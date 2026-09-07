@@ -24,10 +24,12 @@ This repository contains the Salesforce DX source code for the **HRMS (Human Res
   - Support execution context methods (`beforeInsert`, `afterInsert`, `beforeUpdate`, `afterUpdate`, `beforeDelete`, `afterDelete`, `afterUndelete`).
 - **Security & FLS**: Always enforce Object and Field Level Security (FLS) using `WITH USER_MODE`, `Security.stripInaccessible()`, or schema describe checks before DML and SOQL operations.
 - **Unit Testing**:
-  - Maintain >85% code coverage for all Apex classes.
+  - Automatically activate and adhere to the [`apex-test-craftsman`](.agents/skills/apex-test-craftsman/SKILL.md) skill whenever writing, optimizing, or reviewing Apex tests.
+  - Maintain >90% code coverage across all Apex classes with production-grade logical assertions.
+  - Test all 5 vectors: Positive (Happy Path), Negative (Edge/Null), Bulk (200 records), Fault/Exception, and Security/FLS (`System.runAs`).
   - Use `@TestSetup` methods and dedicated `TestDataFactory` for test data creation.
-  - Assert expected outcomes using `Assert.areEqual()`, `Assert.isTrue()`, and test bulk and error handling scenarios.
-  - Do not use `SeeAllData=true`.
+  - Assert expected outcomes using modern Spring '23+ assertions (`Assert.areEqual()`, `Assert.isTrue()`, `Assert.isFalse()`, `Assert.isNull()`, `Assert.fail()`). Never use legacy `System.assert()`.
+  - Zero `SeeAllData=true`.
 
 ### 2. Lightning Web Components (LWC)
 - **Design System**: Use Salesforce Lightning Design System (SLDS) utility classes and components.
