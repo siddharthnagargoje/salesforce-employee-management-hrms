@@ -1,0 +1,260 @@
+<template>
+    <div class="attendance-page">
+
+        <!-- Dashboard Header -->
+        <header class="dashboard-header">
+            <div class="header-background-circle circle-one"></div>
+            <div class="header-background-circle circle-two"></div>
+
+            <div class="dashboard-header-content">
+                <div class="header-text">
+                    <span class="header-eyebrow">
+                        PEOPLE OPERATIONS
+                    </span>
+
+                    <h1>
+                        Attendance Management
+                    </h1>
+
+                    <p>
+                        Track employee attendance, working hours, and real-time operational status.
+                    </p>
+                </div>
+
+                <div class="header-actions">
+                    <div class="current-time-pill">
+                        <span class="live-dot"></span>
+                        {currentTimeLabel}
+                    </div>
+
+                    <button class="primary-button" type="button" onclick={openAddModal}>
+                        <lightning-icon icon-name="utility:add" alternative-text="Add record" size="xx-small">
+                        </lightning-icon>
+                        <span>Add Record</span>
+                    </button>
+
+                    <div class="user-avatar">
+                        HR
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- =========================================================
+             KPI CARDS GRID
+             ========================================================= -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue-stat">
+                    <lightning-icon icon-name="utility:groups" alternative-text="Total" size="small"></lightning-icon>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-label">TOTAL RECORDS</span>
+                    <strong>{totalRecords}</strong>
+                    <span class="stat-subtext">Profiles logged</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green-stat">
+                    <lightning-icon icon-name="utility:success" alternative-text="Present" size="small"></lightning-icon>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-label">PRESENT</span>
+                    <strong>{presentCount}</strong>
+                    <span class="stat-subtext">Active today</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange-stat">
+                    <lightning-icon icon-name="utility:clock" alternative-text="Hours" size="small"></lightning-icon>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-label">WORKING HOURS</span>
+                    <strong>{totalWorkingHours}</strong>
+                    <span class="stat-subtext">Cumulative prod.</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon purple-stat">
+                    <lightning-icon icon-name="utility:trending" alternative-text="Overtime" size="small"></lightning-icon>
+                </div>
+                <div class="stat-content">
+                    <span class="stat-label">OVERTIME</span>
+                    <strong>{totalOvertimeHours}</strong>
+                    <span class="stat-subtext">Extra hours logged</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- =========================================================
+             FILTER CARD SECTION (Modernized Layout)
+             ========================================================= -->
+        <section class="dashboard-card filter-card">
+            <div class="card-heading">
+                <div class="heading-content">
+                    <div class="heading-icon">
+                        <lightning-icon icon-name="utility:filterList" alternative-text="Filter" size="x-small"></lightning-icon>
+                    </div>
+                    <div>
+                        <h2>Attendance Filters</h2>
+                        <p>Filter attendance records by employee, date, or operational mode.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-grid">
+                <div class="filter-item">
+                    <lightning-combobox name="employee" label="Employee" value={selectedEmployee} options={employeeOptions} onchange={handleEmployeeChange}>
+                    </lightning-combobox>
+                </div>
+
+                <div class="filter-item">
+                    <lightning-input type="date" name="attendanceDate" label="Attendance Date" value={attendanceDate} onchange={handleDateChange}>
+                    </lightning-input>
+                </div>
+
+                <div class="filter-item">
+                    <lightning-combobox name="status" label="Status" value={status} options={statusOptions} onchange={handleStatusChange}>
+                    </lightning-combobox>
+                </div>
+
+                <div class="filter-item">
+                    <lightning-combobox name="workMode" label="Work Mode" value={workMode} options={workModeOptions} onchange={handleWorkModeChange}>
+                    </lightning-combobox>
+                </div>
+
+                <div class="filter-actions">
+                    <button class="secondary-button" type="button" onclick={handleResetFilters}>
+                        Reset Filters
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             ATTENDANCE TABLE SECTION
+             ========================================================= -->
+        <section class="dashboard-card attendance-table-card">
+            <div class="card-heading-flex">
+                <div class="heading-content">
+                    <div class="heading-icon blue-heading-icon">
+                        <lightning-icon icon-name="utility:list" alternative-text="Attendance list" size="x-small"></lightning-icon>
+                    </div>
+                    <div>
+                        <h2>Attendance List</h2>
+                        <p>View and manage employee punch-ins, hours, and notes.</p>
+                    </div>
+                </div>
+                <div class="record-count-badge">
+                    {totalRecords} Employees
+                </div>
+            </div>
+
+            <div class="attendance-table-wrapper">
+                <table class="attendance-table">
+                    <thead>
+                        <tr>
+                            <th class="serial-column">S. No</th>
+                            <th>Employee</th>
+                            <th>Date</th>
+                            <th>Punch In</th>
+                            <th>Punch Out</th>
+                            <th>Production</th>
+                            <th>Break</th>
+                            <th>Overtime</th>
+                            <th class="actions-column">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template lwc:if={hasAttendanceRecords}>
+                            <template for:each={attendanceListDisplay} for:item="rec">
+                                <tr key={rec.Id}>
+                                    <td class="serial-cell">{rec.sNo}</td>
+                                    <td>
+                                        <div class="employee-cell">
+                                            <div class="employee-avatar">{rec.employeeInitials}</div>
+                                            <div class="employee-info">
+                                                <span class="employee-name">{rec.employeeName}</span>
+                                                <span class="employee-id">{rec.Employee__c}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="strong-cell">{rec.Attendance_Date__c}</td>
+                                    <td>{rec.checkInDisplay}</td>
+                                    <td>{rec.checkOutDisplay}</td>
+                                    <td><span class="pill-metric">{rec.Total_Hours__c} hrs</span></td>
+                                    <td>{rec.breakDisplay}</td>
+                                    <td><span class="pill-metric-sub">{rec.Overtime_Hours__c} hrs</span></td>
+                                    <td class="actions-cell">
+                                        <div class="row-actions">
+                                            <button class="row-action edit-action" type="button" data-id={rec.Id} data-action="edit" onclick={handleTableRowAction} title="Edit">
+                                                <lightning-icon icon-name="utility:edit" alternative-text="Edit" size="xx-small"></lightning-icon>
+                                            </button>
+                                            <button class="row-action delete-action" type="button" data-id={rec.Id} data-action="delete" onclick={handleTableRowAction} title="Delete">
+                                                <lightning-icon icon-name="utility:delete" alternative-text="Delete" size="xx-small"></lightning-icon>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </template>
+                        <template lwc:else>
+                            <tr>
+                                <td colspan="9" class="empty-table">
+                                    No records match the selected filters.
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- LOADING SPINNER -->
+    <template if:true={isLoading}>
+        <div class="loading-overlay">
+            <lightning-spinner alternative-text="Loading attendance" size="medium"></lightning-spinner>
+        </div>
+    </template>
+
+    <!-- ADD / EDIT MODAL -->
+    <template if:true={showModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="modal-backdrop">
+            <div class="attendance-modal">
+                <div class="modal-header">
+                    <div>
+                        <h2>{modalTitle}</h2>
+                        <p>Enter exact employee attendance and time parameters.</p>
+                    </div>
+                    <button type="button" class="modal-close" onclick={closeModal} title="Close">
+                        <lightning-icon icon-name="utility:close" alternative-text="Close" size="x-small"></lightning-icon>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="modal-grid">
+                        <lightning-combobox name="modalEmployee" label="Employee" value={selectedEmployee} options={employeeOptions} onchange={handleEmployeeChange} required></lightning-combobox>
+                        <lightning-input type="date" name="modalDate" label="Attendance Date" value={attendanceDate} onchange={handleDateChange} required></lightning-input>
+                        <lightning-input type="datetime" name="modalCheckIn" label="Check In" value={checkInTime} onchange={handleCheckInChange}></lightning-input>
+                        <lightning-input type="datetime" name="modalCheckOut" label="Check Out" value={checkOutTime} onchange={handleCheckOutChange}></lightning-input>
+                        <lightning-combobox name="modalStatus" label="Status" value={status} options={statusOptions} onchange={handleStatusChange} required></lightning-combobox>
+                        <lightning-combobox name="modalWorkMode" label="Work Mode" value={workMode} options={workModeOptions} onchange={handleWorkModeChange}></lightning-combobox>
+                        <div class="full-width-field">
+                            <lightning-textarea name="remarks" label="Remarks" value={remarks} onchange={handleRemarksChange}></lightning-textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="secondary-button" onclick={closeModal}>Cancel</button>
+                    <button type="button" class="primary-button" onclick={handleSave}>Save Attendance</button>
+                </div>
+            </div>
+        </section>
+    </template>
+</template>

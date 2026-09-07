@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Send_Payslip_PDF_Email_Action</name>
+        <label>Send Payslip PDF Email Action</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>SendPayslipEmailInvocable</actionName>
+        <actionType>apex</actionType>
+        <faultConnector>
+            <targetReference>Update_Payslip_Fault_Error</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>forceResend</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>payslipId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>SendPayslipEmailInvocable</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <apiVersion>67.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Production-ready Record-Triggered Flow that automatically generates and sends the Payslip PDF email to the employee when a payslip is created or approved/generated/paid, with duplicate prevention and fault handling.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>Truncates flow fault message to 255 characters to fit within Email_Error_Message__c.</description>
+        <name>formula_TruncatedFaultMessage</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!$Flow.FaultMessage}, 255)</expression>
+    </formulas>
+    <interviewLabel>Send Payslip PDF Email {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Send Payslip PDF Email</label>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_Payslip_Fault_Error</name>
+        <label>Update Payslip Fault Error</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Email_Error_Message__c</field>
+            <value>
+                <elementReference>formula_TruncatedFaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Payslip__c</object>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Send_Payslip_PDF_Email_Action</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>(1 OR 2 OR 3) AND 4 AND 5</filterLogic>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Generated</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Paid</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Approved</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Email_Sent__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Employee__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <object>Payslip__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

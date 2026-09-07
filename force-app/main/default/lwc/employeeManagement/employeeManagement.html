@@ -1,0 +1,566 @@
+<template>
+    <div class="employee-page">
+
+        <div class="background-shape shape-one"></div>
+        <div class="background-shape shape-two"></div>
+
+        <div class="page-content">
+
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-background-circle circle-one"></div>
+                <div class="header-background-circle circle-two"></div>
+
+                <div class="dashboard-header-content">
+                    <div class="header-text">
+                        <span class="header-eyebrow">
+                            PEOPLE OPERATIONS
+                        </span>
+
+                        <h1>
+                            Employee Management
+                        </h1>
+
+                        <p>
+                            Manage your workforce, employee profiles, and payroll information.
+                        </p>
+                    </div>
+
+                    <div class="header-actions">
+                        <button class="primary-button" onclick={openEmployeeModal}>
+                            <lightning-icon icon-name="utility:add" alternative-text="Add employee"
+                                size="xx-small">
+                            </lightning-icon>
+                            <span>Add Employee</span>
+                        </button>
+
+                        <div class="user-avatar">
+                            HR
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Breadcrumb -->
+            <div class="page-navigation">
+                <div class="breadcrumb">
+                    <span>Workspace</span>
+
+                    <lightning-icon icon-name="utility:chevronright" alternative-text="Next" size="xx-small">
+                    </lightning-icon>
+
+                    <span class="breadcrumb-active">
+                        Employee Management
+                    </span>
+                </div>
+
+                <div class="live-indicator">
+                    <span class="live-dot"></span>
+                    Live directory
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <section class="stats-grid">
+
+                <!-- Total Employees -->
+                <article class="stat-card stat-blue">
+                    <div class="stat-icon">
+                        <lightning-icon icon-name="utility:groups" alternative-text="Total employees" size="x-small">
+                        </lightning-icon>
+                    </div>
+
+                    <div class="stat-content">
+                        <div class="stat-heading">
+                            <span class="stat-title">
+                                Total Employees
+                            </span>
+
+                            <span class="stat-tag">
+                                Directory
+                            </span>
+                        </div>
+
+                        <div class="stat-value">
+                            {totalEmployeesCount}
+                        </div>
+
+                        <div class="stat-description">
+                            Profiles in directory
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Active Staff -->
+                <article class="stat-card stat-green">
+                    <div class="stat-icon">
+                        <lightning-icon icon-name="utility:check" alternative-text="Active staff" size="x-small">
+                        </lightning-icon>
+                    </div>
+
+                    <div class="stat-content">
+                        <div class="stat-heading">
+                            <span class="stat-title">
+                                Staff Status
+                            </span>
+
+                            <span class="stat-tag">
+                                Active
+                            </span>
+                        </div>
+
+                        <div class="stat-value">
+                            Active
+                        </div>
+
+                        <div class="stat-description">
+                            Workforce currently live
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Onboarding -->
+                <article class="stat-card stat-orange">
+                    <div class="stat-icon">
+                        <lightning-icon icon-name="utility:event" alternative-text="Onboarding" size="x-small">
+                        </lightning-icon>
+                    </div>
+
+                    <div class="stat-content">
+                        <div class="stat-heading">
+                            <span class="stat-title">
+                                Onboarding
+                            </span>
+
+                            <span class="stat-tag">
+                                Live
+                            </span>
+                        </div>
+
+                        <div class="stat-value">
+                            Live
+                        </div>
+
+                        <div class="stat-description">
+                            Employee setup active
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Payroll -->
+                <article class="stat-card stat-purple">
+                    <div class="stat-icon">
+                        <lightning-icon icon-name="utility:money" alternative-text="Payroll" size="x-small">
+                        </lightning-icon>
+                    </div>
+
+                    <div class="stat-content">
+                        <div class="stat-heading">
+                            <span class="stat-title">
+                                Total Payroll
+                            </span>
+
+                            <span class="stat-tag">
+                                Monthly
+                            </span>
+                        </div>
+
+                        <div class="stat-value">
+                            {totalPayroll}
+                        </div>
+
+                        <div class="stat-description">
+                            Current filtered payroll
+                        </div>
+                    </div>
+                </article>
+
+            </section>
+
+            <!-- Employee Directory -->
+            <section class="employee-list-panel">
+
+                <div class="employee-list-header">
+                    <div class="list-title-row">
+                        <div class="list-title-icon">
+                            <lightning-icon icon-name="utility:people" alternative-text="Employee list" size="x-small">
+                            </lightning-icon>
+                        </div>
+
+                        <div>
+                            <h2>Employee Directory</h2>
+
+                            <p>
+                                Manage your employee profiles and work information.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="list-record-count">
+                        <span>{totalEmployeesCount}</span>
+                        <small>Employees</small>
+                    </div>
+                </div>
+
+                <!-- Search -->
+                <div class="employee-search-row">
+                    <div class="employee-search-box">
+                        <lightning-input name="search" type="search" variant="label-hidden"
+                            placeholder="Search by name, employee code, or designation" onchange={handleSearchChange}>
+                        </lightning-input>
+                    </div>
+
+                    <div class="list-status">
+                        <span class="list-status-dot"></span>
+                        Directory updated
+                    </div>
+                </div>
+
+                <!-- Employee Cards -->
+                <template if:true={hasRecords}>
+                    <div class="employee-grid">
+                        <template for:each={pagedEmployees} for:item="emp">
+
+                            <c-employee-card key={emp.Id} employee={emp} onview={handleView} onedit={handleEdit}
+                                ondelete={handleDelete} onuploadphoto={handleOpenPhotoModal}>
+                            </c-employee-card>
+
+                        </template>
+                    </div>
+
+                    <!-- Pagination -->
+                    <template if:true={showPagination}>
+                        <div class="pagination-bar">
+                            <div class="pagination-info">
+                                Showing <strong>{pageRangeStart}</strong>&ndash;<strong>{pageRangeEnd}</strong>
+                                of <strong>{totalEmployeesCount}</strong> employees
+                            </div>
+
+                            <div class="pagination-controls">
+                                <button class="pagination-btn" disabled={isFirstPage} onclick={handlePrevPage}
+                                    title="Previous page" aria-label="Previous page">
+
+                                    <lightning-icon icon-name="utility:chevronleft" alternative-text="Previous"
+                                        size="xx-small">
+                                    </lightning-icon>
+                                    Previous
+                                </button>
+
+                                <div class="pagination-pages">
+                                    <template for:each={pageNumbers} for:item="pg">
+                                        <button key={pg.value} class={pg.className} data-page={pg.value}
+                                            onclick={handleGoToPage}>
+                                            {pg.value}
+                                        </button>
+                                    </template>
+                                </div>
+
+                                <button class="pagination-btn" disabled={isLastPage} onclick={handleNextPage}
+                                    title="Next page" aria-label="Next page">
+                                    Next
+
+                                    <lightning-icon icon-name="utility:chevronright" alternative-text="Next"
+                                        size="xx-small">
+                                    </lightning-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+
+                <!-- Empty State -->
+                <template if:false={hasRecords}>
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <lightning-icon icon-name="utility:search" alternative-text="No records" size="small">
+                            </lightning-icon>
+                        </div>
+
+                        <h3>No employee records found</h3>
+
+                        <p>
+                            Try changing your search keyword and try again.
+                        </p>
+                    </div>
+                </template>
+
+            </section>
+        </div>
+
+        <!-- Loading -->
+        <template if:true={isLoading}>
+            <div class="loading-overlay">
+                <div class="loading-card">
+                    <lightning-spinner variant="brand" size="medium" alternative-text="Loading records">
+                    </lightning-spinner>
+
+                    <span>Loading employee records...</span>
+                </div>
+            </div>
+        </template>
+
+        <!-- Modal -->
+        <template if:true={isModalOpen}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="employee-modal-heading"
+                class="slds-modal slds-fade-in-open employee-modal">
+
+                <div class="slds-modal__container employee-modal-container">
+
+                    <!-- Modal Header -->
+                    <header class="employee-modal-header">
+                        <div class="modal-title-area">
+                            <div class="modal-title-icon">
+                                <lightning-icon icon-name="standard:user" alternative-text="New employee" size="small">
+                                </lightning-icon>
+                            </div>
+
+                            <div>
+                                <span class="modal-label">
+                                    NEW PROFILE
+                                </span>
+
+                                <h2 id="employee-modal-heading">
+                                    Create Employee Record
+                                </h2>
+
+                                <p>
+                                    Add personal and employment information below.
+                                </p>
+                            </div>
+                        </div>
+
+                        <button class="modal-close-button" title="Close" aria-label="Close"
+                            onclick={closeEmployeeModal}>
+
+                            <lightning-icon icon-name="utility:close" alternative-text="Close" size="small">
+                            </lightning-icon>
+                        </button>
+                    </header>
+
+                    <lightning-record-edit-form object-api-name="Employee__c" onsubmit={handleSubmit}
+                        onsuccess={handleSuccess} onerror={handleError}>
+
+                        <div class="slds-modal__content employee-modal-body">
+                            <lightning-messages></lightning-messages>
+
+                            <!-- Profile Preview -->
+                            <div class="profile-preview">
+                                <div class="avatar-border">
+                                    <img src={photoUrlPreview} alt="Employee profile preview" class="avatar-image"
+                                        onerror={handleImageError}>
+                                </div>
+
+                                <div class="profile-preview-text">
+                                    <h3>Profile Preview</h3>
+
+                                    <p>
+                                        Your employee photo preview will appear here.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Personal Details -->
+                            <div class="form-block">
+                                <div class="form-block-heading">
+                                    <div class="form-block-icon blue-icon">
+                                        <lightning-icon icon-name="utility:user" alternative-text="Personal details"
+                                            size="xx-small">
+                                        </lightning-icon>
+                                    </div>
+
+                                    <div>
+                                        <h3>Personal Details</h3>
+                                        <p>Basic employee information</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-grid">
+                                    <lightning-input-field field-name="First_Name__c" required>
+                                    </lightning-input-field>
+
+                                    <lightning-input-field field-name="Last_Name__c" required>
+                                    </lightning-input-field>
+
+                                    <lightning-input-field field-name="Date_of_Birth__c">
+                                    </lightning-input-field>
+
+                                    <lightning-input-field field-name="Gender__c">
+                                    </lightning-input-field>
+
+                                    <div class="full-width">
+                                        <lightning-input-field field-name="Profile_Photo__c"
+                                            onchange={handlePhotoUrlChange}>
+                                        </lightning-input-field>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Employment Details -->
+                            <div class="form-block">
+                                <div class="form-block-heading">
+                                    <div class="form-block-icon purple-icon">
+                                        <lightning-icon icon-name="utility:briefcase"
+                                            alternative-text="Employment details" size="xx-small">
+                                        </lightning-icon>
+                                    </div>
+
+                                    <div>
+                                        <h3>Employment Details</h3>
+                                        <p>Role, contact, payroll, and status</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-grid">
+                                    <lightning-input-field field-name="Employee_Code__c" required>
+                                    </lightning-input-field>
+
+                                    <lightning-input-field field-name="Designation__c">
+                                    </lightning-input-field>
+
+                                    <lightning-input-field field-name="Joining_Date__c">
+                                    </lightning-input-field>
+
+                                    <lightning-input-field field-name="Employment_Type__c">
+                                    </lightning-input-field>
+
+                                    <lightning-input-field field-name="Personal_Email__c">
+                                    </lightning-input-field>
+
+                                    <lightning-input-field field-name="Mobile__c">
+                                    </lightning-input-field>
+
+                                    <lightning-input-field field-name="Salary__c">
+                                    </lightning-input-field>
+
+                                    <lightning-input-field field-name="Status__c">
+                                    </lightning-input-field>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Footer -->
+                        <footer class="employee-modal-footer">
+                            <lightning-button label="Cancel" onclick={closeEmployeeModal}>
+                            </lightning-button>
+
+                            <lightning-button variant="brand" type="submit" label="Save Employee"
+                                icon-name="utility:save">
+                            </lightning-button>
+                        </footer>
+                    </lightning-record-edit-form>
+                </div>
+            </section>
+
+            <div class="slds-backdrop slds-backdrop_open custom-backdrop" role="presentation">
+            </div>
+        </template>
+
+        <!-- Photo Upload Modal -->
+        <template if:true={isPhotoModalOpen}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="photo-modal-heading"
+                class="slds-modal slds-fade-in-open employee-modal photo-upload-modal">
+
+                <div class="slds-modal__container employee-modal-container photo-modal-container">
+
+                    <!-- Modal Header -->
+                    <header class="employee-modal-header photo-header">
+                        <div class="modal-title-area">
+                            <div class="modal-title-icon photo-icon-bg">
+                                <lightning-icon icon-name="standard:file" alternative-text="Profile Photo" size="small">
+                                </lightning-icon>
+                            </div>
+
+                            <div>
+                                <span class="modal-label">
+                                    SALESFORCE FILES
+                                </span>
+
+                                <h2 id="photo-modal-heading">
+                                    Update Profile Photo
+                                </h2>
+
+                                <p>
+                                    Manage individual photo for {photoUploadEmployeeName}
+                                </p>
+                            </div>
+                        </div>
+
+                        <button class="modal-close-button" title="Close" aria-label="Close"
+                            onclick={closePhotoModal}>
+
+                            <lightning-icon icon-name="utility:close" alternative-text="Close" size="small">
+                            </lightning-icon>
+                        </button>
+                    </header>
+
+                    <div class="slds-modal__content photo-modal-body">
+                        <!-- Current Photo / Initials Preview Card -->
+                        <div class="photo-preview-card">
+                            <div class="photo-preview-avatar">
+                                <template if:true={hasPhotoUploadPreview}>
+                                    <img src={photoUploadCurrentUrl} alt={photoUploadEmployeeName} class="photo-avatar-img"
+                                        onerror={handlePhotoModalImgError}>
+                                </template>
+                                <template if:false={hasPhotoUploadPreview}>
+                                    <div class="photo-avatar-initials">
+                                        {photoUploadInitials}
+                                    </div>
+                                </template>
+                            </div>
+
+                            <div class="photo-preview-info">
+                                <h3>{photoUploadEmployeeName}</h3>
+                                <p class="photo-meta-text">Employee Code: <strong>{photoUploadEmployeeCode}</strong></p>
+                                <template if:true={hasPhotoUploadPreview}>
+                                    <span class="photo-status-pill photo-status-active">
+                                        <lightning-icon icon-name="utility:check" size="xx-small"></lightning-icon>
+                                        Active Salesforce File Photo
+                                    </span>
+                                </template>
+                                <template if:false={hasPhotoUploadPreview}>
+                                    <span class="photo-status-pill photo-status-fallback">
+                                        <lightning-icon icon-name="utility:info" size="xx-small"></lightning-icon>
+                                        Showing Initials Fallback
+                                    </span>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- File Upload Component -->
+                        <div class="photo-upload-zone">
+                            <div class="photo-upload-instructions">
+                                <lightning-icon icon-name="utility:upload" size="small" class="upload-icon-style"></lightning-icon>
+                                <h4>Select or Drop New Photo</h4>
+                                <p>Upload JPG, PNG, or WEBP (Max 5MB). Photo is securely stored as a Salesforce File (ContentVersion) and linked to this Employee.</p>
+                            </div>
+
+                            <lightning-file-upload
+                                label="Upload Individual Profile Photo"
+                                name="employeeProfilePhoto"
+                                accept={acceptedPhotoFormats}
+                                record-id={photoUploadEmployeeId}
+                                onuploadfinished={handlePhotoUploadFinished}
+                                class="slds-m-top_small photo-file-uploader">
+                            </lightning-file-upload>
+                        </div>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <footer class="employee-modal-footer photo-modal-footer">
+                        <template if:true={hasPhotoUploadPreview}>
+                            <lightning-button variant="destructive-text" label="Remove Photo"
+                                icon-name="utility:delete" onclick={handleRemovePhoto}>
+                            </lightning-button>
+                        </template>
+
+                        <lightning-button label="Close" onclick={closePhotoModal}>
+                        </lightning-button>
+                    </footer>
+                </div>
+            </section>
+
+            <div class="slds-backdrop slds-backdrop_open custom-backdrop" role="presentation">
+            </div>
+        </template>
+    </div>
+</template>

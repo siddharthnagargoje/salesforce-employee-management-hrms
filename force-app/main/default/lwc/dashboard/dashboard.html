@@ -1,0 +1,356 @@
+<template>
+    <div class="dashboard-layout">
+
+        <!-- Sidebar -->
+        <c-sidebar active-page={currentPage} ontogglesidebar={handleToggleSidebar} onnavigate={handleNavigation}></c-sidebar>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+
+            <template if:true={isDashboard}>
+                <section class="dashboard-page">
+
+                    <!-- Dashboard Header -->
+                    <header class="dashboard-header">
+                        <div class="header-background-circle circle-one"></div>
+                        <div class="header-background-circle circle-two"></div>
+
+                        <div class="dashboard-header-content">
+                            <div class="header-text">
+                                <span class="header-eyebrow">
+                                    HR WORKSPACE
+                                </span>
+
+                                <h1>
+                                    Hello, HR Admin
+                                    <span class="wave"></span>
+                                </h1>
+
+                                <p>
+                                    Here's what's happening across your workforce today.
+                                </p>
+                            </div>
+
+                            <div class="header-actions">
+                                <button class="secondary-button" onclick={navigateToEmployees}>
+
+                                    <lightning-icon icon-name="utility:add" alternative-text="Add employee"
+                                        size="xx-small">
+                                    </lightning-icon>
+
+                                    <span>Add Employee</span>
+                                </button>
+
+                                <button class="primary-button" onclick={navigateToPayslip}>
+
+                                    <lightning-icon icon-name="utility:money" alternative-text="Generate payslip"
+                                        size="xx-small">
+                                    </lightning-icon>
+
+                                    <span>Generate Payslip</span>
+                                </button>
+
+                                <div class="user-avatar">
+                                    HR
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    <!-- KPI Cards -->
+                    <section class="kpi-grid">
+
+                        <!-- Employees -->
+                        <article class="kpi-card kpi-indigo">
+                            <div class="kpi-card-content">
+                                <div class="kpi-card-header">
+                                    <div class="kpi-icon">
+                                        <lightning-icon icon-name="utility:people" alternative-text="Employees"
+                                            size="small">
+                                        </lightning-icon>
+                                    </div>
+
+                                    <span class="kpi-label">Active Employees</span>
+                                </div>
+
+                                <div class="kpi-value">
+                                    {totalEmployees}
+                                </div>
+
+                                <div class="kpi-footer">
+                                    <span class="trend-positive">
+                                        {employeeGrowthTrend}
+                                    </span>
+
+                                    <span>Workforce</span>
+                                </div>
+                            </div>
+
+                            <div class="kpi-decoration"></div>
+                        </article>
+
+                        <!-- Payroll -->
+                        <article class="kpi-card kpi-emerald">
+                            <div class="kpi-card-content">
+                                <div class="kpi-card-header">
+                                    <div class="kpi-icon">
+                                        <lightning-icon icon-name="utility:money" alternative-text="Payroll"
+                                            size="small">
+                                        </lightning-icon>
+                                    </div>
+
+                                    <span class="kpi-label">Gross Payroll</span>
+                                </div>
+
+                                <div class="kpi-value">
+                                    {totalPayrollDisplay}
+                                </div>
+
+                                <div class="kpi-footer">
+                                    <span class="trend-neutral">Live Ledger</span>
+                                    <span>Current month</span>
+                                </div>
+                            </div>
+
+                            <div class="kpi-decoration"></div>
+                        </article>
+
+                        <!-- Attendance -->
+                        <article class="kpi-card kpi-amber">
+                            <div class="kpi-card-content">
+                                <div class="kpi-card-header">
+                                    <div class="kpi-icon">
+                                        <lightning-icon icon-name="utility:date_time" alternative-text="Attendance"
+                                            size="small">
+                                        </lightning-icon>
+                                    </div>
+
+                                    <span class="kpi-label">Attendance Today</span>
+                                </div>
+
+                                <div class="kpi-value">
+                                    {attendancePercent}
+                                </div>
+
+                                <div class="kpi-footer">
+                                    <span class="trend-positive">On track</span>
+                                    <span>Daily status</span>
+                                </div>
+                            </div>
+
+                            <div class="kpi-decoration"></div>
+                        </article>
+                    </section>
+
+                    <!-- Dashboard Grid -->
+                    <section class="dashboard-grid">
+
+                        <!-- Attendance Table -->
+                        <article class="dashboard-card attendance-card">
+                            <div class="card-heading">
+                                <div class="heading-content">
+                                    <div class="heading-icon blue-heading-icon">
+                                        <lightning-icon icon-name="utility:clock" alternative-text="Attendance"
+                                            size="x-small">
+                                        </lightning-icon>
+                                    </div>
+
+                                    <div>
+                                        <h2>Today's Attendance</h2>
+                                        <p>Employee check-in activity</p>
+                                    </div>
+                                </div>
+
+                                <span class="live-badge">
+                                    <span class="live-dot"></span>
+                                    Live
+                                </span>
+                            </div>
+
+                            <div class="table-wrapper">
+                                <table class="attendance-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Employee</th>
+                                            <th scope="col">Check-In</th>
+                                            <th scope="col">Status</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <template for:each={attendanceLogs} for:item="log">
+
+                                            <tr key={log.id}>
+                                                <td>
+                                                    <div class="employee-cell">
+                                                        <span class="employee-mini-avatar">
+                                                            {log.initials}
+                                                        </span>
+
+                                                        <span class="employee-table-name">
+                                                            {log.name}
+                                                        </span>
+                                                    </div>
+                                                </td>
+
+                                                <td class="check-in-time">
+                                                    {log.checkIn}
+                                                </td>
+
+                                                <td>
+                                                    <span class={log.statusClass}>
+                                                        {log.statusLabel}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="card-bottom-note">
+                                <span class="note-icon">
+                                    <lightning-icon icon-name="utility:info" alternative-text="Information"
+                                        size="xx-small">
+                                    </lightning-icon>
+                                </span>
+
+                                Attendance is updated automatically from today's check-ins.
+                            </div>
+                        </article>
+
+                        <!-- Right Column -->
+                        <div class="right-dashboard-column">
+
+                            <!-- Attendance Rate -->
+                            <article class="dashboard-card attendance-rate-card">
+                                <div class="card-heading">
+                                    <div class="heading-content">
+                                        <div class="heading-icon purple-heading-icon">
+                                            <lightning-icon icon-name="utility:chart" alternative-text="Attendance rate"
+                                                size="x-small">
+                                            </lightning-icon>
+                                        </div>
+
+                                        <div>
+                                            <h2>Attendance Rate</h2>
+                                            <p>Today's workforce overview</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="donut-container">
+                                    <div class="donut-chart">
+                                        <div class="donut-inner">
+                                            <strong>{attendancePercent}</strong>
+                                            <span>On Time</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="donut-footer">
+                                    <span>
+                                        <span class="legend-dot present-dot"></span>
+                                        Present
+                                    </span>
+
+                                    <span>
+                                        <span class="legend-dot remaining-dot"></span>
+                                        Remaining
+                                    </span>
+                                </div>
+                            </article>
+
+                            <!-- Pending Requests -->
+                            <article class="dashboard-card requests-card">
+                                <div class="card-heading">
+                                    <div class="heading-content">
+                                        <div class="heading-icon rose-heading-icon">
+                                            <lightning-icon icon-name="utility:approval"
+                                                alternative-text="Pending requests" size="x-small">
+                                            </lightning-icon>
+                                        </div>
+
+                                        <div>
+                                            <h2>Pending Requests</h2>
+                                            <p>Items requiring attention</p>
+                                        </div>
+                                    </div>
+
+                                    <span class="request-count">
+                                        {pendingRequests.length}
+                                    </span>
+                                </div>
+
+                                <div class="request-list">
+                                    <template for:each={pendingRequests} for:item="req">
+
+                                        <div key={req.id} class="request-item" onclick={navigateToLeave}>
+
+                                            <div class="request-item-top">
+                                                <span class="request-employee">
+                                                    {req.employee}
+                                                </span>
+
+                                                <span class={req.typeClass}>
+                                                    {req.type}
+                                                </span>
+                                            </div>
+
+                                            <p>{req.details}</p>
+
+                                            <span class="request-arrow">
+                                                <lightning-icon icon-name="utility:chevronright"
+                                                    alternative-text="Open request" size="xx-small">
+                                                </lightning-icon>
+                                            </span>
+                                        </div>
+                                    </template>
+
+                                    <template if:true={hasNoPendingRequests}>
+                                        <div class="no-requests">
+                                            <div class="no-request-icon">
+                                                <lightning-icon icon-name="utility:success"
+                                                    alternative-text="No requests" size="small">
+                                                </lightning-icon>
+                                            </div>
+
+                                            <span>No pending requests</span>
+                                            <small>Everything is up to date 🎉</small>
+                                        </div>
+                                    </template>
+                                </div>
+                            </article>
+
+                        </div>
+                    </section>
+                </section>
+            </template>
+
+            <!-- Other Pages -->
+            <template if:true={isEmployees}>
+                <c-employee-management class="page-animation"></c-employee-management>
+            </template>
+
+            <template if:true={isAttendance}>
+                <c-attendance-management class="page-animation"></c-attendance-management>
+            </template>
+
+            <template if:true={isLeave}>
+                <c-leave-request class="page-animation"></c-leave-request>
+            </template>
+
+            <template if:true={isReports}>
+                <c-reports-management class="page-animation"></c-reports-management>
+            </template>
+
+            <template if:true={isSettings}>
+                <c-settings-management class="page-animation"></c-settings-management>
+            </template>
+
+            <template if:true={isPayslip}>
+                <c-payslip-management class="page-animation"></c-payslip-management>
+            </template>
+        </main>
+    </div>
+</template>

@@ -1,0 +1,479 @@
+:host {
+    display: block;
+    background-color: #f8fafc;
+}
+
+/* Base Workspace Layout - Dashboard Theme */
+.payslip-page {
+    background-color: #f7f9fc;
+    color: #1e293b;
+    min-height: 100vh;
+    padding: 30px;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+    position: relative;
+    min-height: 130px;
+    overflow: hidden;
+    margin-bottom: 22px;
+    padding: 24px 30px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%) !important;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(30, 58, 138, 0.15);
+}
+
+.dashboard-header-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.header-background-circle {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+}
+
+.circle-one {
+    top: -95px;
+    right: -20px;
+    width: 260px;
+    height: 260px;
+}
+
+.circle-two {
+    right: 160px;
+    bottom: -120px;
+    width: 220px;
+    height: 220px;
+}
+
+.header-eyebrow {
+    display: block;
+    margin-bottom: 6px;
+    color: #93c5fd;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+}
+
+.header-text h1 {
+    margin: 0;
+    color: #ffffff !important;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.header-text p {
+    margin: 6px 0 0;
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-size: 0.83rem;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-actions lightning-icon {
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+.secondary-button,
+.primary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 38px;
+    padding: 0 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.74rem;
+    font-weight: 700;
+    transition: all 180ms ease;
+}
+
+.primary-button {
+    color: #ffffff;
+    background: #2563eb;
+    border: 1px solid #1d4ed8;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.primary-button:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+.user-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    margin-left: 4px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    font-size: 0.68rem;
+    font-weight: 900;
+}
+
+/* ==========================================================================
+   STATISTICS GRID (Unified Enterprise Design)
+   ========================================================================== */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 22px;
+    background: #ffffff;
+    border: 1px solid #E2E8F0;
+    border-radius: 18px;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    border-color: #CBD5E1;
+}
+
+.stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    border-radius: 13px;
+    transition: transform 180ms ease;
+}
+
+.stat-card:hover .stat-icon {
+    transform: scale(1.06);
+}
+
+.stat-icon lightning-icon {
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+.stat-blue .stat-icon { color: #2563EB; background: #EFF6FF; }
+.stat-green .stat-icon { color: #059669; background: #ECFDF5; }
+.stat-orange .stat-icon { color: #D97706; background: #FFFBEB; }
+.stat-purple .stat-icon { color: #7C3AED; background: #F5F3FF; }
+
+.stat-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.stat-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.stat-title {
+    color: #64748B;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.stat-tag {
+    padding: 2px 7px;
+    border-radius: 999px;
+    font-size: 0.62rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.stat-blue .stat-tag { color: #1D4ED8; background: #DBEAFE; }
+.stat-green .stat-tag { color: #065F46; background: #D1FAE5; }
+.stat-orange .stat-tag { color: #92400E; background: #FEF3C7; }
+.stat-purple .stat-tag { color: #5B21B6; background: #EDE9FE; }
+
+.stat-value {
+    color: #0F172A;
+    font-size: 1.55rem;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+.stat-description {
+    margin-top: 3px;
+    color: #94A3B8;
+    font-size: 0.74rem;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   PAYSLIP DIRECTORY PANEL
+   ========================================================================== */
+
+.payslip-panel {
+    background: #ffffff;
+    border: 1px solid #E2E8F0;
+    border-radius: 18px;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.payslip-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 24px;
+    border-bottom: 1px solid #E2E8F0;
+    background: #FFFFFF;
+}
+
+.panel-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.panel-title-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    color: #2563EB;
+    background: #EFF6FF;
+}
+
+.panel-title-icon lightning-icon {
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+.panel-title-row h2 {
+    margin: 0;
+    color: #0F172A;
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+
+.panel-title-row p {
+    margin: 2px 0 0;
+    color: #64748B;
+    font-size: 0.78rem;
+}
+
+.panel-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.employee-select-wrapper {
+    min-width: 240px;
+}
+
+.primary-button-accent {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 16px;
+    color: #ffffff;
+    background: #2563EB;
+    border: 1px solid #1D4ED8;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 160ms ease;
+    white-space: nowrap;
+}
+
+.primary-button-accent:hover {
+    background: #1D4ED8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.primary-button-accent lightning-icon {
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+.datatable-container {
+    padding: 0;
+    background: #ffffff;
+}
+
+/* Ultra-Clean Datatable Styling */
+.modern-datatable-accents {
+    --slds-c-datatable-color-background: #ffffff;
+    --slds-c-datatable-row-color-background-hover: #F8FAFC;
+    --slds-c-datatable-text-color: #1E293B;
+    --slds-c-datatable-header-color-background: #F8FAFC;
+    --slds-c-datatable-header-text-color: #64748B;
+    --slds-c-datatable-border-color: #E2E8F0;
+}
+
+.modern-datatable-accents th {
+    background-color: #F8FAFC !important;
+    color: #64748B !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+}
+
+.modern-datatable-accents td {
+    background-color: #ffffff !important;
+    color: #1E293B !important;
+    border-bottom: 1px solid #F1F5F9 !important;
+}
+
+@media only screen and (max-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .payslip-panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .panel-actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    .employee-select-wrapper {
+        flex: 1;
+        min-width: 180px;
+    }
+}
+
+@media only screen and (max-width: 640px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Loading Overlay */
+.spinner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Modal Popup Styling */
+.modal-glassmorphism .slds-modal__container {
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+    border: 1px solid #e2e8f0;
+}
+
+.logic-gradient-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 1.5rem 1.75rem;
+}
+
+.background-form {
+    background-color: #ffffff !important;
+    color: #1e293b;
+}
+
+.header-border-purple {
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+}
+
+.purple-icon {
+    --sds-c-icon-color-foreground: #3b82f6;
+}
+
+.vibrant-section-title {
+    color: #0f172a !important;
+    font-weight: 800;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.footer-custom {
+    background-color: #f8fafc !important;
+    border-top: 1px solid #e2e8f0;
+    padding: 1.25rem 1.75rem;
+}
+
+.glass-backdrop {
+    background: rgba(15, 23, 42, 0.6) !important;
+    backdrop-filter: blur(4px);
+}
+
+/* Form inputs inside modal */
+.background-form lightning-input-field {
+    --slds-c-input-color-background: #f8fafc;
+    --slds-c-input-text-color: #0f172a;
+    --slds-c-input-border-color: #cbd5e1;
+}
+
+/* Modern Professional Action Buttons */
+.vibrant-action-btn {
+    --slds-c-button-brand-color-background: #1e293b;
+    --slds-c-button-brand-color-border: #2563eb;
+    --slds-c-button-brand-color-background-hover: #1d4ed8;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.vibrant-submit-btn {
+    --slds-c-button-brand-color-background: #1e293b;
+    --slds-c-button-brand-color-border: #2563eb;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.btn-flat {
+    --slds-c-button-neutral-color-background: #ffffff;
+    --slds-c-button-neutral-text-color: #334155;
+    --slds-c-button-neutral-color-border: #cbd5e1;
+    font-weight: 700;
+}
+
+.btn-flat:hover {
+    --slds-c-button-neutral-color-background: #f8fafc;
+    --slds-c-button-neutral-color-border: #94a3b8;
+}

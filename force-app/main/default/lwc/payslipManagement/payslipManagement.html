@@ -1,0 +1,220 @@
+<template>
+    <div class="payslip-page">
+
+        <!-- Dashboard Header -->
+        <header class="dashboard-header">
+            <div class="header-background-circle circle-one"></div>
+            <div class="header-background-circle circle-two"></div>
+
+            <div class="dashboard-header-content">
+                <div class="header-text">
+                    <span class="header-eyebrow">
+                        COMPENSATION & PAYROLL
+                    </span>
+
+                    <h1>
+                        Payslip Management
+                    </h1>
+
+                    <p>
+                        Configure compensation, generate monthly payslips, and track payroll history.
+                    </p>
+                </div>
+
+                <div class="header-actions">
+                    <button class="primary-button" onclick={openPayslipModal}>
+                        <lightning-icon icon-name="utility:money" alternative-text="Generate payslip" size="xx-small">
+                        </lightning-icon>
+                        <span>Generate Payslip</span>
+                    </button>
+
+                    <div class="user-avatar">
+                        HR
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Statistics Grid (Unified Enterprise Design) -->
+        <section class="stats-grid">
+            <!-- Total Payslips -->
+            <article class="stat-card stat-blue">
+                <div class="stat-icon">
+                    <lightning-icon icon-name="utility:money" alternative-text="Total payslips" size="x-small">
+                    </lightning-icon>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-heading">
+                        <span class="stat-title">Total Payslips</span>
+                        <span class="stat-tag">Generated</span>
+                    </div>
+                    <div class="stat-value">{totalPayslips}</div>
+                    <div class="stat-description">Disbursement slips issued</div>
+                </div>
+            </article>
+
+            <!-- Paid -->
+            <article class="stat-card stat-green">
+                <div class="stat-icon">
+                    <lightning-icon icon-name="utility:check" alternative-text="Paid" size="x-small">
+                    </lightning-icon>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-heading">
+                        <span class="stat-title">Paid Status</span>
+                        <span class="stat-tag">Cleared</span>
+                    </div>
+                    <div class="stat-value">{paidCount}</div>
+                    <div class="stat-description">Direct deposit processed</div>
+                </div>
+            </article>
+
+            <!-- Pending -->
+            <article class="stat-card stat-orange">
+                <div class="stat-icon">
+                    <lightning-icon icon-name="utility:clock" alternative-text="Pending" size="x-small">
+                    </lightning-icon>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-heading">
+                        <span class="stat-title">Pending Payment</span>
+                        <span class="stat-tag">In Review</span>
+                    </div>
+                    <div class="stat-value">{pendingCount}</div>
+                    <div class="stat-description">Pending release</div>
+                </div>
+            </article>
+
+            <!-- Total Disbursed -->
+            <article class="stat-card stat-purple">
+                <div class="stat-icon">
+                    <lightning-icon icon-name="utility:currency" alternative-text="Total Disbursed" size="x-small">
+                    </lightning-icon>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-heading">
+                        <span class="stat-title">Total Disbursed</span>
+                        <span class="stat-tag">Gross</span>
+                    </div>
+                    <div class="stat-value">{formattedTotalDisbursed}</div>
+                    <div class="stat-description">Cumulative compensation</div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Payslip Directory Panel -->
+        <section class="payslip-panel">
+            <div class="payslip-panel-header">
+                <div class="panel-title-row">
+                    <div class="panel-title-icon">
+                        <lightning-icon icon-name="utility:file" alternative-text="Payslip list" size="x-small">
+                        </lightning-icon>
+                    </div>
+                    <div>
+                        <h2>Payroll & Payslip History</h2>
+                        <p>Generate, download, and review monthly employee disbursement statements.</p>
+                    </div>
+                </div>
+
+                <div class="panel-actions">
+                    <div class="employee-select-wrapper">
+                        <lightning-combobox name="employee" variant="label-hidden" placeholder="Filter by employee..."
+                            value={selectedEmployeeId} options={employeeOptions} onchange={handleEmployeeChange}
+                            class="modern-filter-dropdown">
+                        </lightning-combobox>
+                    </div>
+
+                    <button class="primary-button-accent" onclick={openPayslipModal}>
+                        <lightning-icon icon-name="utility:add" size="xx-small"></lightning-icon>
+                        <span>New Payslip</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="datatable-container">
+                <lightning-datatable key-field="Id" data={payslipData} columns={columns} hide-checkbox-column
+                    onrowaction={handleRowAction} class="modern-datatable-accents">
+                </lightning-datatable>
+            </div>
+        </section>
+
+        <!-- Loading Overlay -->
+        <template if:true={isLoading}>
+            <div class="spinner-overlay glass-blur">
+                <lightning-spinner variant="brand" size="large"
+                    alternative-text="Loading payroll data..."></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Generate Payslip Modal -->
+        <template if:true={isPayslipModalOpen}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-02"
+                class="slds-modal slds-fade-in-open slds-modal_small modal-glassmorphism">
+                <div class="slds-modal__container">
+
+                    <header class="slds-modal__header modal-header-custom logic-gradient-header">
+                        <h2 id="modal-heading-02" class="slds-text-heading_medium font-weight-bold text-white">Generate
+                            Payslip</h2>
+                        <p class="slds-m-top_xx-small text-white-muted">Enter compensation details to create a new
+                            payslip record.</p>
+                    </header>
+
+                    <lightning-record-edit-form object-api-name="Payslip__c" onsubmit={handlePayslipSubmit}
+                        onsuccess={handlePayslipSuccess} onerror={handleFormError}>
+
+                        <div class="slds-modal__content slds-p-around_large background-form slds-scrollable_y modal-custom-scrollbar"
+                            style="max-height: 52vh; height: 52vh;">
+                            <lightning-messages></lightning-messages>
+
+                            <div class="form-section-header header-border-purple">
+                                <lightning-icon icon-name="utility:money" size="small"
+                                    class="slds-m-right_small purple-icon"></lightning-icon>
+                                <h3 class="vibrant-section-title text-purple">Compensation Details</h3>
+                            </div>
+
+                            <div class="slds-grid slds-wrap slds-gutters custom-form-row">
+                                <div class="slds-col slds-size_1-of-1 slds-p-bottom_small">
+                                    <lightning-input-field field-name="Employee__c" value={selectedEmployeeId} disabled
+                                        required></lightning-input-field>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-bottom_small">
+                                    <lightning-input-field field-name="Pay_Month__c" required></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-bottom_small">
+                                    <lightning-input-field field-name="Pay_Year__c" required></lightning-input-field>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-p-bottom_small">
+                                    <lightning-input-field field-name="Basic_Salary__c"
+                                        required></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-p-bottom_small">
+                                    <lightning-input-field field-name="Bonus__c"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-p-bottom_small">
+                                    <lightning-input-field field-name="Deductions__c"></lightning-input-field>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-bottom_small">
+                                    <lightning-input-field field-name="Status__c"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-bottom_small">
+                                    <lightning-input-field field-name="Downloaded_File__c"></lightning-input-field>
+                                </div>
+                            </div>
+                        </div>
+
+                        <footer class="slds-modal__footer footer-custom">
+                            <lightning-button class="slds-m-right_small btn-flat" label="Cancel"
+                                onclick={closePayslipModal}></lightning-button>
+                            <lightning-button variant="brand" type="submit" label="Save Payslip"
+                                class="vibrant-submit-btn"></lightning-button>
+                        </footer>
+                    </lightning-record-edit-form>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open glass-backdrop" role="presentation"></div>
+        </template>
+    </div>
+</template>

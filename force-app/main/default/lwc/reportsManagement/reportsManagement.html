@@ -1,0 +1,583 @@
+<template>
+    <div class="reports-page">
+        <div class="reports-container">
+
+            <!-- =========================================================
+                 1. HERO BANNER HEADER (Unified HRMS 360 Style)
+                 ========================================================= -->
+            <header class="dashboard-header">
+                <div class="header-background-circle circle-one"></div>
+                <div class="header-background-circle circle-two"></div>
+
+                <div class="dashboard-header-content">
+                    <div class="header-text">
+                        <span class="header-eyebrow">
+                            EXECUTIVE ANALYTICS &amp; INSIGHTS
+                        </span>
+
+                        <h1>
+                            HRMS 360 Reports &amp; Analytics
+                        </h1>
+
+                        <p>
+                            Workforce distribution, attendance metrics, leave patterns, and payroll intelligence.
+                        </p>
+                    </div>
+
+                    <div class="header-actions">
+                        <div class="current-time-pill" title="Live data connection active">
+                            <span class="live-dot"></span>
+                            Live Analytics
+                        </div>
+
+                        <button class="secondary-button" type="button" onclick={handleExportCSV} title="Export Report Data as CSV">
+                            <lightning-icon icon-name="utility:download" alternative-text="Export" size="xx-small">
+                            </lightning-icon>
+                            <span>Export CSV</span>
+                        </button>
+
+                        <button class="primary-button" type="button" onclick={handleRefresh} title="Reload latest data from Salesforce">
+                            <lightning-icon icon-name="utility:refresh" alternative-text="Refresh" size="xx-small">
+                            </lightning-icon>
+                            <span>Refresh Data</span>
+                        </button>
+
+                        <div class="user-avatar" title="HR Administrator">
+                            HR
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- =========================================================
+                 2. BREADCRUMBS & CONTEXT NAVIGATION
+                 ========================================================= -->
+            <div class="page-navigation">
+                <div class="breadcrumb">
+                    <span>Workspace</span>
+                    <lightning-icon icon-name="utility:chevronright" alternative-text="Next" size="xx-small">
+                    </lightning-icon>
+                    <span class="breadcrumb-active">Reports &amp; Analytics</span>
+                </div>
+
+                <div class="live-indicator">
+                    <span class="last-updated-text">Last synchronized: <strong>{lastSyncTime}</strong></span>
+                </div>
+            </div>
+
+            <!-- =========================================================
+                 3. EXECUTIVE KPI SUMMARY METRIC CARDS
+                 ========================================================= -->
+            <section class="stats-grid" aria-label="Executive KPI Summaries">
+
+                <!-- Total Workforce -->
+                <article class="stat-card stat-blue">
+                    <div class="stat-icon">
+                        <lightning-icon icon-name="utility:groups" alternative-text="Total Workforce" size="small">
+                        </lightning-icon>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-heading">
+                            <span class="stat-title">Total Workforce</span>
+                            <span class="stat-tag tag-blue">Headcount</span>
+                        </div>
+                        <div class="stat-value">{kpiTotalEmployees}</div>
+                        <div class="stat-description">Across {kpiDesignationsCount} job designations</div>
+                    </div>
+                </article>
+
+                <!-- Active Staff Status -->
+                <article class="stat-card stat-green">
+                    <div class="stat-icon">
+                        <lightning-icon icon-name="utility:check" alternative-text="Active Staff" size="small">
+                        </lightning-icon>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-heading">
+                            <span class="stat-title">Active Staff</span>
+                            <span class="stat-tag tag-green">Operational</span>
+                        </div>
+                        <div class="stat-value">{kpiActiveRate}</div>
+                        <div class="stat-description">{kpiActiveCount} of {kpiTotalEmployees} employees active</div>
+                    </div>
+                </article>
+
+                <!-- Attendance Rate -->
+                <article class="stat-card stat-orange">
+                    <div class="stat-icon">
+                        <lightning-icon icon-name="utility:clock" alternative-text="Attendance Rate" size="small">
+                        </lightning-icon>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-heading">
+                            <span class="stat-title">Attendance Rate</span>
+                            <span class="stat-tag tag-orange">Today</span>
+                        </div>
+                        <div class="stat-value">{kpiAttendanceRate}</div>
+                        <div class="stat-description">{kpiPresentCount} present / logged today</div>
+                    </div>
+                </article>
+
+                <!-- Total Payroll -->
+                <article class="stat-card stat-purple">
+                    <div class="stat-icon">
+                        <lightning-icon icon-name="utility:money" alternative-text="Monthly Payroll" size="small">
+                        </lightning-icon>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-heading">
+                            <span class="stat-title">Monthly Payroll</span>
+                            <span class="stat-tag tag-purple">Compensation</span>
+                        </div>
+                        <div class="stat-value">{kpiTotalPayrollFormatted}</div>
+                        <div class="stat-description">Disbursement ledger volume</div>
+                    </div>
+                </article>
+
+            </section>
+
+            <!-- =========================================================
+                 4. FILTER TOOLBAR & VIEW CONTROLLER
+                 ========================================================= -->
+            <section class="reports-toolbar-card" aria-label="Report Filters and View Controls">
+                <div class="toolbar-content">
+
+                    <!-- Category Filter Tabs -->
+                    <div class="category-tabs" role="tablist" aria-label="Report Categories">
+                        <button
+                            class={tabAllClass}
+                            role="tab"
+                            data-category="all"
+                            onclick={handleCategorySelect}
+                            aria-selected={isTabAllSelected}>
+                            <lightning-icon icon-name="utility:apps" size="xx-small" class="tab-icon"></lightning-icon>
+                            <span>All Reports</span>
+                            <span class="tab-badge">9</span>
+                        </button>
+
+                        <button
+                            class={tabWorkforceClass}
+                            role="tab"
+                            data-category="workforce"
+                            onclick={handleCategorySelect}
+                            aria-selected={isTabWorkforceSelected}>
+                            <lightning-icon icon-name="utility:people" size="xx-small" class="tab-icon"></lightning-icon>
+                            <span>Workforce &amp; Talent</span>
+                        </button>
+
+                        <button
+                            class={tabAttendanceClass}
+                            role="tab"
+                            data-category="attendance"
+                            onclick={handleCategorySelect}
+                            aria-selected={isTabAttendanceSelected}>
+                            <lightning-icon icon-name="utility:date_time" size="xx-small" class="tab-icon"></lightning-icon>
+                            <span>Attendance &amp; Modes</span>
+                        </button>
+
+                        <button
+                            class={tabLeaveClass}
+                            role="tab"
+                            data-category="leave"
+                            onclick={handleCategorySelect}
+                            aria-selected={isTabLeaveSelected}>
+                            <lightning-icon icon-name="utility:event" size="xx-small" class="tab-icon"></lightning-icon>
+                            <span>Leave Analytics</span>
+                        </button>
+
+                        <button
+                            class={tabPayrollClass}
+                            role="tab"
+                            data-category="payroll"
+                            onclick={handleCategorySelect}
+                            aria-selected={isTabPayrollSelected}>
+                            <lightning-icon icon-name="utility:currency" size="xx-small" class="tab-icon"></lightning-icon>
+                            <span>Payroll &amp; Financials</span>
+                        </button>
+                    </div>
+
+                    <!-- View Switcher (Charts vs Table) -->
+                    <div class="view-switcher-group">
+                        <span class="view-label">Display Mode:</span>
+                        <div class="view-pill-group">
+                            <button
+                                class={chartViewBtnClass}
+                                type="button"
+                                onclick={handleSwitchToCharts}
+                                title="Visual Chart Dashboard">
+                                <lightning-icon icon-name="utility:chart" size="xx-small"></lightning-icon>
+                                <span>Charts</span>
+                            </button>
+                            <button
+                                class={tableViewBtnClass}
+                                type="button"
+                                onclick={handleSwitchToTable}
+                                title="Data Summary Table">
+                                <lightning-icon icon-name="utility:table" size="xx-small"></lightning-icon>
+                                <span>Data Table</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- =========================================================
+                 5. LOADING & ERROR STATES
+                 ========================================================= -->
+            <template if:true={isLoading}>
+                <div class="loading-container">
+                    <lightning-spinner
+                        alternative-text="Loading HRMS Reports"
+                        variant="brand"
+                        size="medium">
+                    </lightning-spinner>
+                    <div class="loading-label">Loading real-time analytics data...</div>
+                </div>
+            </template>
+
+            <template if:true={errorMessage}>
+                <div class="error-banner" role="alert">
+                    <div class="error-icon-wrapper">
+                        <lightning-icon icon-name="utility:error" size="small" variant="error"></lightning-icon>
+                    </div>
+                    <div class="error-text-wrapper">
+                        <h3>Unable to load report data</h3>
+                        <p>{errorMessage}</p>
+                    </div>
+                    <button class="primary-button error-retry-btn" onclick={handleRefresh}>
+                        <span>Retry</span>
+                    </button>
+                </div>
+            </template>
+
+            <!-- =========================================================
+                 6. VIEW MODE A: VISUAL CHARTS GRID
+                 ========================================================= -->
+            <template if:false={isLoading}>
+                <template if:true={isChartsView}>
+
+                    <div class="dashboard-grid">
+
+                        <!-- 1. Bar Chart: Employees by Designation -->
+                        <template if:true={showDesignationChart}>
+                            <article class="chart-card">
+                                <div class="chart-header">
+                                    <div class="chart-header-left">
+                                        <div class="chart-icon-box icon-blue">
+                                            <lightning-icon icon-name="utility:groups" size="x-small"></lightning-icon>
+                                        </div>
+                                        <div>
+                                            <h2>Employees by Designation</h2>
+                                            <p>Headcount distribution across company roles</p>
+                                        </div>
+                                    </div>
+                                    <span class="chart-badge badge-blue">Workforce</span>
+                                </div>
+
+                                <div class="chart-container">
+                                    <canvas class="barChart" aria-label="Employees by Designation Chart"></canvas>
+                                </div>
+                            </article>
+                        </template>
+
+                        <!-- 2. Line Chart: Employee Joining Trend -->
+                        <template if:true={showJoiningChart}>
+                            <article class="chart-card">
+                                <div class="chart-header">
+                                    <div class="chart-header-left">
+                                        <div class="chart-icon-box icon-cyan">
+                                            <lightning-icon icon-name="utility:trending" size="x-small"></lightning-icon>
+                                        </div>
+                                        <div>
+                                            <h2>Employee Joining Trend</h2>
+                                            <p>Monthly onboardings throughout the year</p>
+                                        </div>
+                                    </div>
+                                    <span class="chart-badge badge-cyan">Talent Growth</span>
+                                </div>
+
+                                <div class="chart-container">
+                                    <canvas class="lineChart" aria-label="Employee Joining Trend Chart"></canvas>
+                                </div>
+                            </article>
+                        </template>
+
+                        <!-- 3. Doughnut Chart: Employee Status -->
+                        <template if:true={showStatusChart}>
+                            <article class="chart-card">
+                                <div class="chart-header">
+                                    <div class="chart-header-left">
+                                        <div class="chart-icon-box icon-green">
+                                            <lightning-icon icon-name="utility:user" size="x-small"></lightning-icon>
+                                        </div>
+                                        <div>
+                                            <h2>Employee Status Ratio</h2>
+                                            <p>Active, On Leave, and Inactive staff breakdown</p>
+                                        </div>
+                                    </div>
+                                    <span class="chart-badge badge-green">Operational</span>
+                                </div>
+
+                                <div class="chart-container">
+                                    <canvas class="doughnutChart" aria-label="Employee Status Distribution Chart"></canvas>
+                                </div>
+                            </article>
+                        </template>
+
+                        <!-- 4. Multi-Line Chart: Attendance Overview -->
+                        <template if:true={showAttendanceChart}>
+                            <article class="chart-card">
+                                <div class="chart-header">
+                                    <div class="chart-header-left">
+                                        <div class="chart-icon-box icon-amber">
+                                            <lightning-icon icon-name="utility:clock" size="x-small"></lightning-icon>
+                                        </div>
+                                        <div>
+                                            <h2>Attendance Distribution</h2>
+                                            <p>Present, absent, and leave verification logs</p>
+                                        </div>
+                                    </div>
+                                    <span class="chart-badge badge-amber">Attendance</span>
+                                </div>
+
+                                <div class="chart-container">
+                                    <canvas class="multiLineChart" aria-label="Attendance Status Overview Chart"></canvas>
+                                </div>
+                            </article>
+                        </template>
+
+                        <!-- 5. Bubble Chart: Work Mode Analysis -->
+                        <template if:true={showWorkModeChart}>
+                            <article class="chart-card">
+                                <div class="chart-header">
+                                    <div class="chart-header-left">
+                                        <div class="chart-icon-box icon-indigo">
+                                            <lightning-icon icon-name="utility:company" size="x-small"></lightning-icon>
+                                        </div>
+                                        <div>
+                                            <h2>Work Mode Analytics</h2>
+                                            <p>Office, Remote, and Hybrid model adoption</p>
+                                        </div>
+                                    </div>
+                                    <span class="chart-badge badge-indigo">Workplace</span>
+                                </div>
+
+                                <div class="chart-container">
+                                    <canvas class="bubbleChart" aria-label="Work Mode Analysis Chart"></canvas>
+                                </div>
+                            </article>
+                        </template>
+
+                        <!-- 6. Radar Chart: HR Operations Matrix -->
+                        <template if:true={showRadarChart}>
+                            <article class="chart-card">
+                                <div class="chart-header">
+                                    <div class="chart-header-left">
+                                        <div class="chart-icon-box icon-teal">
+                                            <lightning-icon icon-name="utility:matrix" size="x-small"></lightning-icon>
+                                        </div>
+                                        <div>
+                                            <h2>HR Operations Matrix</h2>
+                                            <p>Multi-dimensional operational balance</p>
+                                        </div>
+                                    </div>
+                                    <span class="chart-badge badge-teal">Health Index</span>
+                                </div>
+
+                                <div class="chart-container">
+                                    <canvas class="radarChart" aria-label="HR Operations Overview Radar Chart"></canvas>
+                                </div>
+                            </article>
+                        </template>
+
+                        <!-- 7. Pie Chart: Leave Types -->
+                        <template if:true={showLeaveTypesChart}>
+                            <article class="chart-card">
+                                <div class="chart-header">
+                                    <div class="chart-header-left">
+                                        <div class="chart-icon-box icon-rose">
+                                            <lightning-icon icon-name="utility:event" size="x-small"></lightning-icon>
+                                        </div>
+                                        <div>
+                                            <h2>Leave Types Distribution</h2>
+                                            <p>Requests by category (Casual, Sick, Paid)</p>
+                                        </div>
+                                    </div>
+                                    <span class="chart-badge badge-rose">Time Off</span>
+                                </div>
+
+                                <div class="chart-container">
+                                    <canvas class="pieChart" aria-label="Leave Types Distribution Chart"></canvas>
+                                </div>
+                            </article>
+                        </template>
+
+                        <!-- 8. Scatter Chart: Leave Request Volumes -->
+                        <template if:true={showLeaveStatusChart}>
+                            <article class="chart-card">
+                                <div class="chart-header">
+                                    <div class="chart-header-left">
+                                        <div class="chart-icon-box icon-purple">
+                                            <lightning-icon icon-name="utility:approval" size="x-small"></lightning-icon>
+                                        </div>
+                                        <div>
+                                            <h2>Leave Request Density</h2>
+                                            <p>Volume dispersion across leave categories</p>
+                                        </div>
+                                    </div>
+                                    <span class="chart-badge badge-purple">Leaves</span>
+                                </div>
+
+                                <div class="chart-container">
+                                    <canvas class="scatterChart" aria-label="Leave Request Analysis Chart"></canvas>
+                                </div>
+                            </article>
+                        </template>
+
+                        <!-- 9. Combo Chart: Payroll Performance -->
+                        <template if:true={showPayrollChart}>
+                            <article class="chart-card chart-card-wide">
+                                <div class="chart-header">
+                                    <div class="chart-header-left">
+                                        <div class="chart-icon-box icon-emerald">
+                                            <lightning-icon icon-name="utility:moneybag" size="x-small"></lightning-icon>
+                                        </div>
+                                        <div>
+                                            <h2>Payroll Distribution by Employee</h2>
+                                            <p>Gross compensation breakdown for top personnel</p>
+                                        </div>
+                                    </div>
+                                    <span class="chart-badge badge-emerald">Payroll Ledger</span>
+                                </div>
+
+                                <div class="chart-container">
+                                    <canvas class="comboChart" aria-label="Payroll Performance Combo Chart"></canvas>
+                                </div>
+                            </article>
+                        </template>
+
+                    </div>
+
+                </template>
+
+                <!-- =========================================================
+                     7. VIEW MODE B: TABULAR DATA SUMMARY
+                     ========================================================= -->
+                <template if:false={isChartsView}>
+                    <div class="tables-view-container">
+
+                        <!-- Table 1: Workforce by Designation -->
+                        <div class="table-card">
+                            <div class="table-card-header">
+                                <div class="table-header-title">
+                                    <lightning-icon icon-name="utility:groups" size="x-small" class="icon-space"></lightning-icon>
+                                    <h3>Workforce Distribution by Designation</h3>
+                                </div>
+                                <span class="table-total-badge">{kpiTotalEmployees} Employees Total</span>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="slds-table slds-table_cell-buffer slds-table_bordered custom-data-table">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th scope="col" style="width: 50%;">Designation / Role</th>
+                                            <th scope="col" style="width: 25%;" class="slds-text-align_right">Headcount</th>
+                                            <th scope="col" style="width: 25%;" class="slds-text-align_right">Distribution %</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={tableDesignationData} for:item="row">
+                                            <tr key={row.label}>
+                                                <td>
+                                                    <span class="role-bullet"></span>
+                                                    <strong>{row.label}</strong>
+                                                </td>
+                                                <td class="slds-text-align_right font-mono">{row.value}</td>
+                                                <td class="slds-text-align_right">
+                                                    <div class="progress-cell">
+                                                        <div class="progress-bar-bg">
+                                                            <div class="progress-bar-fill" style={row.progressStyle}></div>
+                                                        </div>
+                                                        <span class="progress-pct">{row.percentage}%</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Table 2: Attendance & Work Mode Summary -->
+                        <div class="table-card">
+                            <div class="table-card-header">
+                                <div class="table-header-title">
+                                    <lightning-icon icon-name="utility:date_time" size="x-small" class="icon-space"></lightning-icon>
+                                    <h3>Attendance Status &amp; Work Model Summary</h3>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="slds-table slds-table_cell-buffer slds-table_bordered custom-data-table">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th scope="col" style="width: 50%;">Metric Category</th>
+                                            <th scope="col" style="width: 25%;" class="slds-text-align_right">Count</th>
+                                            <th scope="col" style="width: 25%;" class="slds-text-align_right">Status Pill</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={tableAttendanceData} for:item="row">
+                                            <tr key={row.label}>
+                                                <td><strong>{row.label}</strong></td>
+                                                <td class="slds-text-align_right font-mono">{row.value}</td>
+                                                <td class="slds-text-align_right">
+                                                    <span class={row.pillClass}>{row.label}</span>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Table 3: Top Payroll Records -->
+                        <div class="table-card">
+                            <div class="table-card-header">
+                                <div class="table-header-title">
+                                    <lightning-icon icon-name="utility:moneybag" size="x-small" class="icon-space"></lightning-icon>
+                                    <h3>Top Compensation Disbursed by Employee</h3>
+                                </div>
+                                <span class="table-total-badge total-badge-purple">{kpiTotalPayrollFormatted} Monthly Gross</span>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="slds-table slds-table_cell-buffer slds-table_bordered custom-data-table">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th scope="col" style="width: 10%;">Rank</th>
+                                            <th scope="col" style="width: 50%;">Employee Name</th>
+                                            <th scope="col" style="width: 40%;" class="slds-text-align_right">Gross Compensation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={tablePayrollData} for:item="row">
+                                            <tr key={row.label}>
+                                                <td><span class="rank-badge">{row.rank}</span></td>
+                                                <td><strong>{row.label}</strong></td>
+                                                <td class="slds-text-align_right font-mono font-bold text-emerald">{row.formattedValue}</td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </template>
+            </template>
+
+        </div>
+    </div>
+</template>

@@ -1,0 +1,362 @@
+<template>
+    <div class="leave-page">
+
+        <!-- Background Decorations -->
+        <div class="background-decoration decoration-one"></div>
+        <div class="background-decoration decoration-two"></div>
+
+        <div class="leave-page-content">
+
+            <!-- Loading Overlay -->
+            <template if:true={isLoading}>
+                <div class="loading-overlay">
+                    <div class="loading-card">
+                        <lightning-spinner alternative-text="Processing leave request" size="medium" variant="brand">
+                        </lightning-spinner>
+
+                        <span>Processing request...</span>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Dashboard Header -->
+            <header class="dashboard-header">
+                <div class="header-background-circle circle-one"></div>
+                <div class="header-background-circle circle-two"></div>
+
+                <div class="dashboard-header-content">
+                    <div class="header-text">
+                        <span class="header-eyebrow">
+                            PEOPLE OPERATIONS
+                        </span>
+
+                        <h1>
+                            Leave Management
+                        </h1>
+
+                        <p>
+                            Manage leave balances, submit applications, and review employee requests.
+                        </p>
+                    </div>
+
+                    <div class="header-actions">
+                        <button class="primary-button" onclick={openFormModal}>
+                            <lightning-icon icon-name="utility:add" alternative-text="New leave application"
+                                size="xx-small">
+                            </lightning-icon>
+                            <span>New Leave Application</span>
+                        </button>
+
+                        <div class="user-avatar">
+                            HR
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Navigation -->
+            <div class="page-navigation">
+                <div class="breadcrumb">
+                    <span>Workspace</span>
+
+                    <lightning-icon icon-name="utility:chevronright" alternative-text="Next" size="xx-small">
+                    </lightning-icon>
+
+                    <span class="breadcrumb-current">
+                        Leave Management
+                    </span>
+                </div>
+
+                <div class="sync-status">
+                    <span class="sync-dot"></span>
+                    Live Sync Active
+                </div>
+            </div>
+
+            <!-- Leave Balance Cards -->
+            <section class="leave-balance-grid">
+
+                <!-- Annual Leave -->
+                <article class="leave-balance-card annual-card">
+                    <div class="leave-card-top">
+                        <div class="leave-card-icon">
+                            <lightning-icon icon-name="utility:event" alternative-text="Annual leave" size="small">
+                            </lightning-icon>
+                        </div>
+
+                        <span class="leave-card-label">
+                            Paid Leave
+                        </span>
+                    </div>
+
+                    <div class="leave-card-body">
+                        <strong>30</strong>
+                        <span>Days Available</span>
+                    </div>
+
+                    <button class="apply-button annual-button" data-type="Paid Leave" onclick={handleQuickApply}>
+
+                        Apply Now
+
+                        <lightning-icon icon-name="utility:arrowright" alternative-text="Apply" size="xx-small">
+                        </lightning-icon>
+                    </button>
+                </article>
+
+                <!-- Sick Leave -->
+                <article class="leave-balance-card sick-card">
+                    <div class="leave-card-top">
+                        <div class="leave-card-icon">
+                            <lightning-icon icon-name="utility:heart" alternative-text="Sick leave" size="small">
+                            </lightning-icon>
+                        </div>
+
+                        <span class="leave-card-label">
+                            Sick Leave
+                        </span>
+                    </div>
+
+                    <div class="leave-card-body">
+                        <strong>20</strong>
+                        <span>Days Available</span>
+                    </div>
+
+                    <button class="apply-button sick-button" data-type="Sick Leave" onclick={handleQuickApply}>
+
+                        Apply Now
+
+                        <lightning-icon icon-name="utility:arrowright" alternative-text="Apply" size="xx-small">
+                        </lightning-icon>
+                    </button>
+                </article>
+
+                <!-- Maternity Leave -->
+                <article class="leave-balance-card maternity-card">
+                    <div class="leave-card-top">
+                        <div class="leave-card-icon">
+                            <lightning-icon icon-name="utility:people" alternative-text="Maternity leave" size="small">
+                            </lightning-icon>
+                        </div>
+
+                        <span class="leave-card-label">
+                            Work From Home
+                        </span>
+                    </div>
+
+                    <div class="leave-card-body">
+                        <strong>15</strong>
+                        <span>Days Available</span>
+                    </div>
+
+                    <button class="apply-button maternity-button" data-type="Work From Home"
+                        onclick={handleQuickApply}>
+
+                        Apply Now
+
+                        <lightning-icon icon-name="utility:arrowright" alternative-text="Apply" size="xx-small">
+                        </lightning-icon>
+                    </button>
+                </article>
+
+                <!-- Casual Leave -->
+                <article class="leave-balance-card casual-card">
+                    <div class="leave-card-top">
+                        <div class="leave-card-icon">
+                            <lightning-icon icon-name="utility:user_role" alternative-text="Casual leave" size="small">
+                            </lightning-icon>
+                        </div>
+
+                        <span class="leave-card-label">
+                            Casual Leave
+                        </span>
+                    </div>
+
+                    <div class="leave-card-body">
+                        <strong>30</strong>
+                        <span>Days Available</span>
+                    </div>
+
+                    <button class="apply-button casual-button" data-type="Casual Leave" onclick={handleQuickApply}>
+
+                        Apply Now
+
+                        <lightning-icon icon-name="utility:arrowright" alternative-text="Apply" size="xx-small">
+                        </lightning-icon>
+                    </button>
+                </article>
+
+            </section>
+
+            <!-- Leave History -->
+            <section class="history-panel">
+
+                <div class="history-header">
+                    <div class="history-title-area">
+                        <div class="history-icon">
+                            <lightning-icon icon-name="utility:list" alternative-text="Leave history" size="small">
+                            </lightning-icon>
+                        </div>
+
+                        <div>
+                            <h2>Leave History</h2>
+
+                            <p>
+                                Review submitted applications and approval status.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="history-status">
+                        <span class="status-pulse"></span>
+                        Updated
+                    </div>
+                </div>
+
+                <div class="history-table-container">
+                    <lightning-datatable key-field="Id" data={leaveList} columns={columns} hide-checkbox-column
+                        class="leave-datatable">
+                    </lightning-datatable>
+                </div>
+            </section>
+
+            <!-- Create Leave Modal -->
+            <template if:true={isModalOpen}>
+                <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="leave-modal-heading"
+                    class="slds-modal slds-fade-in-open leave-modal">
+
+                    <div class="slds-modal__container leave-modal-container">
+
+                        <!-- Modal Header -->
+                        <header class="leave-modal-header">
+                            <div class="modal-heading-area">
+                                <div class="modal-heading-icon">
+                                    <lightning-icon icon-name="standard:event" alternative-text="Create leave request"
+                                        size="small">
+                                    </lightning-icon>
+                                </div>
+
+                                <div>
+                                    <span class="modal-eyebrow">
+                                        NEW APPLICATION
+                                    </span>
+
+                                    <h2 id="leave-modal-heading">
+                                        Create Leave Request
+                                    </h2>
+
+                                    <p>
+                                        Complete the details below to submit a leave application.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <button class="modal-close-button" title="Close" aria-label="Close"
+                                onclick={closeFormModal}>
+
+                                <lightning-icon icon-name="utility:close" alternative-text="Close" size="small">
+                                </lightning-icon>
+                            </button>
+                        </header>
+
+                        <!-- Modal Body -->
+                        <div class="slds-modal__content leave-modal-body">
+                            <div class="form-introduction">
+                                <div class="form-intro-icon">
+                                    <lightning-icon icon-name="utility:info" alternative-text="Information"
+                                        size="x-small">
+                                    </lightning-icon>
+                                </div>
+
+                                <p>
+                                    Select the employee, leave period, and request details.
+                                </p>
+                            </div>
+
+                            <div class="leave-form-grid">
+
+                                <!-- Employee -->
+                                <div class="form-field">
+                                    <lightning-combobox label="Employee" value={employeeId} options={employeeOptions}
+                                        onchange={handleEmployeeChange} placeholder="Select employee" required>
+                                    </lightning-combobox>
+                                </div>
+
+                                <!-- Applied Date -->
+                                <div class="form-field">
+                                    <lightning-input type="date" label="Applied Date" value={appliedDate}
+                                        onchange={handleAppliedDateChange} required>
+                                    </lightning-input>
+                                </div>
+
+                                <!-- Start Date -->
+                                <div class="form-field">
+                                    <lightning-input type="date" label="Start Date" value={startDate}
+                                        onchange={handleStartDateChange} required>
+                                    </lightning-input>
+                                </div>
+
+                                <!-- End Date -->
+                                <div class="form-field">
+                                    <lightning-input type="date" label="End Date" value={endDate}
+                                        onchange={handleEndDateChange} required>
+                                    </lightning-input>
+                                </div>
+
+                                <!-- Leave Type -->
+                                <div class="form-field">
+                                    <lightning-combobox label="Leave Type" value={leaveType} options={leaveTypeOptions}
+                                        onchange={handleLeaveTypeChange} placeholder="Select leave type" required>
+                                    </lightning-combobox>
+                                </div>
+
+                                <!-- Status -->
+                                <div class="form-field">
+                                    <lightning-combobox label="Status" value={status} options={statusOptions}
+                                        onchange={handleStatusChange} placeholder="Select status" required>
+                                    </lightning-combobox>
+                                </div>
+
+                                <!-- Approved By -->
+                                <div class="form-field">
+                                    <lightning-combobox label="Approved By" value={approvedBy} options={userOptions}
+                                        onchange={handleApprovedByChange} placeholder="Select approver">
+                                    </lightning-combobox>
+                                </div>
+
+                                <!-- Total Days -->
+                                <div class="form-field total-days-field">
+                                    <lightning-input type="number" label="Total Days" value={totalDays} readonly>
+                                    </lightning-input>
+                                </div>
+
+                                <!-- Reason -->
+                                <div class="form-field full-width">
+                                    <lightning-textarea label="Reason" value={reason} onchange={handleReasonChange}
+                                        placeholder="Enter reason for leave" required>
+                                    </lightning-textarea>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Modal Footer -->
+                        <footer class="leave-modal-footer">
+                            <lightning-button label="Cancel" onclick={closeFormModal}>
+                            </lightning-button>
+
+                            <lightning-button label="Clear Form" variant="neutral" onclick={resetForm}>
+                            </lightning-button>
+
+                            <lightning-button label="Save Request" variant="brand" icon-name="utility:save"
+                                onclick={saveLeaveRequest}>
+                            </lightning-button>
+                        </footer>
+                    </div>
+                </section>
+
+                <div class="slds-backdrop slds-backdrop_open leave-backdrop" role="presentation">
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

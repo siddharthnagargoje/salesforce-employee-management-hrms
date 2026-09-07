@@ -1,0 +1,38 @@
+:host {
+    display: block;
+}
+
+.slds-modal__container {
+    max-width: 600px;
+    border-radius: 12px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+    background: #fff;
+}
+
+.slds-modal__header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%);
+    color: white;
+    padding: 16px 24px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.slds-modal__header h2 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.slds-modal__content {
+    padding: 20px;
+    background: #f9fafb;
+}
+
+.slds-modal__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 24px;
+    background: #f1f5f9;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}

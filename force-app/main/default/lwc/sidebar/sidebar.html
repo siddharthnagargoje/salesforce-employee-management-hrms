@@ -1,0 +1,109 @@
+<template>
+    <aside class={sidebarContainerClass} aria-label="Main Navigation">
+
+        <!-- BRAND & TOGGLE -->
+        <div class="brand-section">
+            <div class="brand-logo" title="HRMS 360">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="white"></path>
+                    <path d="M2 17L12 22L22 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M2 12L12 17L22 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </div>
+            <div class="brand-text">
+                <h1>HRMS 360</h1>
+                <span>Enterprise Workspace</span>
+            </div>
+
+            <!-- Collapse / Expand Toggle Button -->
+            <button type="button" class="collapse-toggle-btn" onclick={handleToggleCollapse} title={collapseButtonTitle} aria-label={collapseButtonTitle}>
+                <lightning-icon icon-name={collapseIconName} alternative-text="Toggle Sidebar" size="xx-small">
+                </lightning-icon>
+            </button>
+        </div>
+
+        <!-- MAIN MENU -->
+        <div class="navigation-label">MAIN MENU</div>
+        <nav class="navigation-menu" role="navigation">
+            <ul>
+                <!-- Dashboard -->
+                <li class={dashboardClass} data-page="dashboard" onclick={handleNav} onkeydown={handleKeydown} role="button" tabindex="0" title="Dashboard" aria-current={ariaCurrentDashboard}>
+                    <div class="nav-icon blue-icon">
+                        <lightning-icon icon-name="utility:home" alternative-text="Dashboard" size="x-small"></lightning-icon>
+                    </div>
+                    <span class="nav-label">Dashboard</span>
+                    <template if:true={isDashboard}><span class="active-indicator"></span></template>
+                </li>
+
+                <!-- Employees -->
+                <li class={employeesClass} data-page="employees" onclick={handleNav} onkeydown={handleKeydown} role="button" tabindex="0" title="Employees" aria-current={ariaCurrentEmployees}>
+                    <div class="nav-icon purple-icon">
+                        <lightning-icon icon-name="utility:groups" alternative-text="Employees" size="x-small"></lightning-icon>
+                    </div>
+                    <span class="nav-label">Employees</span>
+                    <template if:true={isEmployees}><span class="active-indicator"></span></template>
+                </li>
+
+                <!-- Attendance -->
+                <li class={attendanceClass} data-page="attendance" onclick={handleNav} onkeydown={handleKeydown} role="button" tabindex="0" title="Attendance" aria-current={ariaCurrentAttendance}>
+                    <div class="nav-icon green-icon">
+                        <lightning-icon icon-name="utility:date_input" alternative-text="Attendance" size="x-small"></lightning-icon>
+                    </div>
+                    <span class="nav-label">Attendance</span>
+                    <template if:true={isAttendance}><span class="active-indicator"></span></template>
+                </li>
+
+                <!-- Leave Requests -->
+                <li class={leaveClass} data-page="leave" onclick={handleNav} onkeydown={handleKeydown} role="button" tabindex="0" title="Leave Requests" aria-current={ariaCurrentLeave}>
+                    <div class="nav-icon orange-icon">
+                        <lightning-icon icon-name="utility:event" alternative-text="Leave Requests" size="x-small"></lightning-icon>
+                    </div>
+                    <span class="nav-label">Leave Requests</span>
+                    <span class="menu-badge">New</span>
+                    <template if:true={isLeave}><span class="active-indicator"></span></template>
+                </li>
+
+                <!-- Payslip -->
+                <li class={payslipClass} data-page="payslip" onclick={handleNav} onkeydown={handleKeydown} role="button" tabindex="0" title="Payslip" aria-current={ariaCurrentPayslip}>
+                    <div class="nav-icon teal-icon">
+                        <lightning-icon icon-name="utility:money" alternative-text="Payslip" size="x-small"></lightning-icon>
+                    </div>
+                    <span class="nav-label">Payslip</span>
+                    <template if:true={isPayslip}><span class="active-indicator"></span></template>
+                </li>
+
+                <!-- Reports -->
+                <li class={reportsClass} data-page="reports" onclick={handleNav} onkeydown={handleKeydown} role="button" tabindex="0" title="Reports" aria-current={ariaCurrentReports}>
+                    <div class="nav-icon pink-icon">
+                        <lightning-icon icon-name="utility:chart" alternative-text="Reports" size="x-small"></lightning-icon>
+                    </div>
+                    <span class="nav-label">Reports</span>
+                    <span class="menu-badge reports-badge">Pro</span>
+                    <template if:true={isReports}><span class="active-indicator"></span></template>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- SYSTEM / PREFERENCES -->
+        <div class="bottom-navigation">
+            <div class="navigation-label">PREFERENCES</div>
+            <ul>
+                <li class={settingsClass} data-page="settings" onclick={handleNav} onkeydown={handleKeydown} role="button" tabindex="0" title="Settings" aria-current={ariaCurrentSettings}>
+                    <div class="nav-icon gray-icon">
+                        <lightning-icon icon-name="utility:settings" alternative-text="Settings" size="x-small"></lightning-icon>
+                    </div>
+                    <span class="nav-label">Settings</span>
+                    <template if:true={isSettings}><span class="active-indicator"></span></template>
+                </li>
+            </ul>
+
+            <!-- Collapsed Quick Expand Footer Action -->
+            <template if:true={isCollapsed}>
+                <div class="expand-footer-hint" onclick={handleToggleCollapse} title="Expand Navigation">
+                    <lightning-icon icon-name="utility:chevronright" size="xx-small"></lightning-icon>
+                </div>
+            </template>
+        </div>
+
+    </aside>
+</template>

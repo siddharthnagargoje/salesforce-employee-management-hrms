@@ -1,0 +1,532 @@
+:host {
+    display: block;
+}
+
+.employee-card {
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #E7ECF5;
+    border-radius: 18px;
+    box-shadow:
+        0 8px 20px rgba(27, 37, 89, 0.08),
+        0 2px 5px rgba(27, 37, 89, 0.04);
+    transition:
+        transform 220ms ease,
+        box-shadow 220ms ease,
+        border-color 220ms ease;
+}
+
+.employee-card:hover {
+    border-color: #8FB6F5;
+    box-shadow:
+        0 18px 36px rgba(27, 37, 89, 0.15),
+        0 5px 10px rgba(27, 37, 89, 0.07);
+    transform: translateY(-5px);
+}
+
+/* Gradient Header */
+
+.card-header-gradient {
+    position: relative;
+    min-height: 73px;
+    padding: 15px 17px;
+    overflow: hidden;
+    background:
+        linear-gradient(135deg,
+            #0f172a 0%,
+            #1e3a8a 50%,
+            #3b82f6 100%);
+}
+
+.header-top {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.header-pattern {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 50%;
+}
+
+.pattern-one {
+    top: -55px;
+    right: -30px;
+    width: 150px;
+    height: 150px;
+}
+
+.pattern-two {
+    right: 70px;
+    bottom: -85px;
+    width: 125px;
+    height: 125px;
+}
+
+/* Status */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.62rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    background: currentColor;
+    border-radius: 50%;
+}
+
+.status-active {
+    color: #d7f5e6;
+    background: rgba(30, 166, 114, 0.24);
+    border: 1px solid rgba(30, 166, 114, 0.45);
+}
+
+.status-warning {
+    color: #ffe3b0;
+    background: rgba(221, 122, 1, 0.24);
+    border: 1px solid rgba(221, 122, 1, 0.45);
+}
+
+.status-inactive,
+.status-default {
+    color: #e2e8f0;
+    background: rgba(255, 255, 255, 0.13);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* Actions — FIX: solid, high-contrast buttons instead of
+   translucent-white-on-translucent-white */
+
+.card-actions {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: 6px;
+}
+
+.action-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18);
+    transition: all 160ms ease;
+}
+
+.action-button lightning-icon {
+    --sds-c-icon-color-foreground-default: #1B2559;
+}
+
+.action-button:hover {
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.24);
+    transform: translateY(-1px);
+}
+
+.action-photo lightning-icon {
+    --sds-c-icon-color-foreground-default: #0284c7;
+}
+
+.action-photo:hover {
+    background: #e0f2fe;
+}
+
+.action-view lightning-icon {
+    --sds-c-icon-color-foreground-default: #5875c2;
+}
+
+.action-view:hover {
+    background: #E8EDFE;
+}
+
+.action-edit lightning-icon {
+    --sds-c-icon-color-foreground-default: #6E5AE8;
+}
+
+.action-edit:hover {
+    background: #ECE9FC;
+}
+
+.action-delete lightning-icon {
+    --sds-c-icon-color-foreground-default: #BA0517;
+}
+
+.action-delete:hover {
+    background: #BA0517;
+    border-color: #BA0517;
+}
+
+.action-delete:hover lightning-icon {
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+/* Identity */
+
+.identity-section {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: -25px;
+    padding: 0 18px 18px;
+}
+
+.avatar-wrapper {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 76px;
+    padding: 4px;
+    overflow: hidden;
+    background: linear-gradient(135deg,
+            #8FB6F5 0%,
+            #6E5AE8 100%);
+    border-radius: 50%;
+    box-shadow: 0 6px 15px rgba(27, 37, 89, 0.24);
+    cursor: pointer;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.avatar-wrapper:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 22px rgba(27, 37, 89, 0.32);
+}
+
+.avatar-upload-overlay {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+    backdrop-filter: blur(1px);
+    z-index: 4;
+}
+
+.avatar-wrapper:hover .avatar-upload-overlay,
+.avatar-wrapper:focus .avatar-upload-overlay {
+    opacity: 1;
+}
+
+.avatar-upload-overlay lightning-icon {
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+.avatar-image,
+.avatar-initials {
+    width: 100%;
+    height: 100%;
+    border: 4px solid #ffffff;
+    border-radius: 50%;
+}
+
+.avatar-image {
+    object-fit: cover;
+    background: #F6F8FE;
+}
+
+.avatar-initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1B2559;
+    background: linear-gradient(135deg, #E8EDFE, #ECE9FC);
+    font-size: 1.35rem;
+    font-weight: 900;
+}
+
+.identity-content {
+    min-width: 0;
+    padding-top: 26px;
+}
+
+.employee-name {
+    margin: 0;
+    overflow: hidden;
+    color: #1B2559;
+    font-size: 1rem;
+    font-weight: 900;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.employee-role {
+    margin: 5px 0 7px;
+    overflow: hidden;
+    color: #8F9BB3;
+    font-size: 0.74rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.employee-code {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    color: #8F9BB3;
+    background: #F6F8FE;
+    border-radius: 6px;
+    font-size: 0.62rem;
+    font-weight: 800;
+}
+
+.employee-code lightning-icon {
+    --sds-c-icon-color-foreground-default: #8F9BB3;
+}
+
+/* Details Heading */
+
+.details-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 18px 13px;
+    color: #A9B2C4;
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.details-heading-line {
+    height: 1px;
+    flex: 1;
+    background: #E7ECF5;
+}
+
+/* Details Grid */
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    padding: 0 18px 18px;
+}
+
+.detail-box {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    gap: 8px;
+    padding: 10px 9px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+}
+
+.detail-blue {
+    background: #E8EDFE;
+    border-color: #DCE5FD;
+}
+
+.detail-green {
+    background: #E3F8EE;
+    border-color: #C9F0DC;
+}
+
+.detail-orange {
+    background: #FDF0DE;
+    border-color: #F6DDB2;
+}
+
+.detail-purple {
+    background: #ECE9FC;
+    border-color: #DCD8FC;
+}
+
+.detail-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 25px;
+    height: 25px;
+    border-radius: 7px;
+}
+
+.detail-icon lightning-icon {
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+.detail-blue .detail-icon {
+    color: #5875c2;
+    background: #DCE5FD;
+}
+
+.detail-green .detail-icon {
+    color: #1EA672;
+    background: #C9F0DC;
+}
+
+.detail-orange .detail-icon {
+    color: #b5710a;
+    background: #F6DDB2;
+}
+
+.detail-purple .detail-icon {
+    color: #6E5AE8;
+    background: #DCD8FC;
+}
+
+.detail-text {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.detail-label {
+    color: #A9B2C4;
+    font-size: 0.57rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.detail-value {
+    overflow: hidden;
+    color: #3B4468;
+    font-size: 0.67rem;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.salary-value {
+    color: #6E5AE8;
+    font-size: 0.72rem;
+}
+
+/* Footer */
+
+.employee-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 18px;
+    background: #F6F8FE;
+    border-top: 1px solid #E7ECF5;
+}
+
+.footer-profile-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #8F9BB3;
+    font-size: 0.62rem;
+    font-weight: 800;
+}
+
+.footer-status-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 21px;
+    height: 21px;
+    color: #5875c2;
+    background: #E8EDFE;
+    border-radius: 6px;
+}
+
+.footer-status-icon lightning-icon {
+    --sds-c-icon-color-foreground-default: #5875c2;
+}
+
+.view-profile-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 9px;
+    color: #6E5AE8;
+    background: #ECE9FC;
+    border: 1px solid #DCD8FC;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 0.63rem;
+    font-weight: 900;
+    transition: all 160ms ease;
+}
+
+.view-profile-button lightning-icon {
+    --sds-c-icon-color-foreground-default: #6E5AE8;
+}
+
+.view-profile-button:hover {
+    color: #ffffff;
+    background: #6E5AE8;
+    border-color: #6E5AE8;
+}
+
+.view-profile-button:hover lightning-icon {
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+/* Responsive */
+
+@media only screen and (max-width: 500px) {
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .employee-card-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .view-profile-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media only screen and (max-width: 360px) {
+    .header-top {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .card-actions {
+        align-self: flex-end;
+    }
+
+    .identity-section {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-top: -20px;
+    }
+
+    .identity-content {
+        padding-top: 0;
+    }
+}

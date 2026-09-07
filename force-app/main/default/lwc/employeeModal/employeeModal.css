@@ -1,0 +1,36 @@
+.form-section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #edf2f7;
+}
+
+.form-section-header h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.modal-header-custom {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    text-align: left;
+    padding: 20px 24px;
+    color: #ffffff;
+}
+
+.modal-header-custom h2 {
+    color: #ffffff;
+}
+
+.modal-header-custom p {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.footer-custom {
+    background: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    padding: 16px 24px;
+    margin-top: 30px;
+}

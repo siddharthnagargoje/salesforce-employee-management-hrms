@@ -1,0 +1,376 @@
+:host {
+    display: block;
+    flex-shrink: 0;
+    height: 100%;
+    --sidebar-ink: #0F172A;
+    --sidebar-muted: #64748B;
+    --sidebar-line: #E2E8F0;
+    --sidebar-accent: #2563EB;
+}
+
+.sidebar {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 264px;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 18px 14px 16px;
+    box-sizing: border-box;
+    background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFD 100%);
+    border-right: 1px solid var(--sidebar-line);
+    box-shadow: 6px 0 24px rgba(15, 23, 42, 0.04);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    transition: width 240ms cubic-bezier(0.4, 0, 0.2, 1), padding 240ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   BRAND SECTION
+   ========================================================================== */
+
+.brand-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 2px 20px;
+    padding: 2px 4px 16px;
+    border-bottom: 1px solid var(--sidebar-line);
+    min-height: 48px;
+    box-sizing: border-box;
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 50%, #2563EB 100%);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 12px;
+    box-shadow: 0 6px 14px rgba(30, 58, 138, 0.28);
+}
+
+.brand-text {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: opacity 180ms ease;
+}
+
+.brand-text h1 {
+    margin: 0;
+    color: var(--sidebar-ink);
+    font-size: 15.5px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.brand-text span {
+    display: block;
+    margin-top: 2px;
+    color: #94A3B8;
+    font-size: 9.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.collapse-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    background: #F1F5F9;
+    border: 1px solid var(--sidebar-line);
+    border-radius: 7px;
+    color: var(--sidebar-muted);
+    cursor: pointer;
+    transition: all 160ms ease;
+    padding: 0;
+}
+
+.collapse-toggle-btn:hover {
+    background: #E2E8F0;
+    color: var(--sidebar-ink);
+    transform: scale(1.05);
+}
+
+.collapse-toggle-btn lightning-icon {
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+/* ==========================================================================
+   NAVIGATION LABELS & MENUS
+   ========================================================================== */
+
+.navigation-label {
+    margin: 0 10px 8px;
+    color: #94A3B8;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: opacity 180ms ease;
+}
+
+.navigation-menu {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #CBD5E1 transparent;
+}
+
+.navigation-menu ul,
+.bottom-navigation ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* ==========================================================================
+   NAVIGATION ITEMS
+   ========================================================================== */
+
+.navigation-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 44px;
+    margin: 3px 0;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    color: var(--sidebar-muted);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 11px;
+    cursor: pointer;
+    transition: background 160ms ease, color 160ms ease, transform 160ms ease, border-color 160ms ease;
+}
+
+.navigation-item:hover {
+    color: var(--sidebar-ink);
+    background: #F1F5F9;
+    border-color: #E2E8F0;
+    transform: translateX(2px);
+}
+
+.navigation-item.active {
+    color: #1E3A8A;
+    background: linear-gradient(90deg, #EFF6FF 0%, #F8FAFC 100%);
+    border-color: #BFDBFE;
+    font-weight: 700;
+    box-shadow: 0 3px 10px rgba(37, 99, 235, 0.08);
+}
+
+.navigation-item:focus-visible {
+    outline: 2px solid #3B82F6;
+    outline-offset: 2px;
+}
+
+.active-indicator {
+    position: absolute;
+    right: 8px;
+    width: 4px;
+    height: 18px;
+    background: linear-gradient(180deg, #2563EB 0%, #3B82F6 100%);
+    border-radius: 999px;
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
+}
+
+/* ICON CONTAINERS */
+.nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    transition: transform 160ms ease, background 160ms ease;
+}
+
+.nav-icon lightning-icon {
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+.blue-icon { color: #2563EB; background: #DBEAFE; }
+.purple-icon { color: #7C3AED; background: #EDE9FE; }
+.green-icon { color: #059669; background: #D1FAE5; }
+.orange-icon { color: #D97706; background: #FEF3C7; }
+.teal-icon { color: #0D9488; background: #CCFBF1; }
+.pink-icon { color: #E11D48; background: #FFE4E6; }
+.gray-icon { color: #475569; background: #F1F5F9; }
+
+.navigation-item.active .nav-icon {
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+    transform: scale(1.05);
+}
+
+.nav-label {
+    flex: 1;
+    min-width: 0;
+    font-size: 13.5px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity 180ms ease;
+}
+
+.navigation-item.active .nav-label {
+    font-weight: 700;
+    color: #1E3A8A;
+}
+
+/* BADGES */
+.menu-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 6px;
+    color: #B45309;
+    background: #FEF3C7;
+    border-radius: 6px;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.reports-badge {
+    color: #1D4ED8;
+    background: #DBEAFE;
+}
+
+.navigation-item.active .menu-badge {
+    background: #FFFFFF;
+}
+
+/* BOTTOM SECTION */
+.bottom-navigation {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid var(--sidebar-line);
+}
+
+.expand-footer-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin: 10px auto 0;
+    background: #F1F5F9;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #64748B;
+    transition: all 160ms ease;
+}
+
+.expand-footer-hint:hover {
+    background: #E2E8F0;
+    color: #0F172A;
+    transform: scale(1.08);
+}
+
+.expand-footer-hint lightning-icon {
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+/* ==========================================================================
+   COLLAPSED STATE (Desktop & Tablet)
+   ========================================================================== */
+
+.sidebar.collapsed {
+    width: 78px;
+    padding: 18px 10px 16px;
+}
+
+.sidebar.collapsed .brand-section {
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 12px;
+    margin: 0 0 16px;
+}
+
+.sidebar.collapsed .brand-text,
+.sidebar.collapsed .navigation-label,
+.sidebar.collapsed .nav-label,
+.sidebar.collapsed .menu-badge,
+.sidebar.collapsed .active-indicator {
+    display: none;
+    opacity: 0;
+}
+
+.sidebar.collapsed .navigation-item {
+    justify-content: center;
+    padding: 8px 6px;
+    min-height: 42px;
+}
+
+.sidebar.collapsed .navigation-item:hover {
+    transform: scale(1.06);
+}
+
+.sidebar.collapsed .nav-icon {
+    width: 34px;
+    height: 34px;
+}
+
+.sidebar.collapsed .collapse-toggle-btn {
+    margin: 4px 0 0;
+    width: 28px;
+    height: 28px;
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVENESS
+   ========================================================================== */
+
+@media only screen and (max-width: 768px) {
+    .sidebar {
+        width: 74px;
+        padding: 14px 8px;
+    }
+
+    .brand-section {
+        flex-direction: column;
+        gap: 8px;
+        padding-bottom: 12px;
+        margin: 0 0 14px;
+    }
+
+    .brand-text,
+    .navigation-label,
+    .nav-label,
+    .menu-badge,
+    .active-indicator,
+    .collapse-toggle-btn {
+        display: none !important;
+    }
+
+    .navigation-item {
+        justify-content: center;
+        padding: 6px;
+        min-height: 42px;
+    }
+
+    .nav-icon {
+        width: 34px;
+        height: 34px;
+    }
+}

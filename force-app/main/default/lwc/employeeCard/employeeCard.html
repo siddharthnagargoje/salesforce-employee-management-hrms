@@ -1,0 +1,174 @@
+<template>
+    <article class="employee-card">
+
+        <!-- Colorful Card Header -->
+        <div class="card-header-gradient">
+            <div class="header-top">
+                <span class={statusClass}>
+                    <span class="status-dot"></span>
+                    {statusLabel}
+                </span>
+
+                <div class="card-actions">
+                    <button type="button" class="action-button action-photo" title="Upload Photo"
+                        aria-label="Upload Photo" onclick={handleUploadPhoto}>
+
+                        <lightning-icon icon-name="utility:photo" alternative-text="Upload Photo" size="xx-small">
+                        </lightning-icon>
+                    </button>
+
+                    <button type="button" class="action-button action-view" title="View Profile"
+                        aria-label="View Profile" onclick={viewEmployee}>
+
+                        <lightning-icon icon-name="utility:preview" alternative-text="View" size="xx-small">
+                        </lightning-icon>
+                    </button>
+
+                    <button type="button" class="action-button action-edit" title="Edit Employee"
+                        aria-label="Edit Employee" onclick={editEmployee}>
+
+                        <lightning-icon icon-name="utility:edit" alternative-text="Edit" size="xx-small">
+                        </lightning-icon>
+                    </button>
+
+                    <button type="button" class="action-button action-delete" title="Delete Employee"
+                        aria-label="Delete Employee" onclick={deleteEmployee}>
+
+                        <lightning-icon icon-name="utility:delete" alternative-text="Delete" size="xx-small">
+                        </lightning-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="header-pattern pattern-one"></div>
+            <div class="header-pattern pattern-two"></div>
+        </div>
+
+        <!-- Identity Section -->
+        <div class="identity-section">
+            <div class="avatar-wrapper" onclick={handleUploadPhoto} title="Click to change profile photo" role="button" tabindex="0" onkeydown={handleAvatarKeyDown}>
+                <template if:true={hasValidPhoto}>
+                    <img src={employee.Profile_Photo__c} alt={fullName} class="avatar-image"
+                        onerror={handleImageError}>
+                </template>
+
+                <template if:false={hasValidPhoto}>
+                    <div class="avatar-initials">
+                        {userInitials}
+                    </div>
+                </template>
+
+                <div class="avatar-upload-overlay" title="Upload Photo">
+                    <lightning-icon icon-name="utility:camera" alternative-text="Upload Photo" size="xx-small">
+                    </lightning-icon>
+                </div>
+            </div>
+
+            <div class="identity-content">
+                <h2 class="employee-name" title={fullName}>
+                    {fullName}
+                </h2>
+
+                <p class="employee-role" title={employee.Designation__c}>
+                    {employee.Designation__c}
+                </p>
+
+                <span class="employee-code">
+                    <lightning-icon icon-name="utility:identity" alternative-text="Employee ID" size="xx-small">
+                    </lightning-icon>
+
+                    {employee.Employee_Code__c}
+                </span>
+            </div>
+        </div>
+
+        <!-- Information Title -->
+        <div class="details-heading">
+            <span class="details-heading-line"></span>
+            <span>Employee Information</span>
+            <span class="details-heading-line"></span>
+        </div>
+
+        <!-- Information Grid -->
+        <div class="details-grid">
+
+            <div class="detail-box detail-blue">
+                <div class="detail-icon">
+                    <lightning-icon icon-name="utility:email" alternative-text="Email" size="xx-small">
+                    </lightning-icon>
+                </div>
+
+                <div class="detail-text">
+                    <span class="detail-label">Email</span>
+                    <span class="detail-value" title={employee.Personal_Email__c}>
+                        {employee.Personal_Email__c}
+                    </span>
+                </div>
+            </div>
+
+            <div class="detail-box detail-green">
+                <div class="detail-icon">
+                    <lightning-icon icon-name="utility:call" alternative-text="Phone" size="xx-small">
+                    </lightning-icon>
+                </div>
+
+                <div class="detail-text">
+                    <span class="detail-label">Mobile</span>
+                    <span class="detail-value" title={employee.Mobile__c}>
+                        {employee.Mobile__c}
+                    </span>
+                </div>
+            </div>
+
+            <div class="detail-box detail-orange">
+                <div class="detail-icon">
+                    <lightning-icon icon-name="utility:event" alternative-text="Joining date" size="xx-small">
+                    </lightning-icon>
+                </div>
+
+                <div class="detail-text">
+                    <span class="detail-label">Joined</span>
+                    <span class="detail-value">
+                        {formattedJoiningDate}
+                    </span>
+                </div>
+            </div>
+
+            <div class="detail-box detail-purple">
+                <div class="detail-icon">
+                    <lightning-icon icon-name="utility:money" alternative-text="Salary" size="xx-small">
+                    </lightning-icon>
+                </div>
+
+                <div class="detail-text">
+                    <span class="detail-label">Salary</span>
+                    <span class="detail-value salary-value">
+                        {formattedSalary}
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="employee-card-footer">
+            <div class="footer-profile-status">
+                <span class="footer-status-icon">
+                    <lightning-icon icon-name="utility:shield" alternative-text="Verified" size="xx-small">
+                    </lightning-icon>
+                </span>
+
+                <span>Employee Profile</span>
+            </div>
+
+            <button type="button" class="view-profile-button" onclick={viewEmployee}>
+
+                View Profile
+
+                <lightning-icon icon-name="utility:arrowright" alternative-text="View profile" size="xx-small">
+                </lightning-icon>
+            </button>
+        </div>
+
+    </article>
+</template>

@@ -1,0 +1,314 @@
+<template>
+    <div class="settings-shell">
+        <div class="settings-page">
+
+            <!-- Dashboard Header -->
+            <header class="dashboard-header">
+                <div class="header-background-circle circle-one"></div>
+                <div class="header-background-circle circle-two"></div>
+
+                <div class="dashboard-header-content">
+                    <div class="header-text">
+                        <span class="header-eyebrow">
+                            CONFIGURATION & SECURITY
+                        </span>
+
+                        <h1>
+                            System Settings
+                        </h1>
+
+                        <p>
+                            Manage employee access, application preferences, and system configurations.
+                        </p>
+                    </div>
+
+                    <div class="header-actions">
+                        <div class="system-status">
+                            <span class="status-dot"></span>
+                            <span>System operational</span>
+                        </div>
+
+                        <div class="user-avatar">
+                            HR
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Summary Cards -->
+            <section class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-icon summary-icon-purple">
+                        <lightning-icon icon-name="utility:people" alternative-text="User access" size="small">
+                        </lightning-icon>
+                    </div>
+
+                    <div>
+                        <span class="summary-label">User Access</span>
+                        <span class="summary-value">Configured</span>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-icon summary-icon-green">
+                        <lightning-icon icon-name="utility:check" alternative-text="Notifications" size="small">
+                        </lightning-icon>
+                    </div>
+
+                    <div>
+                        <span class="summary-label">Notifications</span>
+                        <span class="summary-value">{notificationStatus}</span>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-icon summary-icon-orange">
+                        <lightning-icon icon-name="utility:date_input" alternative-text="Date format" size="small">
+                        </lightning-icon>
+                    </div>
+
+                    <div>
+                        <span class="summary-label">Date Format</span>
+                        <span class="summary-value">{dateFormat}</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- User Access -->
+            <section class="settings-card">
+                <div class="card-header">
+                    <div class="section-icon section-icon-purple">
+                        <lightning-icon icon-name="utility:user" alternative-text="User access" size="small">
+                        </lightning-icon>
+                    </div>
+
+                    <div class="card-heading">
+                        <h2 class="card-title">User Access</h2>
+                        <p class="card-description">
+                            Configure roles and permissions for your team.
+                        </p>
+                    </div>
+
+                    <span class="card-number">01</span>
+                </div>
+
+                <div class="settings-list">
+                    <div class="settings-row">
+                        <div class="settings-row-content">
+                            <span class="settings-row-label">
+                                Allow HR Admins to delete records
+                            </span>
+
+                            <span class="settings-row-hint">
+                                Grants delete access to employee, attendance, and payslip data.
+                            </span>
+                        </div>
+
+                        <button type="button" class={adminDeleteToggleClass} onclick={toggleAdminDelete}
+                            aria-label="Allow HR Admins to delete records" aria-pressed={allowAdminDelete}>
+                            <span class="toggle-knob"></span>
+                        </button>
+                    </div>
+
+                    <div class="settings-row">
+                        <div class="settings-row-content">
+                            <span class="settings-row-label">
+                                Default role for new users
+                            </span>
+
+                            <span class="settings-row-hint">
+                                Automatically applied when a new user record is created.
+                            </span>
+                        </div>
+
+                        <select class="settings-select" onchange={handleDefaultRoleChange}
+                            aria-label="Default role for new users">
+                            <option value="Employee">Employee</option>
+                            <option value="Manager">Manager</option>
+                            <option value="HR Admin">HR Admin</option>
+                        </select>
+                    </div>
+
+                    <div class="settings-row settings-row-last">
+                        <div class="settings-row-content">
+                            <span class="settings-row-label">
+                                Require approval for leave requests
+                            </span>
+
+                            <span class="settings-row-hint">
+                                Leave requests remain pending until approved by a manager.
+                            </span>
+                        </div>
+
+                        <button type="button" class={approvalToggleClass} onclick={toggleApprovalRequired}
+                            aria-label="Require approval for leave requests" aria-pressed={requireApproval}>
+                            <span class="toggle-knob"></span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Preferences -->
+            <section class="settings-card">
+                <div class="card-header">
+                    <div class="section-icon section-icon-green">
+                        <lightning-icon icon-name="utility:settings" alternative-text="Preferences" size="small">
+                        </lightning-icon>
+                    </div>
+
+                    <div class="card-heading">
+                        <h2 class="card-title">Preferences</h2>
+                        <p class="card-description">
+                            Set application preferences and display defaults.
+                        </p>
+                    </div>
+
+                    <span class="card-number">02</span>
+                </div>
+
+                <div class="settings-list">
+                    <div class="settings-row">
+                        <div class="settings-row-content">
+                            <span class="settings-row-label">
+                                Email notifications
+                            </span>
+
+                            <span class="settings-row-hint">
+                                Receive notifications when leave requests or payslips need review.
+                            </span>
+                        </div>
+
+                        <button type="button" class={emailNotifToggleClass} onclick={toggleEmailNotifications}
+                            aria-label="Enable email notifications" aria-pressed={emailNotifications}>
+                            <span class="toggle-knob"></span>
+                        </button>
+                    </div>
+
+                    <div class="settings-row">
+                        <div class="settings-row-content">
+                            <span class="settings-row-label">
+                                Currency format
+                            </span>
+
+                            <span class="settings-row-hint">
+                                Used across payroll, salary, and payslip totals.
+                            </span>
+                        </div>
+
+                        <select class="settings-select" onchange={handleCurrencyChange} aria-label="Currency format">
+                            <option value="INR">INR (₹)</option>
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                        </select>
+                    </div>
+
+                    <div class="settings-row settings-row-last">
+                        <div class="settings-row-content">
+                            <span class="settings-row-label">
+                                Date format
+                            </span>
+
+                            <span class="settings-row-hint">
+                                Applies to tables, employee records, and exported reports.
+                            </span>
+                        </div>
+
+                        <select class="settings-select" onchange={handleDateFormatChange} aria-label="Date format">
+                            <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                            <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                            <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Configurations -->
+            <section class="settings-card">
+                <div class="card-header">
+                    <div class="section-icon section-icon-orange">
+                        <lightning-icon icon-name="utility:setup" alternative-text="System configuration" size="small">
+                        </lightning-icon>
+                    </div>
+
+                    <div class="card-heading">
+                        <h2 class="card-title">System Configurations</h2>
+                        <p class="card-description">
+                            Manage system behavior and operational settings.
+                        </p>
+                    </div>
+
+                    <span class="card-number">03</span>
+                </div>
+
+                <div class="settings-list">
+                    <div class="settings-row">
+                        <div class="settings-row-content">
+                            <span class="settings-row-label">
+                                Maintenance mode
+                            </span>
+
+                            <span class="settings-row-hint">
+                                Temporarily restricts access while system changes are performed.
+                            </span>
+                        </div>
+
+                        <button type="button" class={maintenanceToggleClass} onclick={toggleMaintenanceMode}
+                            aria-label="Enable maintenance mode" aria-pressed={maintenanceMode}>
+                            <span class="toggle-knob"></span>
+                        </button>
+                    </div>
+
+                    <div class="settings-row settings-row-last">
+                        <div class="settings-row-content">
+                            <span class="settings-row-label">
+                                Attendance auto check-out
+                            </span>
+
+                            <span class="settings-row-hint">
+                                Automatically records check-out if no time is entered by midnight.
+                            </span>
+                        </div>
+
+                        <button type="button" class={autoCheckoutToggleClass} onclick={toggleAutoCheckout}
+                            aria-label="Enable attendance auto check-out" aria-pressed={autoCheckout}>
+                            <span class="toggle-knob"></span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Save Bar -->
+            <div class="save-bar">
+                <div class="save-message">
+                    <span class={saveIndicatorClass}></span>
+
+                    <div>
+                        <span class={saveStatusClass}>
+                            {saveStatusText}
+                        </span>
+
+                        <span class="save-help-text">
+                            {saveHelpText}
+                        </span>
+                    </div>
+                </div>
+
+                <button type="button" class="save-button" onclick={handleSaveSettings} disabled={isSaving}>
+
+                    <template if:true={isSaving}>
+                        <lightning-spinner alternative-text="Saving settings" size="small">
+                        </lightning-spinner>
+                    </template>
+
+                    <template if:false={isSaving}>
+                        <lightning-icon icon-name="utility:save" alternative-text="Save" size="xx-small">
+                        </lightning-icon>
+                    </template>
+
+                    <span>{saveButtonText}</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</template>
