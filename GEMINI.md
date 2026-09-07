@@ -23,6 +23,7 @@ This repository contains the Salesforce DX source code for the **HRMS (Human Res
   - Keep triggers logic-free; delegate execution to dedicated Trigger Handler classes (e.g., `EmployeeTriggerHandler`).
   - Support execution context methods (`beforeInsert`, `afterInsert`, `beforeUpdate`, `afterUpdate`, `beforeDelete`, `afterDelete`, `afterUndelete`).
 - **Security & FLS**: Always enforce Object and Field Level Security (FLS) using `WITH USER_MODE`, `Security.stripInaccessible()`, or schema describe checks before DML and SOQL operations.
+- **Code Review & Auditing**: Automatically activate and adhere to the [`apex-code-reviewer`](.agents/skills/apex-code-reviewer/SKILL.md) skill whenever reviewing, inspecting, or auditing Apex code in this project.
 - **Unit Testing**:
   - Automatically activate and adhere to the [`apex-test-craftsman`](.agents/skills/apex-test-craftsman/SKILL.md) skill whenever writing, optimizing, or reviewing Apex tests.
   - Maintain >90% code coverage across all Apex classes with production-grade logical assertions.
