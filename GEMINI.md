@@ -23,11 +23,21 @@ This repository contains the Salesforce DX source code for the **HRMS (Human Res
   - Keep triggers logic-free; delegate execution to dedicated Trigger Handler classes (e.g., `EmployeeTriggerHandler`).
   - Support execution context methods (`beforeInsert`, `afterInsert`, `beforeUpdate`, `afterUpdate`, `beforeDelete`, `afterDelete`, `afterUndelete`).
 - **Security & FLS**: Always enforce Object and Field Level Security (FLS) using `WITH USER_MODE`, `Security.stripInaccessible()`, or schema describe checks before DML and SOQL operations.
-- **Code Review & Auditing**: Automatically activate and adhere to the [`apex-code-reviewer`](.agents/skills/apex-code-reviewer/SKILL.md) skill whenever reviewing, inspecting, or auditing Apex code in this project.
-- **Unit Testing**:
-  - Automatically activate and adhere to the [`apex-test-craftsman`](.agents/skills/apex-test-craftsman/SKILL.md) skill whenever writing, optimizing, or reviewing Apex tests.
+- **Code Review & Auditing (Quality Gate)**:
+  - Automatically activate and strictly adhere to the [`apex-code-reviewer`](.agents/skills/apex-code-reviewer/SKILL.md) skill whenever reviewing, inspecting, or auditing Apex code in this project.
+  - **Hard Rule — No Code Changes During Review**: The review agent MUST conduct all analysis first and produce the full report without making any file modifications. Modifying code, writing files, or running mutating commands during the review phase is strictly prohibited.
+  - **Mandatory Checklist Output**: Every Apex code review MUST explicitly render the complete 30-point checklist from `.agents/skills/apex-code-reviewer/references/checklist.md` as a Markdown table (`| # | Check Item | Status (✅ PASS / ❌ FAIL / ⚪ N/A) | Notes |`) in the final review report. A review is incomplete without this rendered table.
+  - **Explicit Approval Gate**: Once the complete report and proposed diffs are presented in table format, the agent MUST stop and ask the developer: *"Would you like me to proceed with implementing these recommended changes?"* ONLY if the developer explicitly responds with "yes" or grants approval may the agent proceed to modify code.
+- **Unit Testing (Quality Gate)**:
+  - Automatically activate and strictly adhere to the [`apex-test-craftsman`](.agents/skills/apex-test-craftsman/SKILL.md) skill whenever writing, optimizing, or reviewing Apex tests.
   - Maintain >90% code coverage across all Apex classes with production-grade logical assertions.
-  - Test all 5 vectors: Positive (Happy Path), Negative (Edge/Null), Bulk (200 records), Fault/Exception, and Security/FLS (`System.runAs`).
+  - **Mandatory 5-Vector Test Enforcement**: Every test class MUST contain dedicated test methods covering all 5 vectors:
+    1. `test*_Positive_*` (Happy Path validation with expected database state)
+    2. `test*_Negative_*` (Edge, boundary, and null handling)
+    3. `test*_Bulk200_*` (Must process >= 200 records in a single transaction without hitting 101 SOQL or 150 DML limits)
+    4. `test*_Fault_*` (Verifying caught exceptions and rollback integrity)
+    5. `test*_Security_RunAs_*` (Executing under `System.runAs` with a standard/restricted user)
+  - A test class is INCOMPLETE and REJECTED if any of these 5 vectors is missing, regardless of the line coverage percentage achieved.
   - Use `@TestSetup` methods and dedicated `TestDataFactory` for test data creation.
   - Assert expected outcomes using modern Spring '23+ assertions (`Assert.areEqual()`, `Assert.isTrue()`, `Assert.isFalse()`, `Assert.isNull()`, `Assert.fail()`). Never use legacy `System.assert()`.
   - Zero `SeeAllData=true`.

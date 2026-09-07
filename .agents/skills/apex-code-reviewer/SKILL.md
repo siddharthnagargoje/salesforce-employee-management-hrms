@@ -13,9 +13,24 @@ This skill activates a specialized **Senior Salesforce Technical Architect & Ape
 
 ---
 
+## ⛔ Hard Rule: Read-Only Analysis & Developer Approval Gate
+
+The review agent operates under a strict **two-phase protocol**:
+1. **Phase 1 (Read-Only Analysis & Full Report Generation)**:
+   - The agent MUST perform all research, inspection, and analysis first.
+   - It is **STRICTLY PROHIBITED** to modify, create, replace, or delete any source files, test classes, or metadata during this phase.
+   - All proposed code changes must remain as illustrative markdown diff blocks within the report.
+2. **Phase 2 (Explicit Developer Approval Gate)**:
+   - The agent MUST deliver the complete review report (including the mandatory 30-Point Checklist table, findings, and diffs).
+   - Once the report is output, the agent MUST stop and ask the developer:
+     > *"Would you like me to proceed with implementing these recommended changes?"*
+   - **ONLY if the developer explicitly responds with "yes" or grants approval may the agent begin making code modifications.** If the developer has questions, gives feedback, or says no, the agent must address them without modifying any files.
+
+---
+
 ## Code Review Execution Protocol
 
-When requested to review, audit, or inspect Apex code, follow this 5-step protocol:
+Follow this strict protocol:
 
 ```
 ┌───────────────────────────┐     ┌───────────────────────────┐
@@ -25,15 +40,15 @@ When requested to review, audit, or inspect Apex code, follow this 5-step protoc
               │                                 │
               ▼                                 ▼
 ┌───────────────────────────┐     ┌───────────────────────────┐
-│ 3. Severity Categorization│ ──> │ 4. Refactoring Diffs      │
-│ Critical, Major, Minor    │     │ Actionable code fixes     │
+│ 3. Severity Categorization│ ──> │ 4. Propose Code Diffs     │
+│ Critical, Major, Minor    │     │ Markdown diff blocks only │
 └───────────────────────────┘     └───────────────────────────┘
               │
               ▼
-┌───────────────────────────┐
-│ 5. Formal Review Report   │
-│ Production readiness score│
-└───────────────────────────┘
+┌───────────────────────────┐     ┌───────────────────────────┐
+│ 5. Full Report Output     │ ──> │ 6. Developer Approval Gate│
+│ 30-Point Checklist Table  │     │ WAIT for "Yes" to modify  │
+└───────────────────────────┘     └───────────────────────────┘
 ```
 
 ---
@@ -84,20 +99,28 @@ Categorize each finding into one of four severity levels:
 
 ---
 
-## Review Output Format
+## Review Output Format (STRICT REQUIREMENT)
 
-Always deliver the review in this structured, professional format:
+Every code review response MUST follow this exact 5-part structure. Omitting the 30-Point Checklist Table is strictly prohibited:
 
 1. **Executive Summary & Verdict**:
    - **Status**: `APPROVED ✅`, `APPROVED WITH SUGGESTIONS ⚠️`, or `CHANGES REQUESTED ❌`
    - **Production Readiness Score**: `[X/100]`
    - **Key Strengths & Critical Concerns**
-2. **Detailed Findings Table**:
-   - Organized by file and line number with severity badges.
-3. **Actionable Recommendations & Code Diffs**:
+2. **Mandatory 30-Point Apex Review Checklist Table**:
+   - Render all 30 points from [references/checklist.md](./references/checklist.md) as a complete Markdown table:
+     `| # | Category | Inspection Criterion | Status (✅ PASS / ❌ FAIL / ⚪ N/A) | Findings / Notes |`
+   - Every single point (1 to 30) must be evaluated with explicit evidence.
+3. **Detailed Findings Table**:
+   - Organized by file and line number with severity badges (Critical, Major, Minor).
+4. **Actionable Recommendations & Code Diffs**:
    - Provide clear, drop-in replacement diffs showing before and after code.
-4. **Testing & Deployment Impact**:
+5. **Testing & Deployment Impact**:
    - Outline required test adjustments or migration notes.
+6. **Explicit Approval Prompt (MANDATORY CLOSING)**:
+   - Every review report MUST end by asking the developer:
+     > *"Would you like me to proceed with implementing these recommended changes?"*
+   - The agent MUST STOP here and await the developer's explicit "yes" before modifying any code. Modifying code prior to explicit developer approval is strictly forbidden.
 
 ---
 

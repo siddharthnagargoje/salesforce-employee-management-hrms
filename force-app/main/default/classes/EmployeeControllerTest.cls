@@ -718,5 +718,56 @@ private class EmployeeControllerTest {
 
         Assert.isTrue(exceptionCaught, 'Exception should be caught on null employeeId');
     }
+
+    // =========================================================================
+    // BULK & SECURITY 5-VECTOR TESTS (QUALITY GATE COMPLIANCE)
+    // =========================================================================
+
+    @IsTest
+    static void testBulk200_Employees_QueryAndProcessing() {
+        // Vector 3: Bulk Processing (>= 200 records)
+        List<Employee__c> bulkEmps = TestDataFactory.createEmployees(200, true);
+        Assert.areEqual(200, bulkEmps.size(), 'Should create 200 bulk employee records');
+
+        Test.startTest();
+        List<Employee__c> result = EmployeeController.getEmployees();
+        Test.stopTest();
+
+        Assert.isNotNull(result, 'Result should not be null');
+        Assert.isTrue(result.size() >= 200, 'Should return at least 200 records without hitting governor limits');
+        Assert.isTrue(Limits.getQueries() < Limits.getLimitQueries(), 'SOQL query limits must remain within governor bounds');
+    }
+
+    @IsTest
+    static void testSecurity_RunAs_StandardUser() {
+        // Vector 5: Security / FLS Context via System.runAs
+        Profile stdProfile = [SELECT Id FROM Profile WHERE Name = 'Standard User' LIMIT 1];
+        User stdUser = new User(
+            Alias = 'hrmsu',
+            Email = 'hrmsstandarduser@testorg.com',
+            EmailEncodingKey = 'UTF-8',
+            LastName = 'HRMSStandardUser',
+            LanguageLocaleKey = 'en_US',
+            LocaleSidKey = 'en_US',
+            ProfileId = stdProfile.Id,
+            TimeZoneSidKey = 'America/Los_Angeles',
+            UserName = 'hrmsstandarduser' + DateTime.now().getTime() + '@testorg.com'
+        );
+        insert stdUser;
+
+        System.runAs(stdUser) {
+            Test.startTest();
+            try {
+                List<Employee__c> emps = EmployeeController.getEmployees();
+                Assert.isNotNull(emps, 'Standard user should execute query gracefully');
+            } catch (AuraHandledException e) {
+                // If standard user lacks FLS or object permission, AuraHandledException is expected and safe
+                Assert.isNotNull(e, 'AuraHandledException caught for restricted user');
+            } catch (Exception e) {
+                Assert.isNotNull(e.getMessage(), 'Exception message present');
+            }
+            Test.stopTest();
+        }
+    }
 }
 

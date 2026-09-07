@@ -19,7 +19,9 @@ public with sharing class PayslipPDFController {
     public String generatedDate { get; private set; }
 
     public PayslipPDFController(ApexPages.StandardController controller) {
-        Id payslipId = controller.getId();
+        initializeDefaults();
+
+        Id payslipId = (controller != null) ? controller.getId() : null;
         if (payslipId == null) {
             return;
         }
@@ -45,6 +47,7 @@ public with sharing class PayslipPDFController {
                 CreatedDate
             FROM Payslip__c
             WHERE Id = :payslipId
+            WITH USER_MODE
             LIMIT 1
         ];
 
@@ -54,7 +57,7 @@ public with sharing class PayslipPDFController {
         payslip = slips[0];
 
         if (payslip.Employee__r != null) {
-            employeeName = payslip.Employee__r.Name;
+            employeeName = String.isNotBlank(payslip.Employee__r.Name) ? payslip.Employee__r.Name : 'N/A';
             employeeCode = String.isNotBlank(payslip.Employee__r.Employee_Code__c) ? payslip.Employee__r.Employee_Code__c : 'N/A';
             designation = String.isNotBlank(payslip.Employee__r.Designation__c) ? payslip.Employee__r.Designation__c : 'Associate';
             
@@ -67,12 +70,6 @@ public with sharing class PayslipPDFController {
             }
 
             workLocation = String.isNotBlank(payslip.Employee__r.Work_Location__c) ? payslip.Employee__r.Work_Location__c : 'Headquarters';
-        } else {
-            employeeName = 'N/A';
-            employeeCode = 'N/A';
-            designation = 'N/A';
-            employeeEmail = 'N/A';
-            workLocation = 'Headquarters';
         }
 
         basicSalary = payslip.Basic_Salary__c != null ? payslip.Basic_Salary__c : 0;
@@ -83,9 +80,29 @@ public with sharing class PayslipPDFController {
         payslipNumber = String.isNotBlank(payslip.Name) ? payslip.Name : 'N/A';
         payMonth = payslip.Pay_Month__c != null ? String.valueOf(payslip.Pay_Month__c) : 'N/A';
         payYear = payslip.Pay_Year__c != null ? String.valueOf(payslip.Pay_Year__c) : 'N/A';
-        payPeriod = payMonth + ' ' + payYear;
+        payPeriod = (payMonth != 'N/A' || payYear != 'N/A') ? (payMonth + ' ' + payYear) : 'N/A';
         paymentStatus = String.isNotBlank(payslip.Status__c) ? payslip.Status__c : 'Pending';
         generatedDate = payslip.CreatedDate != null ? payslip.CreatedDate.format('dd MMM yyyy') : Datetime.now().format('dd MMM yyyy');
+    }
+
+    private void initializeDefaults() {
+        payslip = null;
+        employeeName = 'N/A';
+        employeeCode = 'N/A';
+        designation = 'N/A';
+        employeeEmail = 'N/A';
+        workLocation = 'Headquarters';
+        basicSalary = 0;
+        bonus = 0;
+        deductions = 0;
+        grossSalary = 0;
+        netSalary = 0;
+        payslipNumber = 'N/A';
+        payMonth = 'N/A';
+        payYear = 'N/A';
+        payPeriod = 'N/A';
+        paymentStatus = 'Pending';
+        generatedDate = Datetime.now().format('dd MMM yyyy');
     }
 
     public String formatCurrency(Decimal amount) {

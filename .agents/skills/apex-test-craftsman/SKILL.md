@@ -137,9 +137,9 @@ static void testCalculateSalary_SeniorGrade_AppliesCorrectAllowance() {
 
 ---
 
-## Phase 4: Validation & Quality Gate
+## Phase 4: Validation & Pre-Deployment Quality Gate
 
-After generating the test class:
+Before declaring test engineering complete, execute the automated test run and verify the **Pre-Deployment Checklist**:
 
 1. **Deploy Metadata**:
    ```bash
@@ -149,10 +149,18 @@ After generating the test class:
    ```bash
    sf apex run test --class-names <TargetClassName>Test --result-format human --code-coverage
    ```
-3. **Quality Criteria**:
-   - Pass Rate: **100%** (zero failures, zero unhandled errors).
-   - Code Coverage: **>90%** across the target class.
-   - Assertions: Every test method contains **at least one meaningful `Assert.*` statement**. Tests without assertions are strictly prohibited.
+3. **Mandatory 5-Vector Quality Gate (ALL 5 REQUIRED)**:
+   - [ ] **Vector 1: Positive**: Happy path tested with expected database and return state.
+   - [ ] **Vector 2: Negative/Boundary**: Null inputs, empty collections, and non-existent IDs handled gracefully.
+   - [ ] **Vector 3: Bulk (>= 200 Records)**: Dedicated method (e.g. `test<Feature>_Bulk200_Success`) verifies processing 200 records without hitting governor limits (101 SOQL, 150 DML, 10,000 DML rows).
+   - [ ] **Vector 4: Fault & Exception**: Explicitly exercises catch blocks, rolls back transactions, or validates `AuraHandledException`.
+   - [ ] **Vector 5: Security / FLS (`System.runAs`)**: Dedicated method runs under `System.runAs(standardUser)` to verify sharing and FLS enforcement.
+   - [ ] **Modern Assertions**: Zero legacy `System.assert` calls; all assertions use Spring '23+ `Assert.*` with descriptive failure messages.
+   - [ ] **Pass Rate**: **100%** (zero failures, zero unhandled errors).
+   - [ ] **Code Coverage**: **>90%** across the target class.
+
+> [!WARNING]
+> A test class that achieves >90% coverage but omits the Bulk (200 records) or Security (`System.runAs`) vectors **FAILS the quality gate** and must not be reported as complete.
 
 ---
 
@@ -161,3 +169,4 @@ After generating the test class:
 For detailed code patterns, see:
 - [Testing Invocable Actions, Controllers, and Batch Apex](./references/patterns.md)
 - [Sample Production-Grade Test Class](./examples/SampleApexTest.cls)
+
