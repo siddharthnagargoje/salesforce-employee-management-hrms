@@ -1,27 +1,28 @@
 :host {
     display: block;
-    background-color: #f8fafc;
+    background-color: #F4F6FA;
 }
 
 /* Base Workspace Layout - Dashboard Theme */
 .payslip-page {
-    background-color: #f7f9fc;
-    color: #1e293b;
+    background-color: #F4F6FA;
+    color: #111827;
     min-height: 100vh;
     padding: 30px;
 }
 
-/* Dashboard Header */
+/* Dashboard Header (Clean light SaaS card style matching CLEARIQ) */
 .dashboard-header {
     position: relative;
-    min-height: 130px;
+    min-height: 120px;
     overflow: hidden;
     margin-bottom: 22px;
     padding: 24px 30px;
-    color: #ffffff;
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%) !important;
+    color: #111827;
+    background: #ffffff !important;
+    border: 1px solid #EEF2F6;
     border-radius: 18px;
-    box-shadow: 0 10px 25px rgba(30, 58, 138, 0.15);
+    box-shadow: 0 2px 10px rgba(18, 38, 63, 0.03);
 }
 
 .dashboard-header-content {
@@ -35,8 +36,9 @@
 
 .header-background-circle {
     position: absolute;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(12, 117, 255, 0.08);
     border-radius: 50%;
+    pointer-events: none;
 }
 
 .circle-one {
@@ -56,24 +58,25 @@
 .header-eyebrow {
     display: block;
     margin-bottom: 6px;
-    color: #93c5fd;
-    font-size: 0.65rem;
+    color: #0C75FF;
+    font-size: 0.68rem;
     font-weight: 800;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
 }
 
 .header-text h1 {
     margin: 0;
-    color: #ffffff !important;
+    color: #111827 !important;
     font-size: 1.6rem;
     font-weight: 800;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
 }
 
 .header-text p {
     margin: 6px 0 0;
-    color: rgba(255, 255, 255, 0.8) !important;
-    font-size: 0.83rem;
+    color: #64748B !important;
+    font-size: 0.85rem;
 }
 
 .header-actions {
@@ -92,40 +95,43 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
-    min-height: 38px;
-    padding: 0 14px;
+    min-height: 40px;
+    padding: 0 16px;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 0.74rem;
+    font-size: 0.78rem;
     font-weight: 700;
     transition: all 180ms ease;
 }
 
 .primary-button {
     color: #ffffff;
-    background: #2563eb;
-    border: 1px solid #1d4ed8;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    background: #0C75FF;
+    border: 1px solid #0C75FF;
+    box-shadow: 0 4px 14px rgba(12, 117, 255, 0.28);
 }
 
 .primary-button:hover {
-    background: #1d4ed8;
-    transform: translateY(-2px);
+    background: #0060DF;
+    border-color: #0060DF;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(12, 117, 255, 0.38);
 }
 
 .user-avatar {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     margin-left: 4px;
     color: #ffffff;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: linear-gradient(135deg, #0C75FF 0%, #00C5C8 100%);
+    border: 2px solid #ffffff;
     border-radius: 50%;
-    font-size: 0.68rem;
-    font-weight: 900;
+    font-size: 0.75rem;
+    font-weight: 800;
+    box-shadow: 0 2px 8px rgba(12, 117, 255, 0.25);
 }
 
 /* ==========================================================================
@@ -136,7 +142,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
-    margin-bottom: 22px;
+    margin-bottom: 24px;
 }
 
 .stat-card {
@@ -145,15 +151,15 @@
     gap: 16px;
     padding: 20px 22px;
     background: #ffffff;
-    border: 1px solid #E2E8F0;
-    border-radius: 18px;
-    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+    border: 1px solid #EEF2F6;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(18, 38, 63, 0.03);
     transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
 
 .stat-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(18, 38, 63, 0.06);
     border-color: #CBD5E1;
 }
 
@@ -164,22 +170,22 @@
     width: 46px;
     height: 46px;
     min-width: 46px;
-    border-radius: 13px;
+    border-radius: 12px;
     transition: transform 180ms ease;
 }
 
 .stat-card:hover .stat-icon {
-    transform: scale(1.06);
+    transform: scale(1.05);
 }
 
 .stat-icon lightning-icon {
     --sds-c-icon-color-foreground-default: currentColor;
 }
 
-.stat-blue .stat-icon { color: #2563EB; background: #EFF6FF; }
-.stat-green .stat-icon { color: #059669; background: #ECFDF5; }
-.stat-orange .stat-icon { color: #D97706; background: #FFFBEB; }
-.stat-purple .stat-icon { color: #7C3AED; background: #F5F3FF; }
+.stat-blue .stat-icon { color: #0C75FF; background: #EFF6FF; }
+.stat-green .stat-icon { color: #00D284; background: #E6F9F0; }
+.stat-orange .stat-icon { color: #FF8A00; background: #FFF7ED; }
+.stat-purple .stat-icon { color: #7C3AED; background: #F3EEFF; }
 
 .stat-content {
     flex: 1;
@@ -196,29 +202,29 @@
 
 .stat-title {
     color: #64748B;
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
 }
 
 .stat-tag {
-    padding: 2px 7px;
+    padding: 2px 8px;
     border-radius: 999px;
     font-size: 0.62rem;
     font-weight: 800;
     text-transform: uppercase;
 }
 
-.stat-blue .stat-tag { color: #1D4ED8; background: #DBEAFE; }
-.stat-green .stat-tag { color: #065F46; background: #D1FAE5; }
-.stat-orange .stat-tag { color: #92400E; background: #FEF3C7; }
-.stat-purple .stat-tag { color: #5B21B6; background: #EDE9FE; }
+.stat-blue .stat-tag { color: #0C75FF; background: #EFF6FF; }
+.stat-green .stat-tag { color: #00A664; background: #E6F9F0; }
+.stat-orange .stat-tag { color: #FF8A00; background: #FFF7ED; }
+.stat-purple .stat-tag { color: #7C3AED; background: #F3EEFF; }
 
 .stat-value {
-    color: #0F172A;
+    color: #111827;
     font-size: 1.55rem;
-    font-weight: 900;
+    font-weight: 800;
     line-height: 1.2;
     letter-spacing: -0.02em;
 }
@@ -226,7 +232,7 @@
 .stat-description {
     margin-top: 3px;
     color: #94A3B8;
-    font-size: 0.74rem;
+    font-size: 0.72rem;
     font-weight: 500;
 }
 
@@ -236,9 +242,9 @@
 
 .payslip-panel {
     background: #ffffff;
-    border: 1px solid #E2E8F0;
-    border-radius: 18px;
-    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+    border: 1px solid #EEF2F6;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(18, 38, 63, 0.03);
     overflow: hidden;
     margin-bottom: 24px;
 }
@@ -249,7 +255,7 @@
     justify-content: space-between;
     gap: 16px;
     padding: 20px 24px;
-    border-bottom: 1px solid #E2E8F0;
+    border-bottom: 1px solid #EEF2F6;
     background: #FFFFFF;
 }
 
@@ -266,7 +272,7 @@
     width: 36px;
     height: 36px;
     border-radius: 10px;
-    color: #2563EB;
+    color: #0C75FF;
     background: #EFF6FF;
 }
 
@@ -276,7 +282,7 @@
 
 .panel-title-row h2 {
     margin: 0;
-    color: #0F172A;
+    color: #111827;
     font-size: 1.15rem;
     font-weight: 800;
 }
@@ -301,23 +307,25 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    height: 36px;
+    height: 38px;
     padding: 0 16px;
     color: #ffffff;
-    background: #2563EB;
-    border: 1px solid #1D4ED8;
+    background: #0C75FF;
+    border: 1px solid #0C75FF;
     border-radius: 10px;
     font-size: 0.78rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 160ms ease;
     white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(12, 117, 255, 0.25);
 }
 
 .primary-button-accent:hover {
-    background: #1D4ED8;
+    background: #0060DF;
+    border-color: #0060DF;
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    box-shadow: 0 6px 16px rgba(12, 117, 255, 0.35);
 }
 
 .primary-button-accent lightning-icon {
@@ -333,17 +341,17 @@
 .modern-datatable-accents {
     --slds-c-datatable-color-background: #ffffff;
     --slds-c-datatable-row-color-background-hover: #F8FAFC;
-    --slds-c-datatable-text-color: #1E293B;
+    --slds-c-datatable-text-color: #111827;
     --slds-c-datatable-header-color-background: #F8FAFC;
     --slds-c-datatable-header-text-color: #64748B;
-    --slds-c-datatable-border-color: #E2E8F0;
+    --slds-c-datatable-border-color: #EEF2F6;
 }
 
 .modern-datatable-accents th {
     background-color: #F8FAFC !important;
     color: #64748B !important;
-    border-bottom: 1px solid #E2E8F0 !important;
-    font-weight: 800;
+    border-bottom: 1px solid #EEF2F6 !important;
+    font-weight: 700;
     letter-spacing: 0.05em;
     font-size: 0.72rem;
     text-transform: uppercase;
@@ -351,7 +359,7 @@
 
 .modern-datatable-accents td {
     background-color: #ffffff !important;
-    color: #1E293B !important;
+    color: #111827 !important;
     border-bottom: 1px solid #F1F5F9 !important;
 }
 
@@ -386,7 +394,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(244, 246, 250, 0.8);
     backdrop-filter: blur(4px);
     z-index: 9999;
     display: flex;
@@ -398,23 +406,23 @@
 .modal-glassmorphism .slds-modal__container {
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
-    border: 1px solid #e2e8f0;
+    box-shadow: 0 25px 50px -12px rgba(18, 38, 63, 0.25);
+    border: 1px solid #EEF2F6;
 }
 
 .logic-gradient-header {
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    background: linear-gradient(135deg, #0C75FF 0%, #0060DF 55%, #00C5C8 100%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     padding: 1.5rem 1.75rem;
 }
 
 .background-form {
     background-color: #ffffff !important;
-    color: #1e293b;
+    color: #111827;
 }
 
 .header-border-purple {
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #EEF2F6;
     padding-bottom: 0.75rem;
     margin-bottom: 1.25rem;
     display: flex;
@@ -422,58 +430,58 @@
 }
 
 .purple-icon {
-    --sds-c-icon-color-foreground: #3b82f6;
+    --sds-c-icon-color-foreground: #0C75FF;
 }
 
 .vibrant-section-title {
-    color: #0f172a !important;
+    color: #111827 !important;
     font-weight: 800;
     font-size: 1rem;
     margin: 0;
 }
 
 .footer-custom {
-    background-color: #f8fafc !important;
-    border-top: 1px solid #e2e8f0;
+    background-color: #F8FAFC !important;
+    border-top: 1px solid #EEF2F6;
     padding: 1.25rem 1.75rem;
 }
 
 .glass-backdrop {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: rgba(17, 24, 39, 0.45) !important;
     backdrop-filter: blur(4px);
 }
 
 /* Form inputs inside modal */
 .background-form lightning-input-field {
-    --slds-c-input-color-background: #f8fafc;
-    --slds-c-input-text-color: #0f172a;
-    --slds-c-input-border-color: #cbd5e1;
+    --slds-c-input-color-background: #F8FAFC;
+    --slds-c-input-text-color: #111827;
+    --slds-c-input-border-color: #CBD5E1;
 }
 
 /* Modern Professional Action Buttons */
 .vibrant-action-btn {
-    --slds-c-button-brand-color-background: #1e293b;
-    --slds-c-button-brand-color-border: #2563eb;
-    --slds-c-button-brand-color-background-hover: #1d4ed8;
+    --slds-c-button-brand-color-background: #0C75FF;
+    --slds-c-button-brand-color-border: #0C75FF;
+    --slds-c-button-brand-color-background-hover: #0060DF;
     font-weight: 700;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 4px 12px rgba(12, 117, 255, 0.28);
 }
 
 .vibrant-submit-btn {
-    --slds-c-button-brand-color-background: #1e293b;
-    --slds-c-button-brand-color-border: #2563eb;
+    --slds-c-button-brand-color-background: #0C75FF;
+    --slds-c-button-brand-color-border: #0C75FF;
     font-weight: 700;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 4px 12px rgba(12, 117, 255, 0.28);
 }
 
 .btn-flat {
     --slds-c-button-neutral-color-background: #ffffff;
     --slds-c-button-neutral-text-color: #334155;
-    --slds-c-button-neutral-color-border: #cbd5e1;
+    --slds-c-button-neutral-color-border: #E2E8F0;
     font-weight: 700;
 }
 
 .btn-flat:hover {
-    --slds-c-button-neutral-color-background: #f8fafc;
-    --slds-c-button-neutral-color-border: #94a3b8;
+    --slds-c-button-neutral-color-background: #F8FAFC;
+    --slds-c-button-neutral-color-border: #CBD5E1;
 }

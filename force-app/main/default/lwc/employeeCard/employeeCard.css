@@ -6,11 +6,9 @@
     position: relative;
     overflow: hidden;
     background: #ffffff;
-    border: 1px solid #E7ECF5;
+    border: 1px solid #EEF2F6;
     border-radius: 18px;
-    box-shadow:
-        0 8px 20px rgba(27, 37, 89, 0.08),
-        0 2px 5px rgba(27, 37, 89, 0.04);
+    box-shadow: 0 2px 10px rgba(18, 38, 63, 0.03);
     transition:
         transform 220ms ease,
         box-shadow 220ms ease,
@@ -18,25 +16,19 @@
 }
 
 .employee-card:hover {
-    border-color: #8FB6F5;
-    box-shadow:
-        0 18px 36px rgba(27, 37, 89, 0.15),
-        0 5px 10px rgba(27, 37, 89, 0.07);
-    transform: translateY(-5px);
+    border-color: #0C75FF;
+    box-shadow: 0 12px 28px rgba(12, 117, 255, 0.12);
+    transform: translateY(-4px);
 }
 
-/* Gradient Header */
+/* Gradient Header (Reference: Radiant electric blue & cyan) */
 
 .card-header-gradient {
     position: relative;
     min-height: 73px;
     padding: 15px 17px;
     overflow: hidden;
-    background:
-        linear-gradient(135deg,
-            #0f172a 0%,
-            #1e3a8a 50%,
-            #3b82f6 100%);
+    background: linear-gradient(135deg, #0C75FF 0%, #0060DF 55%, #00C5C8 100%);
 }
 
 .header-top {
@@ -50,7 +42,7 @@
 
 .header-pattern {
     position: absolute;
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.22);
     border-radius: 50%;
 }
 
@@ -74,10 +66,10 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 10px;
+    padding: 5px 10px;
     border-radius: 999px;
-    font-size: 0.62rem;
-    font-weight: 800;
+    font-size: 0.64rem;
+    font-weight: 700;
     text-transform: uppercase;
     white-space: nowrap;
 }
@@ -90,26 +82,25 @@
 }
 
 .status-active {
-    color: #d7f5e6;
-    background: rgba(30, 166, 114, 0.24);
-    border: 1px solid rgba(30, 166, 114, 0.45);
+    color: #00A664;
+    background: #E6F9F0;
+    border: 1px solid #B6F2D6;
 }
 
 .status-warning {
-    color: #ffe3b0;
-    background: rgba(221, 122, 1, 0.24);
-    border: 1px solid rgba(221, 122, 1, 0.45);
+    color: #FF8A00;
+    background: #FFF7ED;
+    border: 1px solid #FED7AA;
 }
 
 .status-inactive,
 .status-default {
-    color: #e2e8f0;
-    background: rgba(255, 255, 255, 0.13);
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #64748B;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
 }
 
-/* Actions — FIX: solid, high-contrast buttons instead of
-   translucent-white-on-translucent-white */
+/* Actions */
 
 .card-actions {
     position: relative;
@@ -125,55 +116,55 @@
     width: 30px;
     height: 30px;
     padding: 0;
-    background: rgba(255, 255, 255, 0.94);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    background: #ffffff;
+    border: 1px solid #EEF2F6;
     border-radius: 8px;
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18);
+    box-shadow: 0 2px 6px rgba(18, 38, 63, 0.08);
     transition: all 160ms ease;
 }
 
 .action-button lightning-icon {
-    --sds-c-icon-color-foreground-default: #1B2559;
+    --sds-c-icon-color-foreground-default: #111827;
 }
 
 .action-button:hover {
     background: #ffffff;
-    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.24);
+    box-shadow: 0 4px 10px rgba(18, 38, 63, 0.16);
     transform: translateY(-1px);
 }
 
 .action-photo lightning-icon {
-    --sds-c-icon-color-foreground-default: #0284c7;
+    --sds-c-icon-color-foreground-default: #00C5C8;
 }
 
 .action-photo:hover {
-    background: #e0f2fe;
+    background: #E0F9F9;
 }
 
 .action-view lightning-icon {
-    --sds-c-icon-color-foreground-default: #5875c2;
+    --sds-c-icon-color-foreground-default: #0C75FF;
 }
 
 .action-view:hover {
-    background: #E8EDFE;
+    background: #EFF6FF;
 }
 
 .action-edit lightning-icon {
-    --sds-c-icon-color-foreground-default: #6E5AE8;
+    --sds-c-icon-color-foreground-default: #7C3AED;
 }
 
 .action-edit:hover {
-    background: #ECE9FC;
+    background: #F3EEFF;
 }
 
 .action-delete lightning-icon {
-    --sds-c-icon-color-foreground-default: #BA0517;
+    --sds-c-icon-color-foreground-default: #FF4D4F;
 }
 
 .action-delete:hover {
-    background: #BA0517;
-    border-color: #BA0517;
+    background: #FF4D4F;
+    border-color: #FF4D4F;
 }
 
 .action-delete:hover lightning-icon {
@@ -200,18 +191,16 @@
     height: 76px;
     padding: 4px;
     overflow: hidden;
-    background: linear-gradient(135deg,
-            #8FB6F5 0%,
-            #6E5AE8 100%);
+    background: linear-gradient(135deg, #0C75FF 0%, #00C5C8 100%);
     border-radius: 50%;
-    box-shadow: 0 6px 15px rgba(27, 37, 89, 0.24);
+    box-shadow: 0 6px 15px rgba(12, 117, 255, 0.25);
     cursor: pointer;
     transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
 .avatar-wrapper:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 22px rgba(27, 37, 89, 0.32);
+    box-shadow: 0 8px 22px rgba(12, 117, 255, 0.35);
 }
 
 .avatar-upload-overlay {
@@ -221,7 +210,7 @@
     right: 4px;
     bottom: 4px;
     border-radius: 50%;
-    background: rgba(15, 23, 42, 0.65);
+    background: rgba(17, 24, 39, 0.65);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -251,17 +240,17 @@
 
 .avatar-image {
     object-fit: cover;
-    background: #F6F8FE;
+    background: #F8FAFC;
 }
 
 .avatar-initials {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #1B2559;
-    background: linear-gradient(135deg, #E8EDFE, #ECE9FC);
+    color: #111827;
+    background: linear-gradient(135deg, #EFF6FF 0%, #E0F9F9 100%);
     font-size: 1.35rem;
-    font-weight: 900;
+    font-weight: 800;
 }
 
 .identity-content {
@@ -272,9 +261,9 @@
 .employee-name {
     margin: 0;
     overflow: hidden;
-    color: #1B2559;
+    color: #111827;
     font-size: 1rem;
-    font-weight: 900;
+    font-weight: 800;
     line-height: 1.25;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -283,8 +272,9 @@
 .employee-role {
     margin: 5px 0 7px;
     overflow: hidden;
-    color: #8F9BB3;
+    color: #64748B;
     font-size: 0.74rem;
+    font-weight: 500;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -293,16 +283,16 @@
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 4px 8px;
-    color: #8F9BB3;
-    background: #F6F8FE;
+    padding: 3px 8px;
+    color: #64748B;
+    background: #F1F5F9;
     border-radius: 6px;
-    font-size: 0.62rem;
-    font-weight: 800;
+    font-size: 0.65rem;
+    font-weight: 700;
 }
 
 .employee-code lightning-icon {
-    --sds-c-icon-color-foreground-default: #8F9BB3;
+    --sds-c-icon-color-foreground-default: #64748B;
 }
 
 /* Details Heading */
@@ -312,9 +302,9 @@
     align-items: center;
     gap: 8px;
     padding: 0 18px 13px;
-    color: #A9B2C4;
-    font-size: 0.62rem;
-    font-weight: 900;
+    color: #94A3B8;
+    font-size: 0.64rem;
+    font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
@@ -322,7 +312,7 @@
 .details-heading-line {
     height: 1px;
     flex: 1;
-    background: #E7ECF5;
+    background: #EEF2F6;
 }
 
 /* Details Grid */
@@ -345,23 +335,23 @@
 }
 
 .detail-blue {
-    background: #E8EDFE;
-    border-color: #DCE5FD;
+    background: #EFF6FF;
+    border-color: #DBEAFE;
 }
 
 .detail-green {
-    background: #E3F8EE;
-    border-color: #C9F0DC;
+    background: #E6F9F0;
+    border-color: #B6F2D6;
 }
 
 .detail-orange {
-    background: #FDF0DE;
-    border-color: #F6DDB2;
+    background: #FFF7ED;
+    border-color: #FED7AA;
 }
 
 .detail-purple {
-    background: #ECE9FC;
-    border-color: #DCD8FC;
+    background: #F3EEFF;
+    border-color: #DDD6FE;
 }
 
 .detail-icon {
@@ -369,8 +359,8 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    width: 25px;
-    height: 25px;
+    width: 26px;
+    height: 26px;
     border-radius: 7px;
 }
 
@@ -379,23 +369,23 @@
 }
 
 .detail-blue .detail-icon {
-    color: #5875c2;
-    background: #DCE5FD;
+    color: #0C75FF;
+    background: #DBEAFE;
 }
 
 .detail-green .detail-icon {
-    color: #1EA672;
-    background: #C9F0DC;
+    color: #00D284;
+    background: #B6F2D6;
 }
 
 .detail-orange .detail-icon {
-    color: #b5710a;
-    background: #F6DDB2;
+    color: #FF8A00;
+    background: #FED7AA;
 }
 
 .detail-purple .detail-icon {
-    color: #6E5AE8;
-    background: #DCD8FC;
+    color: #7C3AED;
+    background: #DDD6FE;
 }
 
 .detail-text {
@@ -407,24 +397,24 @@
 }
 
 .detail-label {
-    color: #A9B2C4;
-    font-size: 0.57rem;
+    color: #94A3B8;
+    font-size: 0.58rem;
     font-weight: 700;
     text-transform: uppercase;
 }
 
 .detail-value {
     overflow: hidden;
-    color: #3B4468;
-    font-size: 0.67rem;
-    font-weight: 800;
+    color: #111827;
+    font-size: 0.72rem;
+    font-weight: 700;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .salary-value {
-    color: #6E5AE8;
-    font-size: 0.72rem;
+    color: #0C75FF;
+    font-size: 0.74rem;
 }
 
 /* Footer */
@@ -435,61 +425,58 @@
     justify-content: space-between;
     gap: 10px;
     padding: 12px 18px;
-    background: #F6F8FE;
-    border-top: 1px solid #E7ECF5;
+    background: #F8FAFC;
+    border-top: 1px solid #EEF2F6;
 }
 
 .footer-profile-status {
     display: flex;
     align-items: center;
     gap: 6px;
-    color: #8F9BB3;
-    font-size: 0.62rem;
-    font-weight: 800;
+    color: #64748B;
+    font-size: 0.65rem;
+    font-weight: 700;
 }
 
 .footer-status-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 21px;
-    height: 21px;
-    color: #5875c2;
-    background: #E8EDFE;
+    width: 22px;
+    height: 22px;
+    color: #0C75FF;
+    background: #EFF6FF;
     border-radius: 6px;
 }
 
 .footer-status-icon lightning-icon {
-    --sds-c-icon-color-foreground-default: #5875c2;
+    --sds-c-icon-color-foreground-default: #0C75FF;
 }
 
 .view-profile-button {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: 6px 9px;
-    color: #6E5AE8;
-    background: #ECE9FC;
-    border: 1px solid #DCD8FC;
+    padding: 6px 10px;
+    color: #0C75FF;
+    background: #EFF6FF;
+    border: 1px solid #DBEAFE;
     border-radius: 7px;
     cursor: pointer;
-    font-size: 0.63rem;
-    font-weight: 900;
+    font-size: 0.65rem;
+    font-weight: 700;
     transition: all 160ms ease;
 }
 
 .view-profile-button lightning-icon {
-    --sds-c-icon-color-foreground-default: #6E5AE8;
+    --sds-c-icon-color-foreground-default: currentColor;
 }
 
 .view-profile-button:hover {
     color: #ffffff;
-    background: #6E5AE8;
-    border-color: #6E5AE8;
-}
-
-.view-profile-button:hover lightning-icon {
-    --sds-c-icon-color-foreground-default: #ffffff;
+    background: #0C75FF;
+    border-color: #0C75FF;
+    box-shadow: 0 2px 8px rgba(12, 117, 255, 0.25);
 }
 
 /* Responsive */

@@ -2,16 +2,16 @@
     display: block;
     box-sizing: border-box;
 
-    --page-background: #EEF2FA;
+    --page-background: #F4F6FA;
     --surface: #ffffff;
-    --surface-soft: #F6F8FE;
-    --text-primary: #1B2559;
-    --text-secondary: #8F9BB3;
-    --text-muted: #A9B2C4;
-    --border: #E7ECF5;
+    --surface-soft: #F8FAFC;
+    --text-primary: #111827;
+    --text-secondary: #64748B;
+    --text-muted: #94A3B8;
+    --border: #EEF2F6;
     --radius: 16px;
-    --shadow: 0 8px 24px rgba(30, 64, 100, 0.07);
-    --shadow-hover: 0 15px 30px rgba(30, 64, 100, 0.13);
+    --shadow: 0 2px 10px rgba(18, 38, 63, 0.03);
+    --shadow-hover: 0 8px 24px rgba(18, 38, 63, 0.07);
 }
 
 :host *,
@@ -27,7 +27,7 @@
     min-height: 100vh;
     overflow: hidden;
     padding: 30px;
-    background: #f7f9fc;
+    background: var(--page-background);
 }
 
 .leave-page-content {
@@ -48,7 +48,7 @@
     right: -80px;
     width: 390px;
     height: 390px;
-    background: rgba(143, 182, 245, 0.07);
+    background: rgba(12, 117, 255, 0.04);
 }
 
 .decoration-two {
@@ -56,21 +56,22 @@
     left: -110px;
     width: 440px;
     height: 440px;
-    background: rgba(110, 90, 232, 0.06);
+    background: rgba(0, 197, 200, 0.03);
 }
 
-/* Dashboard Header */
+/* Dashboard Header (Clean light SaaS card style matching CLEARIQ) */
 
 .dashboard-header {
     position: relative;
-    min-height: 130px;
+    min-height: 120px;
     overflow: hidden;
     margin-bottom: 22px;
     padding: 24px 30px;
-    color: #ffffff;
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%);
+    color: var(--text-primary);
+    background: #ffffff;
+    border: 1px solid var(--border);
     border-radius: 18px;
-    box-shadow: 0 10px 25px rgba(30, 58, 138, 0.15);
+    box-shadow: var(--shadow);
 }
 
 .dashboard-header-content {
@@ -84,8 +85,9 @@
 
 .header-background-circle {
     position: absolute;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(12, 117, 255, 0.08);
     border-radius: 50%;
+    pointer-events: none;
 }
 
 .circle-one {
@@ -106,25 +108,25 @@
 .modal-eyebrow {
     display: block;
     margin-bottom: 6px;
-    color: #93c5fd;
-    font-size: 0.65rem;
+    color: #0C75FF;
+    font-size: 0.68rem;
     font-weight: 800;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
 }
 
 .header-text h1 {
     margin: 0;
-    color: #ffffff;
+    color: var(--text-primary);
     font-size: 1.6rem;
     font-weight: 800;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
 }
 
 .header-text p {
     margin: 6px 0 0;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.83rem;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
 }
 
 .header-actions {
@@ -143,40 +145,43 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
-    min-height: 38px;
-    padding: 0 14px;
+    min-height: 40px;
+    padding: 0 16px;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 0.74rem;
+    font-size: 0.78rem;
     font-weight: 700;
     transition: all 180ms ease;
 }
 
 .primary-button {
     color: #ffffff;
-    background: #2563eb;
-    border: 1px solid #1d4ed8;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    background: #0C75FF;
+    border: 1px solid #0C75FF;
+    box-shadow: 0 4px 14px rgba(12, 117, 255, 0.28);
 }
 
 .primary-button:hover {
-    background: #1d4ed8;
-    transform: translateY(-2px);
+    background: #0060DF;
+    border-color: #0060DF;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(12, 117, 255, 0.38);
 }
 
 .user-avatar {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     margin-left: 4px;
     color: #ffffff;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: linear-gradient(135deg, #0C75FF 0%, #00C5C8 100%);
+    border: 2px solid #ffffff;
     border-radius: 50%;
-    font-size: 0.68rem;
-    font-weight: 900;
+    font-size: 0.75rem;
+    font-weight: 800;
+    box-shadow: 0 2px 8px rgba(12, 117, 255, 0.25);
 }
 
 /* Navigation */
@@ -192,16 +197,16 @@
     display: flex;
     align-items: center;
     gap: 7px;
-    color: #8F9BB3;
-    font-size: 0.73rem;
+    color: var(--text-secondary);
+    font-size: 0.76rem;
 }
 
 .breadcrumb lightning-icon {
-    --sds-c-icon-color-foreground-default: #A9B2C4;
+    --sds-c-icon-color-foreground-default: #94A3B8;
 }
 
 .breadcrumb-current {
-    color: #1B2559;
+    color: var(--text-primary);
     font-weight: 800;
 }
 
@@ -209,8 +214,8 @@
     display: flex;
     align-items: center;
     gap: 7px;
-    color: #47715d;
-    font-size: 0.7rem;
+    color: #00A664;
+    font-size: 0.74rem;
     font-weight: 800;
 }
 
@@ -218,9 +223,9 @@
 .status-pulse {
     width: 7px;
     height: 7px;
-    background: #1EA672;
+    background: #00D284;
     border-radius: 50%;
-    box-shadow: 0 0 0 4px rgba(30, 166, 114, 0.12);
+    box-shadow: 0 0 0 4px rgba(0, 210, 132, 0.18);
 }
 
 /* Leave Balance Cards */
@@ -228,26 +233,26 @@
 .leave-balance-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 15px;
-    margin-bottom: 22px;
+    gap: 16px;
+    margin-bottom: 24px;
 }
 
 .leave-balance-card {
     position: relative;
     min-height: 174px;
     overflow: hidden;
-    padding: 19px;
+    padding: 20px 18px;
     background: #ffffff;
     border: 1px solid var(--border);
-    border-radius: 15px;
+    border-radius: var(--radius);
     box-shadow: var(--shadow);
     transition: all 180ms ease;
 }
 
 .leave-balance-card:hover {
-    border-color: #b5c6dc;
+    border-color: #CBD5E1;
     box-shadow: var(--shadow-hover);
-    transform: translateY(-4px);
+    transform: translateY(-2px);
 }
 
 .leave-balance-card::after {
@@ -258,24 +263,13 @@
     height: 135px;
     border-radius: 50%;
     content: "";
-    opacity: 0.1;
+    opacity: 0.06;
 }
 
-.annual-card::after {
-    background: #8FB6F5;
-}
-
-.sick-card::after {
-    background: #BA0517;
-}
-
-.maternity-card::after {
-    background: #1EA672;
-}
-
-.casual-card::after {
-    background: #6E5AE8;
-}
+.annual-card::after { background: #0C75FF; }
+.sick-card::after { background: #FF4D4F; }
+.maternity-card::after { background: #00D284; }
+.casual-card::after { background: #7C3AED; }
 
 .leave-card-top {
     position: relative;
@@ -300,29 +294,29 @@
 }
 
 .annual-card .leave-card-icon {
-    color: #8FB6F5;
-    background: #E8EDFE;
+    color: #0C75FF;
+    background: #EFF6FF;
 }
 
 .sick-card .leave-card-icon {
-    color: #BA0517;
-    background: #FBE4E3;
+    color: #FF4D4F;
+    background: #FEF2F2;
 }
 
 .maternity-card .leave-card-icon {
-    color: #1EA672;
-    background: #E3F8EE;
+    color: #00D284;
+    background: #E6F9F0;
 }
 
 .casual-card .leave-card-icon {
-    color: #6E5AE8;
-    background: #ECE9FC;
+    color: #7C3AED;
+    background: #F3EEFF;
 }
 
 .leave-card-label {
     color: var(--text-secondary);
-    font-size: 0.7rem;
-    font-weight: 800;
+    font-size: 0.75rem;
+    font-weight: 700;
 }
 
 .leave-card-body {
@@ -334,7 +328,7 @@
 .leave-card-body strong {
     display: block;
     color: var(--text-primary);
-    font-size: 1.65rem;
+    font-size: 1.7rem;
     font-weight: 900;
     line-height: 1;
 }
@@ -343,8 +337,8 @@
     display: block;
     margin-top: 6px;
     color: var(--text-muted);
-    font-size: 0.67rem;
-    font-weight: 700;
+    font-size: 0.7rem;
+    font-weight: 600;
 }
 
 .apply-button {
@@ -354,12 +348,12 @@
     align-items: center;
     gap: 6px;
     margin-top: 14px;
-    padding: 6px 9px;
+    padding: 6px 11px;
     background: #ffffff;
     border: 1px solid currentColor;
-    border-radius: 7px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 0.64rem;
+    font-size: 0.68rem;
     font-weight: 800;
     transition: all 150ms ease;
 }
@@ -369,19 +363,27 @@
 }
 
 .annual-button {
-    color: #8FB6F5;
+    color: #0C75FF;
+    border-color: #DBEAFE;
+    background: #EFF6FF;
 }
 
 .sick-button {
-    color: #BA0517;
+    color: #FF4D4F;
+    border-color: #FECACA;
+    background: #FEF2F2;
 }
 
 .maternity-button {
-    color: #1EA672;
+    color: #00D284;
+    border-color: #B6F2D6;
+    background: #E6F9F0;
 }
 
 .casual-button {
-    color: #6E5AE8;
+    color: #7C3AED;
+    border-color: #DDD6FE;
+    background: #F3EEFF;
 }
 
 .apply-button:hover {
@@ -390,19 +392,23 @@
 }
 
 .annual-button:hover {
-    background: #8FB6F5;
+    background: #0C75FF;
+    border-color: #0C75FF;
 }
 
 .sick-button:hover {
-    background: #BA0517;
+    background: #FF4D4F;
+    border-color: #FF4D4F;
 }
 
 .maternity-button:hover {
-    background: #1EA672;
+    background: #00D284;
+    border-color: #00D284;
 }
 
 .casual-button:hover {
-    background: #6E5AE8;
+    background: #7C3AED;
+    border-color: #7C3AED;
 }
 
 .apply-button:hover lightning-icon {
@@ -425,7 +431,7 @@
     justify-content: space-between;
     gap: 18px;
     padding: 22px 24px;
-    border-bottom: 1px solid #E7ECF5;
+    border-bottom: 1px solid var(--border);
 }
 
 .history-title-area {
@@ -440,38 +446,39 @@
     justify-content: center;
     width: 38px;
     height: 38px;
-    color: #6E5AE8;
-    background: #ECE9FC;
+    color: #0C75FF;
+    background: #EFF6FF;
     border-radius: 10px;
 }
 
 .history-icon lightning-icon {
-    --sds-c-icon-color-foreground-default: #6E5AE8;
+    --sds-c-icon-color-foreground-default: #0C75FF;
 }
 
 .history-header h2 {
     margin: 0;
     color: var(--text-primary);
-    font-size: 1rem;
-    font-weight: 900;
+    font-size: 1.05rem;
+    font-weight: 800;
 }
 
 .history-header p {
     margin: 4px 0 0;
-    color: var(--text-muted);
-    font-size: 0.72rem;
+    color: var(--text-secondary);
+    font-size: 0.76rem;
 }
 
 .history-status {
     display: flex;
     align-items: center;
     gap: 7px;
-    padding: 6px 10px;
-    color: #1EA672;
-    background: #E3F8EE;
+    padding: 6px 12px;
+    color: #00A664;
+    background: #E6F9F0;
+    border: 1px solid #B6F2D6;
     border-radius: 999px;
-    font-size: 0.65rem;
-    font-weight: 800;
+    font-size: 0.7rem;
+    font-weight: 700;
 }
 
 .history-table-container {
@@ -483,10 +490,10 @@
 /* Datatable Wrapper */
 
 .leave-datatable {
-    --slds-c-table-header-color-background: #F6F8FE;
-    --slds-c-table-header-text-color: #8F9BB3;
-    --slds-c-table-text-color: #1B2559;
-    --slds-c-table-row-color-background-hover: #F6F8FE;
+    --slds-c-table-header-color-background: #F8FAFC;
+    --slds-c-table-header-text-color: #64748B;
+    --slds-c-table-text-color: #111827;
+    --slds-c-table-row-color-background-hover: #F8FAFC;
 }
 
 /* Modal */
@@ -502,8 +509,8 @@
     width: 900px;
     max-width: 100%;
     overflow: hidden;
-    border-radius: 17px;
-    box-shadow: 0 25px 70px rgba(27, 37, 89, 0.25);
+    border-radius: 18px;
+    box-shadow: 0 25px 70px rgba(18, 38, 63, 0.22);
 }
 
 .leave-modal-header {
@@ -513,7 +520,7 @@
     gap: 20px;
     padding: 24px 28px;
     color: #ffffff;
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%);
+    background: linear-gradient(135deg, #0C75FF 0%, #0060DF 55%, #00C5C8 100%);
 }
 
 .modal-heading-area {
@@ -528,9 +535,9 @@
     justify-content: center;
     width: 39px;
     height: 39px;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
 }
 
 .modal-heading-icon lightning-icon {
@@ -540,32 +547,32 @@
 .leave-modal-header h2 {
     margin: 0;
     color: #ffffff;
-    font-size: 1.18rem;
-    font-weight: 900;
+    font-size: 1.25rem;
+    font-weight: 800;
 }
 
 .leave-modal-header p {
     margin: 5px 0 0;
-    color: rgba(255, 255, 255, 0.76);
-    font-size: 0.74rem;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.78rem;
 }
 
 .modal-close-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 31px;
-    height: 31px;
+    width: 32px;
+    height: 32px;
     padding: 0;
     color: #ffffff;
     background: transparent;
     border: 0;
-    border-radius: 7px;
+    border-radius: 8px;
     cursor: pointer;
 }
 
 .modal-close-button:hover {
-    background: rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .modal-close-button lightning-icon {
@@ -574,7 +581,7 @@
 
 .leave-modal-body {
     max-height: 65vh;
-    padding: 26px;
+    padding: 28px;
     overflow-y: auto;
     background: #ffffff;
 }
@@ -584,12 +591,12 @@
     align-items: center;
     gap: 9px;
     margin-bottom: 22px;
-    padding: 11px 13px;
-    color: #8F9BB3;
-    background: #F6F8FE;
-    border: 1px solid #e4ebf4;
-    border-radius: 9px;
-    font-size: 0.72rem;
+    padding: 12px 16px;
+    color: var(--text-secondary);
+    background: #F8FAFC;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.75rem;
 }
 
 .form-introduction p {
@@ -600,18 +607,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #8FB6F5;
+    color: #0C75FF;
 }
 
 .form-intro-icon lightning-icon {
-    --sds-c-icon-color-foreground-default: #8FB6F5;
+    --sds-c-icon-color-foreground-default: #0C75FF;
 }
 
 .leave-form-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 22px;
-    row-gap: 7px;
+    row-gap: 8px;
 }
 
 .form-field {
@@ -623,9 +630,9 @@
 }
 
 .total-days-field {
-    padding: 10px 12px;
-    background: #ECE9FC;
-    border: 1px solid #DCD8FC;
+    padding: 10px 14px;
+    background: #EFF6FF;
+    border: 1px solid #DBEAFE;
     border-radius: 8px;
 }
 
@@ -633,9 +640,9 @@
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    padding: 17px 27px;
-    background: #F6F8FE;
-    border-top: 1px solid #E7ECF5;
+    padding: 18px 28px;
+    background: #F8FAFC;
+    border-top: 1px solid var(--border);
 }
 
 .leave-modal-footer lightning-button {
@@ -643,7 +650,7 @@
 }
 
 .leave-backdrop {
-    background: rgba(27, 37, 89, 0.38) !important;
+    background: rgba(17, 24, 39, 0.45) !important;
     backdrop-filter: blur(4px);
 }
 
@@ -656,7 +663,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(238, 245, 252, 0.68);
+    background: rgba(244, 246, 250, 0.7);
     backdrop-filter: blur(4px);
 }
 
@@ -666,12 +673,12 @@
     gap: 14px;
     min-width: 220px;
     padding: 21px 25px;
-    color: #8F9BB3;
+    color: var(--text-secondary);
     background: #ffffff;
-    border: 1px solid #D7E0F0;
-    border-radius: 12px;
-    box-shadow: 0 15px 35px rgba(30, 64, 100, 0.15);
-    font-size: 0.78rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 15px 35px rgba(18, 38, 63, 0.12);
+    font-size: 0.82rem;
     font-weight: 800;
 }
 
@@ -692,35 +699,6 @@
         padding: 0 4px 15px;
     }
 
-    .leave-hero {
-        align-items: flex-start;
-        flex-direction: column;
-        min-height: auto;
-        padding: 22px 20px;
-    }
-
-    .hero-content {
-        align-items: flex-start;
-    }
-
-    .hero-text h1 {
-        font-size: 1.5rem;
-    }
-
-    .hero-eyebrow {
-        margin-bottom: 6px;
-        font-size: 0.68rem;
-    }
-
-    .hero-text p {
-        margin-top: 6px;
-        font-size: 0.8rem;
-    }
-
-    .new-leave-button {
-        width: 100%;
-    }
-
     .page-navigation {
         align-items: flex-start;
         flex-direction: column;
@@ -729,11 +707,7 @@
 
     .leave-balance-grid {
         grid-template-columns: 1fr;
-        gap: 11px;
-    }
-
-    .leave-balance-card {
-        min-height: 155px;
+        gap: 12px;
     }
 
     .history-header {
@@ -769,28 +743,5 @@
 
     .leave-modal-footer lightning-button {
         width: 100%;
-    }
-}
-
-@media only screen and (max-width: 430px) {
-    .hero-content {
-        flex-direction: column;
-    }
-
-    .history-title-area {
-        align-items: flex-start;
-    }
-
-    .history-status {
-        align-self: flex-start;
-    }
-
-    .hero-icon {
-        width: 50px;
-        height: 50px;
-    }
-
-    .hero-text h1 {
-        font-size: 1.35rem;
     }
 }

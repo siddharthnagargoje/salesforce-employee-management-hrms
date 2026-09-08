@@ -132,14 +132,24 @@ export default class Dashboard extends LightningElement {
         })}`;
     }
 
-    get attendanceDonutStyle() {
-        const percentage = parseInt(this.attendancePercent, 10) || 0;
+    renderedCallback() {
+        const donutEl = this.template.querySelector('.donut-chart');
+        if (donutEl) {
+            const percentage = parseInt(this.attendancePercent, 10) || 0;
+            donutEl.style.setProperty('--attendance-progress', `${percentage}%`);
+        }
+    }
 
-        return `--attendance-progress: ${percentage}%`;
+    get pendingRequestsCount() {
+        return this.pendingRequests ? this.pendingRequests.length : 0;
     }
 
     get hasNoPendingRequests() {
         return this.pendingRequests.length === 0;
+    }
+
+    get hasNoAttendanceLogs() {
+        return !this.attendanceLogs || this.attendanceLogs.length === 0;
     }
 
     handleNavigation(event) {

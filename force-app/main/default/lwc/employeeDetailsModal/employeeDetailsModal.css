@@ -4,35 +4,39 @@
 
 .slds-modal__container {
     max-width: 600px;
-    border-radius: 12px;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
-    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(18, 38, 63, 0.2);
+    background: #ffffff;
+    overflow: hidden;
 }
 
 .slds-modal__header {
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%);
-    color: white;
-    padding: 16px 24px;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
+    background: linear-gradient(135deg, #0C75FF 0%, #0060DF 55%, #00C5C8 100%);
+    color: #ffffff;
+    padding: 20px 26px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom: 0;
 }
 
 .slds-modal__header h2 {
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #ffffff;
 }
 
 .slds-modal__content {
-    padding: 20px;
-    background: #f9fafb;
+    padding: 24px 26px;
+    background: #ffffff;
 }
 
 .slds-modal__footer {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    padding: 16px 24px;
-    background: #f1f5f9;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
+    padding: 16px 26px;
+    background: #F8FAFC;
+    border-top: 1px solid #EEF2F6;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
 }
