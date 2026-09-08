@@ -1,23 +1,50 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, wire, track } from 'lwc';
+import getSettings from '@salesforce/apex/HRMSSettingsController.getSettings';
+import saveSettings from '@salesforce/apex/HRMSSettingsController.saveSettings';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { refreshApex } from '@salesforce/apex';
 
 export default class SettingsManagement extends LightningElement {
     // User Access
-    allowAdminDelete = false;
-    defaultRole = 'Employee';
-    requireApproval = true;
+    @track allowAdminDelete = false;
+    @track defaultRole = 'Employee';
+    @track requireApproval = true;
 
     // Preferences
-    emailNotifications = true;
-    currencyFormat = 'INR';
-    dateFormat = 'DD/MM/YYYY';
+    @track emailNotifications = true;
+    @track currencyFormat = 'INR';
+    @track dateFormat = 'DD/MM/YYYY';
 
     // System Configuration
-    maintenanceMode = false;
-    autoCheckout = false;
+    @track maintenanceMode = false;
+    @track autoCheckout = false;
 
     // Save state
-    isDirty = false;
-    isSaving = false;
+    @track isDirty = false;
+    @track isSaving = false;
+
+    settingRecordId;
+    wiredSettingsResult;
+
+    @wire(getSettings)
+    wiredSettings(result) {
+        this.wiredSettingsResult = result;
+        const { data, error } = result;
+        if (data) {
+            this.settingRecordId = data.Id;
+            this.allowAdminDelete = data.Allow_Admin_Delete__c === true;
+            this.defaultRole = data.Default_Role__c || 'Employee';
+            this.requireApproval = data.Require_Approval__c !== false;
+            this.emailNotifications = data.Email_Notifications__c !== false;
+            this.currencyFormat = data.Currency_Format__c || 'INR';
+            this.dateFormat = data.Date_Format__c || 'DD/MM/YYYY';
+            this.maintenanceMode = data.Maintenance_Mode__c === true;
+            this.autoCheckout = data.Auto_Checkout__c === true;
+            this.isDirty = false;
+        } else if (error) {
+            this.showToast('Error', 'Failed to load system settings from Salesforce: ' + (error.body?.message || error.message), 'error');
+        }
+    }
 
     toggleAdminDelete() {
         this.allowAdminDelete = !this.allowAdminDelete;
@@ -135,20 +162,44 @@ export default class SettingsManagement extends LightningElement {
             : 'save-indicator save-indicator-saved';
     }
 
-    handleSaveSettings() {
+    async handleSaveSettings() {
         if (!this.isDirty || this.isSaving) {
             return;
         }
 
         this.isSaving = true;
 
-        /*
-         * Replace this simulated save with an Apex method later.
-         */
+        const payload = {
+            sobjectType: 'HRMS_Setting__c',
+            Id: this.settingRecordId,
+            Allow_Admin_Delete__c: this.allowAdminDelete,
+            Default_Role__c: this.defaultRole,
+            Require_Approval__c: this.requireApproval,
+            Email_Notifications__c: this.emailNotifications,
+            Currency_Format__c: this.currencyFormat,
+            Date_Format__c: this.dateFormat,
+            Maintenance_Mode__c: this.maintenanceMode,
+            Auto_Checkout__c: this.autoCheckout
+        };
 
-        window.setTimeout(() => {
-            this.isSaving = false;
+        try {
+            const saved = await saveSettings({ config: payload });
+            this.settingRecordId = saved.Id;
             this.isDirty = false;
-        }, 800);
+            this.showToast('Success', 'System configuration saved successfully.', 'success');
+            await refreshApex(this.wiredSettingsResult);
+        } catch (error) {
+            this.showToast('Error', 'Failed to save settings: ' + (error.body?.message || error.message), 'error');
+        } finally {
+            this.isSaving = false;
+        }
+    }
+
+    showToast(title, message, variant) {
+        this.dispatchEvent(new ShowToastEvent({
+            title,
+            message,
+            variant
+        }));
     }
 }

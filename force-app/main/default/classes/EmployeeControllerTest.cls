@@ -495,7 +495,9 @@ private class EmployeeControllerTest {
 
     @IsTest
     static void testDeletePayslip_Success() {
-        Payslip__c slip = [SELECT Id FROM Payslip__c LIMIT 1];
+        Payslip__c slip = [SELECT Id, Status__c FROM Payslip__c LIMIT 1];
+        slip.Status__c = 'Generated';
+        update slip;
 
         Test.startTest();
         EmployeeController.deletePayslip(slip.Id);

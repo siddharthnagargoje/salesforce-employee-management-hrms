@@ -123,11 +123,11 @@ private class PayslipPDFControllerTest {
      */
     @IsTest
     static void testBulk200_PayslipPDFControllers() {
-        Employee__c emp = [SELECT Id FROM Employee__c LIMIT 1];
+        List<Employee__c> emps = TestDataFactory.createEmployees(200, true);
         List<Payslip__c> bulkSlips = new List<Payslip__c>();
         for (Integer i = 0; i < 200; i++) {
             bulkSlips.add(new Payslip__c(
-                Employee__c = emp.Id,
+                Employee__c = emps[i].Id,
                 Pay_Month__c = 'January',
                 Pay_Year__c = 2026,
                 Basic_Salary__c = 50000 + i,

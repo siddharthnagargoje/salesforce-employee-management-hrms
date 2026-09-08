@@ -3,7 +3,7 @@ import { loadScript } from 'lightning/platformResourceLoader';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 import ChartJS from '@salesforce/resourceUrl/ChartJS';
-import getReportData from '@salesforce/apex/EmployeeController.getReportData';
+import getReportData from '@salesforce/apex/HRReportsController.getReportData';
 
 // Theme Color Palettes
 const PALETTE_PRIMARY = ['#2563eb', '#3b82f6', '#60a5fa', '#0ea5e9', '#06b6d4', '#14b8a6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];

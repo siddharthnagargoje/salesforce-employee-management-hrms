@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Auto_Checkout__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Automatically performs punch-out at the close of standard business hours.</description>
+    <label>Auto Checkout</label>
+    <type>Checkbox</type>
+</CustomField>

@@ -214,7 +214,7 @@
 
                 <div class="history-table-container">
                     <lightning-datatable key-field="Id" data={leaveList} columns={columns} hide-checkbox-column
-                        class="leave-datatable">
+                        onrowaction={handleRowAction} class="leave-datatable">
                     </lightning-datatable>
                 </div>
             </section>
@@ -356,6 +356,45 @@
 
                 <div class="slds-backdrop slds-backdrop_open leave-backdrop" role="presentation">
                 </div>
+            </template>
+
+            <!-- Approval / Rejection Review Modal -->
+            <template if:true={isReviewModalOpen}>
+                <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="review-modal-heading"
+                    class="slds-modal slds-fade-in-open leave-modal">
+                    <div class="slds-modal__container leave-modal-container" style="max-width: 500px;">
+                        <header class="leave-modal-header">
+                            <div class="modal-heading-area">
+                                <div class="modal-heading-icon">
+                                    <lightning-icon icon-name={reviewActionIcon} alternative-text="Review" size="small">
+                                    </lightning-icon>
+                                </div>
+                                <div>
+                                    <span class="modal-eyebrow">REVIEW WORKFLOW</span>
+                                    <h2 id="review-modal-heading">{reviewModalTitle}</h2>
+                                </div>
+                            </div>
+                            <button class="modal-close-button" title="Close" aria-label="Close" onclick={closeReviewModal}>
+                                <lightning-icon icon-name="utility:close" alternative-text="Close" size="small">
+                                </lightning-icon>
+                            </button>
+                        </header>
+                        <div class="slds-modal__content leave-modal-body" style="padding: 1.5rem;">
+                            <p style="font-size: 0.95rem; color: #1e293b; margin-bottom: 1.25rem;">
+                                Confirm action: Set status to <strong>{reviewTargetStatus}</strong> for employee <strong>{selectedLeaveEmployee}</strong>?
+                            </p>
+                            <lightning-textarea label="Review Comments / Feedback" value={reviewComments}
+                                onchange={handleReviewCommentsChange} placeholder="Enter reason or notes (optional)...">
+                            </lightning-textarea>
+                        </div>
+                        <footer class="leave-modal-footer">
+                            <lightning-button label="Cancel" onclick={closeReviewModal}></lightning-button>
+                            <lightning-button label={confirmReviewButtonLabel} variant={reviewConfirmVariant}
+                                onclick={submitLeaveReview}></lightning-button>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open leave-backdrop" role="presentation"></div>
             </template>
         </div>
     </div>

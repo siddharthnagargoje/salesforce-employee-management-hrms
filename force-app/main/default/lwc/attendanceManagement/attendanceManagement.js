@@ -1,7 +1,7 @@
 import { LightningElement, wire, track } from "lwc";
-import getAttendanceList from "@salesforce/apex/EmployeeController.getAttendanceList";
-import saveAttendance from "@salesforce/apex/EmployeeController.saveAttendance";
-import deleteAttendance from "@salesforce/apex/EmployeeController.deleteAttendance";
+import getAttendanceList from "@salesforce/apex/AttendanceController.getAttendanceList";
+import saveAttendance from "@salesforce/apex/AttendanceController.saveAttendance";
+import deleteAttendance from "@salesforce/apex/AttendanceController.deleteAttendance";
 import getEmployees from "@salesforce/apex/EmployeeController.getEmployees";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";

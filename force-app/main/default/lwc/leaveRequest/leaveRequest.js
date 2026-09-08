@@ -1,17 +1,23 @@
 import { LightningElement, wire, track } from 'lwc';
 import getEmployees from '@salesforce/apex/EmployeeController.getEmployees';
-import getUsers from '@salesforce/apex/EmployeeController.getUsers';
-import createLeaveRequest from '@salesforce/apex/EmployeeController.createLeaveRequest';
-import getLeaveRequests from '@salesforce/apex/EmployeeController.getLeaveRequests';
+import getUsers from '@salesforce/apex/LeaveController.getUsers';
+import createLeaveRequest from '@salesforce/apex/LeaveController.createLeaveRequest';
+import getLeaveRequests from '@salesforce/apex/LeaveController.getLeaveRequests';
+import updateLeaveStatus from '@salesforce/apex/LeaveController.updateLeaveStatus';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
+
+const ROW_ACTIONS = [
+    { label: 'Approve Request', name: 'approve', iconName: 'utility:check' },
+    { label: 'Reject Request', name: 'reject', iconName: 'utility:close' }
+];
 
 export default class LeaveManagement extends LightningElement {
     @track employeeOptions = [];
     @track userOptions = [];
     @track leaveList = [];
     @track isModalOpen = false;
-    isLoading = false;
+    @track isLoading = false;
 
     // Form fields
     employeeId = '';
@@ -23,6 +29,13 @@ export default class LeaveManagement extends LightningElement {
     status = '';
     reason = '';
     totalDays = '';
+
+    // Review Modal state
+    @track isReviewModalOpen = false;
+    selectedLeaveId = '';
+    selectedLeaveEmployee = '';
+    reviewTargetStatus = '';
+    reviewComments = '';
 
     leaveTypeOptions = [
         { label: 'Casual Leave', value: 'Casual Leave' },
@@ -45,7 +58,11 @@ export default class LeaveManagement extends LightningElement {
         { label: 'End Date', fieldName: 'End_Date__c', type: 'date' },
         { label: 'Type', fieldName: 'Leave_Type__c', type: 'text' },
         { label: 'Reason(s)', fieldName: 'Reason__c', type: 'text' },
-        { label: 'Status', fieldName: 'Status__c', type: 'text', cellAttributes: { class: 'status-text-weight' } }
+        { label: 'Status', fieldName: 'Status__c', type: 'text', cellAttributes: { class: 'status-text-weight' } },
+        {
+            type: 'action',
+            typeAttributes: { rowActions: ROW_ACTIONS }
+        }
     ];
 
     wiredLeaveResult;
@@ -92,6 +109,72 @@ export default class LeaveManagement extends LightningElement {
 
     closeFormModal() {
         this.isModalOpen = false;
+    }
+
+    handleRowAction(event) {
+        const actionName = event.detail.action.name;
+        const row = event.detail.row;
+        this.selectedLeaveId = row.Id;
+        this.selectedLeaveEmployee = row.EmployeeName || 'Employee';
+        this.reviewComments = '';
+
+        if (actionName === 'approve') {
+            this.reviewTargetStatus = 'Approved';
+            this.isReviewModalOpen = true;
+        } else if (actionName === 'reject') {
+            this.reviewTargetStatus = 'Rejected';
+            this.isReviewModalOpen = true;
+        }
+    }
+
+    closeReviewModal() {
+        this.isReviewModalOpen = false;
+        this.selectedLeaveId = '';
+        this.selectedLeaveEmployee = '';
+        this.reviewTargetStatus = '';
+        this.reviewComments = '';
+    }
+
+    handleReviewCommentsChange(event) {
+        this.reviewComments = event.target.value;
+    }
+
+    get reviewModalTitle() {
+        return `${this.reviewTargetStatus} Leave Request`;
+    }
+
+    get reviewActionIcon() {
+        return this.reviewTargetStatus === 'Approved' ? 'action:approval' : 'action:reject';
+    }
+
+    get confirmReviewButtonLabel() {
+        return `Confirm ${this.reviewTargetStatus}`;
+    }
+
+    get reviewConfirmVariant() {
+        return this.reviewTargetStatus === 'Approved' ? 'brand' : 'destructive';
+    }
+
+    async submitLeaveReview() {
+        if (!this.selectedLeaveId || !this.reviewTargetStatus) {
+            return;
+        }
+
+        this.isLoading = true;
+        try {
+            await updateLeaveStatus({
+                leaveId: this.selectedLeaveId,
+                status: this.reviewTargetStatus,
+                comments: this.reviewComments
+            });
+            this.showToast('Success', `Leave request has been ${this.reviewTargetStatus.toLowerCase()}.`, 'success');
+            this.closeReviewModal();
+            await refreshApex(this.wiredLeaveResult);
+        } catch (error) {
+            this.showToast('Error', 'Failed to update leave status: ' + (error.body?.message || error.message), 'error');
+        } finally {
+            this.isLoading = false;
+        }
     }
 
     handleQuickApply(event) {
@@ -153,13 +236,13 @@ export default class LeaveManagement extends LightningElement {
             status: this.status
         })
         .then(() => {
-            this.showToast('Success', 'Leave system application registered successfully.', 'success');
+            this.showToast('Success', 'Leave application submitted successfully.', 'success');
             this.resetForm();
             this.closeFormModal();
             return refreshApex(this.wiredLeaveResult);
         })
         .catch(error => {
-            const message = error?.body?.message || 'Transaction parameters failed.';
+            const message = error?.body?.message || 'Transaction failed.';
             this.showToast('Error', message, 'error');
         })
         .finally(() => {

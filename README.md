@@ -1,58 +1,102 @@
-# Salesforce DX Project
+# HRMS - Salesforce Workforce Management System
 
-Salesforce DX is a development approach that brings source-driven development, team collaboration, and continuous integration to the Salesforce Platform. Instead of working directly in an org through a web browser, you work with metadata as source files in a local DX project, track changes in version control, and deploy through automated processes.
+An enterprise-grade **Human Resource Management System (HRMS)** built natively on the Salesforce Platform using Apex, Lightning Web Components (LWC), and Salesforce DX.
 
-This project template gets you started with the tools and structure you need to build Salesforce applications using source control, scratch orgs, and the Salesforce CLI.
+---
 
-## Prerequisites
+## 🌟 Application Features
 
-Before you start, make sure you have:
+- **Centralized Workforce Dashboard (`c-dashboard`)**: Real-time KPI metrics, active employee counts, payroll summaries, attendance tracking, and pending leave approvals.
+- **Employee Directory (`c-employee-management`)**: Complete lifecycle employee management, profile photo uploads with Salesforce Files integration, contact details, designations, and salary records.
+- **Attendance Tracker (`c-attendance-management`)**: Daily employee check-in/check-out logs, work mode categorization (Office / Remote / Hybrid), and overtime tracking.
+- **Leave Management Portal (`c-leave-request`)**: Leave request workflows (Casual, Sick, Paid, WFH, LOP) with real-time approval/rejection status tracking.
+- **Payroll & Compensation (`c-payslip-management`)**: Salary ledger generation, automated Visualforce PDF statement rendering (`PayslipPDFPage.page`), and email distribution with PDF attachments (`SendPayslipEmailInvocable.cls`).
+- **Analytics & Visual Reports (`c-reports-management`)**: Interactive data visualization powered by Chart.js (designation breakdown, status ratios, joining trends, and compensation distribution).
+- **System Configuration (`c-settings-management`)**: Administrative preferences, approval policies, notification rules, and localization settings.
 
-- **Salesforce CLI** - Download from [developer.salesforce.com/tools/salesforcecli](https://developer.salesforce.com/tools/salesforcecli). See [Install Salesforce CLI](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli.htm) for details.
-- **VS Code with Salesforce Extension Pack** - See [Installation Instructions](https://developer.salesforce.com/docs/platform/sfvscode-extensions/guide/install.html) for details. Includes the Agentforce Vibes extension.
-- **A development org** - Sign up for a free Developer Edition org [here](https://developer.salesforce.com/signup).
-- **Dev Hub enabled** (optional, required to create scratch orgs) - You can enable Dev Hub in your development org under Setup > Dev Hub.  See [Provide Developers Access to Salesforce DX Tools](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_setup_dx_tools.htm).
+---
 
-## Project Structure
+## 🏗️ Architecture & Data Model
 
-Your DX project follows this structure:
+```mermaid
+erDiagram
+    Employee__c ||--o{ Attendance__c : logs
+    Employee__c ||--o{ Leave_Request__c : applies
+    Employee__c ||--o{ Payslip__c : receives
+    Employee__c ||--o{ Leave_Balance__c : owns
+    
+    Employee__c {
+        string Name
+        string First_Name__c
+        string Last_Name__c
+        string Employee_Code__c
+        string Designation__c
+        currency Salary__c
+        string Status__c
+        date Joining_Date__c
+        url Profile_Photo__c
+    }
+    
+    Attendance__c {
+        id Employee__c
+        date Attendance_Date__c
+        datetime Check_In__c
+        datetime Check_Out__c
+        string Status__c
+        string Work_Mode__c
+        number Total_Hours__c
+    }
+    
+    Leave_Request__c {
+        id Employee__c
+        date Start_Date__c
+        date End_Date__c
+        string Leave_Type__c
+        string Status__c
+        string Reason__c
+        id Approved_By__c
+    }
+    
+    Payslip__c {
+        id Employee__c
+        string Pay_Month__c
+        number Pay_Year__c
+        currency Basic_Salary__c
+        currency Bonus__c
+        currency Deductions__c
+        currency Gross_Salary__c
+        string Status__c
+        boolean Email_Sent__c
+    }
+```
 
-- **`force-app/main/default/`** - Your metadata source files live in this default package directory. You can configure additional package directories in the `sfdx-project.json` file.
-- **`config/`** - Scratch org definitions and project settings
-- **`scripts/`** - Automation scripts for common tasks
-- **`sfdx-project.json`** - Project manifest that defines package directories, namespace, API version, and other project-level settings
+---
 
-See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm).
+## 🔐 Security & Access Control
 
-## Get Started
+- **Strict User Mode**: Queries enforce field and object-level permissions using `WITH USER_MODE`, `as user`, and `Security.stripInaccessible()`.
+- **Sharing Architecture**: Explicit `with sharing` or `inherited sharing` on all service layers.
+- **Permission Sets**:
+  - `HRMS_Admin`: Full configuration, payroll, and roster management.
+  - `HRMS_Manager`: Team attendance review and leave approval workflows.
+  - `HRMS_Employee`: Self-service portal (personal attendance, leave filing, payslip access).
+  - `HRMS_Payroll_Access`: Dedicated finance/payroll operational permissions.
 
-Ready to start developing? The [Get Started with Salesforce DX](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_get_started_dx.htm) guide walks you through your first project, from creating a scratch org to creating a simple Apex class or LWC to deploying your code to a sandbox.
+---
 
-## Common Salesforce CLI Commands
+## 🚀 Deployment & Testing
 
-Here are common CLI commands that you'll use the most:
+### 1. Deploy Metadata to Org
+```bash
+sf project deploy start --target-org HrmsOrg
+```
 
-- `sf org login web`: Authorize an org
-- `sf org open`: Open your org in a browser
-- `sf org create scratch`: Create a scratch org
-- `sf project deploy start`: Deploy metadata to your org
-- `sf project retrieve start`: Retrieve metadata from your org
-- `sf template generate <artifact>`: Scaffold new components, such as Apex classes and triggers, LWC components, Lightning apps, and more
-- `sf apex <command>`: Run Apex tests, run anonymous Apex blocks, and view logs
-- `sf data <command>`: Work with test data
-- `sf alias <command>`: Manage org aliases
-- `sf config <command>`: Configure CLI settings
+### 2. Run Test Suite
+```bash
+sf apex run test --test-level RunLocalTests --target-org HrmsOrg --result-format human --code-coverage
+```
 
-## Use Agentforce Vibes to Build Lightning Apps
-
-Transform your ideas into custom Lightning apps that extend CRM workflows directly in Lightning Experience. Through natural conversations with Agentforce Vibes, implement custom objects and fields, complex business logic, and dynamic UI components. See [Build a Lightning App Using Agentforce Vibes](https://developer.salesforce.com/docs/platform/einstein-for-devs/guide/lexapp-overview.html).
-
-## Additional Resources
-
-- [Agentforce Vibes Developer Guide](https://developer.salesforce.com/docs/platform/einstein-for-devs/guide/einstein-overview.html)
-- [Salesforce CLI Installation Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/)
-- [Salesforce CLI Plugin Development Guide](https://developer.salesforce.com/docs/platform/salesforce-cli-plugin/guide/conceptual-overview.html)
-- [Salesforce VS Code Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-
+### 3. Assign Permissions
+```bash
+sf org assign permset --name HRMS_Admin --target-org HrmsOrg
+```

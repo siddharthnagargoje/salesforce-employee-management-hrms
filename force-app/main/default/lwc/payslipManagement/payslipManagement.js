@@ -1,6 +1,7 @@
 import { LightningElement, track, wire } from 'lwc';
 import { refreshApex } from '@salesforce/apex';
-import getPayslips from '@salesforce/apex/EmployeeController.getPayslips';
+import getPayslips from '@salesforce/apex/PayrollController.getPayslips';
+import sendPayslipEmail from '@salesforce/apex/PayrollController.sendPayslipEmail';
 import getEmployees from '@salesforce/apex/EmployeeController.getEmployees';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { NavigationMixin } from 'lightning/navigation';
@@ -15,7 +16,7 @@ export default class PayslipManagement extends NavigationMixin(LightningElement)
 
     wiredPayslipsResult;
 
-    // Table columns including row actions row item mapping
+    // Table columns including PDF and Email dispatch row actions
     columns = [
         { label: 'Payslip Name', fieldName: 'Name', type: 'text', initialWidth: 150 },
         { label: 'Employee', fieldName: 'EmployeeName', type: 'text', cellAttributes: { class: 'font-weight-bold' } },
@@ -29,13 +30,26 @@ export default class PayslipManagement extends NavigationMixin(LightningElement)
         {
             label: 'Statement',
             type: 'button',
-            initialWidth: 160,
+            initialWidth: 150,
             typeAttributes: {
-                label: 'Download PDF',
+                label: 'PDF',
                 name: 'download_pdf',
                 title: 'Download Statement PDF',
                 variant: 'border-filled',
                 iconName: 'utility:download',
+                iconPosition: 'left'
+            }
+        },
+        {
+            label: 'Dispatch',
+            type: 'button',
+            initialWidth: 150,
+            typeAttributes: {
+                label: 'Email PDF',
+                name: 'email_pdf',
+                title: 'Send Payslip PDF directly to Employee Email',
+                variant: 'neutral',
+                iconName: 'utility:email',
                 iconPosition: 'left'
             }
         }
@@ -52,7 +66,7 @@ export default class PayslipManagement extends NavigationMixin(LightningElement)
             }));
             this.error = undefined;
         } else if (error) {
-            this.showToast('Error', 'Error loading payslip data: ' + error.body.message, 'error');
+            this.showToast('Error', 'Error loading payslip data: ' + (error.body?.message || error.message), 'error');
             this.payslipData = [];
         }
         this.isLoading = false;
@@ -66,7 +80,7 @@ export default class PayslipManagement extends NavigationMixin(LightningElement)
                 value: emp.Id
             }));
         } else if (error) {
-            this.showToast('Error', 'Error loading employee list: ' + error.body.message, 'error');
+            this.showToast('Error', 'Error loading employee list: ' + (error.body?.message || error.message), 'error');
         }
     }
 
@@ -104,14 +118,32 @@ export default class PayslipManagement extends NavigationMixin(LightningElement)
 
         if (actionName === 'download_pdf') {
             this.downloadPayslipPDF(rowId);
+        } else if (actionName === 'email_pdf') {
+            this.handleEmailPayslip(rowId);
         }
     }
 
     downloadPayslipPDF(payslipId) {
-        this.showToast('Download Started', 'Preparing payslip PDF...', 'info');
-
-        // Routes to the custom Visualforce PDF page we created
+        this.showToast('Download Started', 'Preparing payslip PDF statement...', 'info');
         window.open(`/apex/PayslipPDFPage?id=${payslipId}`, '_blank');
+    }
+
+    async handleEmailPayslip(payslipId) {
+        this.isLoading = true;
+        this.showToast('Dispatching', 'Sending payslip PDF to employee...', 'info');
+        try {
+            const result = await sendPayslipEmail({ payslipId: payslipId, forceResend: true });
+            if (result.isSuccess) {
+                this.showToast('Success', `Payslip emailed successfully to ${result.recipientEmail}`, 'success');
+            } else {
+                this.showToast('Notice', result.message, 'warning');
+            }
+            await refreshApex(this.wiredPayslipsResult);
+        } catch (error) {
+            this.showToast('Error', 'Failed to email payslip: ' + (error.body?.message || error.message), 'error');
+        } finally {
+            this.isLoading = false;
+        }
     }
 
     openPayslipModal() {

@@ -99,4 +99,41 @@ public class TestDataFactory {
         }
         return slip;
     }
+
+    public static HRMS_Setting__c createSetting(Boolean doInsert) {
+        HRMS_Setting__c setting = new HRMS_Setting__c(
+            Name = 'Default',
+            Allow_Admin_Delete__c = false,
+            Default_Role__c = 'Employee',
+            Require_Approval__c = true,
+            Email_Notifications__c = true,
+            Currency_Format__c = 'INR',
+            Date_Format__c = 'DD/MM/YYYY',
+            Maintenance_Mode__c = false,
+            Auto_Checkout__c = false
+        );
+        if (doInsert) {
+            insert setting;
+        }
+        return setting;
+    }
+
+    public static User createStandardUser() {
+        Profile p = [SELECT Id FROM Profile WHERE Name = 'Standard User' LIMIT 1];
+        String uniqueSuffix = String.valueOf(Datetime.now().getTime()) + Math.round(Math.random() * 1000);
+        User u = new User(
+            FirstName = 'Standard',
+            LastName = 'TestUser' + uniqueSuffix,
+            Email = 'standardtest' + uniqueSuffix + '@hrmstest.com',
+            Username = 'standardtest' + uniqueSuffix + '@hrmstest.com',
+            Alias = 'stdu',
+            TimeZoneSidKey = 'America/Los_Angeles',
+            LocaleSidKey = 'en_US',
+            EmailEncodingKey = 'UTF-8',
+            ProfileId = p.Id,
+            LanguageLocaleKey = 'en_US'
+        );
+        insert u;
+        return u;
+    }
 }
