@@ -53,51 +53,65 @@
 }
 
 /* ==========================================================================
-   Modern SaaS Hero Header (Clean Light Design matching CLEARIQ)
+   Modern 3D SaaS Hero Header (Elevated, Vibrant, Matching Design System)
    ========================================================================== */
 
 .dashboard-header {
     position: relative;
+    min-height: 124px;
     overflow: hidden;
     margin-bottom: 24px;
-    padding: 26px 30px;
+    padding: 24px 32px;
     color: var(--dash-text-main);
-    background: #ffffff;
-    border: 1px solid var(--dash-border);
-    border-radius: var(--dash-radius-lg);
-    box-shadow: var(--dash-shadow-card);
+    background: linear-gradient(135deg, #FFFFFF 0%, #F6FAFF 48%, #EDF5FF 100%);
+    border: 1px solid #D6E4F8;
+    border-radius: 20px;
+    box-shadow: 
+        0 14px 34px -6px rgba(12, 117, 255, 0.09),
+        0 4px 14px rgba(18, 38, 63, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
 }
 
 .header-ambient-glow {
     position: absolute;
-    top: -50%;
-    right: -10%;
-    width: 380px;
-    height: 380px;
-    background: radial-gradient(circle, rgba(12, 117, 255, 0.06) 0%, rgba(12, 117, 255, 0) 70%);
+    top: -60%;
+    right: -5%;
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, rgba(12, 117, 255, 0.14) 0%, rgba(0, 197, 200, 0.08) 45%, rgba(124, 58, 237, 0.03) 70%, transparent 85%);
     border-radius: 50%;
     pointer-events: none;
+    filter: blur(20px);
 }
 
 .header-background-circle {
     position: absolute;
-    border: 1px solid rgba(12, 117, 255, 0.08);
     border-radius: 50%;
     pointer-events: none;
+    backdrop-filter: blur(3px);
 }
 
 .circle-one {
-    top: -100px;
-    right: 40px;
+    top: -95px;
+    right: 25px;
     width: 280px;
     height: 280px;
+    background: linear-gradient(135deg, rgba(12, 117, 255, 0.09) 0%, rgba(0, 197, 200, 0.12) 100%);
+    border: 1.5px solid rgba(12, 117, 255, 0.18);
+    box-shadow: inset 0 4px 20px rgba(255, 255, 255, 0.7), 0 8px 24px rgba(12, 117, 255, 0.08);
 }
 
 .circle-two {
-    right: 220px;
+    right: 200px;
     bottom: -110px;
-    width: 200px;
-    height: 200px;
+    width: 210px;
+    height: 210px;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.06) 0%, rgba(12, 117, 255, 0.08) 100%);
+    border: 1.5px solid rgba(124, 58, 237, 0.14);
+    box-shadow: inset 0 2px 14px rgba(255, 255, 255, 0.5);
 }
 
 .dashboard-header-content {
@@ -107,6 +121,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 24px;
+    width: 100%;
 }
 
 .header-text {
@@ -119,24 +134,27 @@
     align-items: center;
     gap: 7px;
     margin-bottom: 8px;
-    padding: 4px 10px;
-    background: #EFF6FF;
-    border: 1px solid #DBEAFE;
+    padding: 5px 12px;
+    background: linear-gradient(135deg, #FFFFFF 0%, #EFF6FF 100%);
+    border: 1px solid #BFDBFE;
     border-radius: 9999px;
+    box-shadow: 0 2px 8px rgba(12, 117, 255, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    width: fit-content;
 }
 
 .header-status-dot {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     background-color: var(--dash-emerald);
     border-radius: 50%;
-    box-shadow: 0 0 0 3px rgba(0, 210, 132, 0.2);
+    box-shadow: 0 0 0 3px rgba(0, 210, 132, 0.25);
+    animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
 }
 
 .header-eyebrow {
     color: var(--dash-primary);
     font-size: 0.68rem;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
@@ -144,9 +162,9 @@
 .header-text h1 {
     margin: 0;
     color: var(--dash-text-main);
-    font-size: 1.6rem;
+    font-size: 1.65rem;
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     line-height: 1.25;
 }
 
@@ -184,14 +202,16 @@
 .primary-button {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    height: 40px;
-    padding: 0 16px;
-    border-radius: var(--dash-radius-md);
-    font-size: 0.82rem;
-    font-weight: 600;
+    justify-content: center;
+    gap: 8px;
+    height: 42px;
+    min-height: 42px;
+    padding: 0 18px;
+    border-radius: 12px;
+    font-size: 0.84rem;
     cursor: pointer;
-    transition: all 160ms ease;
+    box-sizing: border-box;
+    transition: all 180ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .secondary-button lightning-icon,
@@ -200,54 +220,74 @@
 }
 
 .secondary-button {
-    color: #334155;
-    background: #F8FAFC;
-    border: 1px solid #E2E8F0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    color: #1E293B;
+    background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+    border: 1px solid #D6E4F8;
+    box-shadow: 
+        0 2px 8px rgba(18, 38, 63, 0.06),
+        inset 0 1px 0 #FFFFFF;
+    font-weight: 600;
 }
 
 .secondary-button:hover {
     background: #F1F5F9;
     border-color: #CBD5E1;
-    color: #111827;
-    transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+    color: #0F172A;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(18, 38, 63, 0.1);
 }
 
 .primary-button {
-    color: #ffffff;
-    background: var(--dash-primary);
-    border: 1px solid var(--dash-primary);
-    box-shadow: 0 4px 14px rgba(12, 117, 255, 0.28);
+    color: #FFFFFF;
+    background: linear-gradient(135deg, #0C75FF 0%, #005ce6 100%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 
+        0 6px 18px rgba(12, 117, 255, 0.35),
+        inset 0 1px 1px rgba(255, 255, 255, 0.35);
+    font-weight: 700;
 }
 
 .primary-button:hover {
-    background: var(--dash-primary-hover);
-    border-color: var(--dash-primary-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(12, 117, 255, 0.38);
+    background: linear-gradient(135deg, #0060DF 0%, #004bc2 100%);
+    border-color: rgba(255, 255, 255, 0.35);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 10px 24px rgba(12, 117, 255, 0.45),
+        inset 0 1px 1px rgba(255, 255, 255, 0.45);
 }
 
 .secondary-button:active,
 .primary-button:active {
     transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(12, 117, 255, 0.25);
 }
 
 .user-avatar {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     color: #ffffff;
     background: linear-gradient(135deg, #0C75FF 0%, #00C5C8 100%);
-    border: 2px solid #ffffff;
+    border: 2.5px solid #ffffff;
     border-radius: 50%;
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-size: 0.8rem;
+    font-weight: 800;
     letter-spacing: 0.05em;
     user-select: none;
-    box-shadow: 0 2px 8px rgba(12, 117, 255, 0.25);
+    box-shadow: 
+        0 4px 16px rgba(0, 197, 200, 0.35),
+        0 2px 6px rgba(12, 117, 255, 0.2),
+        inset 0 1px 2px rgba(255, 255, 255, 0.6);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.user-avatar:hover {
+    transform: scale(1.08);
+    box-shadow: 
+        0 6px 20px rgba(0, 197, 200, 0.45),
+        0 3px 8px rgba(12, 117, 255, 0.3);
 }
 
 /* ==========================================================================

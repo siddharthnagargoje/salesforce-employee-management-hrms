@@ -1,80 +1,126 @@
 <template>
-    <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open slds-modal_medium">
-        <div class="slds-modal__container">
+    <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open employee-modal">
+        <div class="slds-modal__container employee-modal-container">
 
-            <header class="slds-modal__header modal-header-custom">
-                <h2 class="slds-text-heading_medium font-weight-bold">Create Employee Record</h2>
-                <p class="slds-m-top_xx-small text-muted-header">Fill out personal and professional details below.</p>
+            <!-- Modal Header -->
+            <header class="employee-modal-header">
+                <div class="modal-bg-circle circle-one"></div>
+                <div class="modal-bg-circle circle-two"></div>
+
+                <div class="modal-title-area">
+                    <div class="modal-title-icon">
+                        <lightning-icon icon-name="standard:user" alternative-text="New employee" size="small">
+                        </lightning-icon>
+                    </div>
+
+                    <div>
+                        <div class="modal-eyebrow">
+                            <span class="modal-live-dot"></span>
+                            <span>NEW WORKFORCE PROFILE</span>
+                        </div>
+
+                        <h2>Create Employee Record</h2>
+                        <p>Fill out personal and professional details below to onboard team members.</p>
+                    </div>
+                </div>
+
+                <button class="modal-close-button" title="Close" aria-label="Close" onclick={handleCancel}>
+                    <lightning-icon icon-name="utility:close" alternative-text="Close" size="small">
+                    </lightning-icon>
+                </button>
             </header>
 
-            <div class="slds-modal__content slds-p-around_large background-form">
-                <lightning-record-edit-form object-api-name="Employee__c" onsubmit={handleSubmit}
-                    onsuccess={handleSuccess} onerror={handleError}>
+            <lightning-record-edit-form object-api-name="Employee__c" onsubmit={handleSubmit}
+                onsuccess={handleSuccess} onerror={handleError}>
 
+                <div class="slds-modal__content employee-modal-body">
                     <lightning-messages></lightning-messages>
 
-                    <div class="form-section-header">
-                        <lightning-icon icon-name="utility:identity" size="small"
-                            class="slds-m-right_small"></lightning-icon>
-                        <h3>Personal Details</h3>
-                    </div>
+                    <!-- Personal Details Card -->
+                    <div class="form-card">
+                        <div class="form-card-header">
+                            <div class="form-card-icon blue-icon">
+                                <lightning-icon icon-name="utility:identity" size="xx-small"
+                                    alternative-text="Personal Details"></lightning-icon>
+                            </div>
+                            <div>
+                                <div class="form-section-tag blue-tag">STEP 1 • IDENTITY</div>
+                                <h3>Personal Details</h3>
+                                <p>Legal name, birth date, and gender</p>
+                            </div>
+                        </div>
 
-                    <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_x-large">
-                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
-                            <lightning-input-field field-name="First_Name__c"></lightning-input-field>
-                        </div>
-                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
-                            <lightning-input-field field-name="Last_Name__c"></lightning-input-field>
-                        </div>
-                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
-                            <lightning-input-field field-name="Date_of_Birth__c"></lightning-input-field>
-                        </div>
-                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
-                            <lightning-input-field field-name="Gender__c"></lightning-input-field>
-                        </div>
-                    </div>
-
-                    <div class="form-section-header">
-                        <lightning-icon icon-name="utility:cases" size="small"
-                            class="slds-m-right_small"></lightning-icon>
-                        <h3>Work Information</h3>
-                    </div>
-
-                    <div class="slds-grid slds-wrap slds-gutters">
-                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
-                            <lightning-input-field field-name="Employee_Code__c"></lightning-input-field>
-                        </div>
-                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
-                            <lightning-input-field field-name="Designation__c"></lightning-input-field>
-                        </div>
-                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
-                            <lightning-input-field field-name="Joining_Date__c"></lightning-input-field>
-                        </div>
-                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
-                            <lightning-input-field field-name="Employment_Type__c"></lightning-input-field>
-                        </div>
-                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
-                            <lightning-input-field field-name="Personal_Email__c"></lightning-input-field>
-                        </div>
-                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
-                            <lightning-input-field field-name="Mobile__c"></lightning-input-field>
-                        </div>
-                        <div class="slds-col slds-size_1-of-2">
-                            <lightning-input-field field-name="Salary__c"></lightning-input-field>
-                        </div>
-                        <div class="slds-col slds-size_1-of-2">
-                            <lightning-input-field field-name="Status__c"></lightning-input-field>
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input-field field-name="First_Name__c" required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input-field field-name="Last_Name__c" required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input-field field-name="Date_of_Birth__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input-field field-name="Gender__c"></lightning-input-field>
+                            </div>
                         </div>
                     </div>
 
-                    <footer class="slds-modal__footer footer-custom">
-                        <lightning-button class="slds-m-right_small" label="Cancel"
-                            onclick={handleCancel}></lightning-button>
-                        <lightning-button variant="brand" type="submit" label="Save Employee Data"></lightning-button>
-                    </footer>
-                </lightning-record-edit-form>
-            </div>
+                    <!-- Work Information Card -->
+                    <div class="form-card">
+                        <div class="form-card-header">
+                            <div class="form-card-icon purple-icon">
+                                <lightning-icon icon-name="utility:cases" size="xx-small"
+                                    alternative-text="Work Information"></lightning-icon>
+                            </div>
+                            <div>
+                                <div class="form-section-tag purple-tag">STEP 2 • WORK & COMPENSATION</div>
+                                <h3>Work Information</h3>
+                                <p>Role designation, contact channels, and payroll compensation</p>
+                            </div>
+                        </div>
+
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input-field field-name="Employee_Code__c" required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input-field field-name="Designation__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input-field field-name="Joining_Date__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input-field field-name="Employment_Type__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input-field field-name="Personal_Email__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2 slds-p-bottom_small">
+                                <lightning-input-field field-name="Mobile__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Salary__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Status__c"></lightning-input-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="employee-modal-footer">
+                    <button type="button" class="modal-cancel-btn" onclick={handleCancel}>
+                        Cancel
+                    </button>
+                    <button type="submit" class="modal-save-btn">
+                        <lightning-icon icon-name="utility:save" alternative-text="Save" size="xx-small">
+                        </lightning-icon>
+                        <span>Save Employee Data</span>
+                    </button>
+                </footer>
+            </lightning-record-edit-form>
         </div>
     </section>
-    <div class="slds-backdrop slds-backdrop_open"></div>
+    <div class="slds-backdrop slds-backdrop_open custom-backdrop"></div>
 </template>

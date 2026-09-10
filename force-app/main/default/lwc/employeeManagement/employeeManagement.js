@@ -1,4 +1,4 @@
-import { LightningElement, wire, track } from 'lwc';
+import { LightningElement, wire, track, api } from 'lwc';
 import { refreshApex } from '@salesforce/apex';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { deleteRecord } from 'lightning/uiRecordApi';
@@ -16,6 +16,11 @@ export default class EmployeeManagement extends NavigationMixin(LightningElement
     @track error;
     @track isLoading = true;
     @track isModalOpen = false;
+    @api isCreateMode = false;
+
+    @track previewFirstName = '';
+    @track previewLastName = '';
+    @track previewDesignation = '';
 
     // --- Photo Modal State ---
     @track isPhotoModalOpen = false;
@@ -164,7 +169,51 @@ export default class EmployeeManagement extends NavigationMixin(LightningElement
         }
     }
 
+    get displayNamePreview() {
+        const full = `${this.previewFirstName} ${this.previewLastName}`.trim();
+        return full || 'New Employee';
+    }
+
+    get displayRolePreview() {
+        return this.previewDesignation || 'Designation / Role';
+    }
+
+    openCreateMode() {
+        this.previewFirstName = '';
+        this.previewLastName = '';
+        this.previewDesignation = '';
+        this.photoUrlPreview = this.defaultAvatarPlaceholder;
+        this.isCreateMode = true;
+    }
+
+    closeCreateMode() {
+        this.isCreateMode = false;
+    }
+
+    handleFirstNameChange(event) {
+        this.previewFirstName = event.target.value || '';
+    }
+
+    handleLastNameChange(event) {
+        this.previewLastName = event.target.value || '';
+    }
+
+    handleDesignationChange(event) {
+        this.previewDesignation = event.target.value || '';
+    }
+
+    triggerFormSubmit() {
+        const form = this.template.querySelector('.create-page-main lightning-record-edit-form') || 
+                     this.template.querySelector('lightning-record-edit-form');
+        if (form) {
+            form.submit();
+        }
+    }
+
     openEmployeeModal() {
+        this.previewFirstName = '';
+        this.previewLastName = '';
+        this.previewDesignation = '';
         this.photoUrlPreview = this.defaultAvatarPlaceholder;
         this.isModalOpen = true;
     }
@@ -210,6 +259,7 @@ export default class EmployeeManagement extends NavigationMixin(LightningElement
             })
         );
 
+        this.isCreateMode = false;
         this.isModalOpen = false;
         this.isLoading = true;
         this.currentPage = 1; // new record was added — show it from page 1

@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
     <brand>
-        <headerColor>#1E293B</headerColor>
-        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+        <headerColor>#000000</headerColor>
+        <logo>usergroupiconmanagementbusinessteam</logo>
+        <logoVersion>1</logoVersion>
+        <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
     </brand>
-    <description>HRMS Workforce Portal &amp; Operations Management Suite</description>
+    <description>Manage employee details and attendance.</description>
+    <formFactors>Small</formFactors>
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
     <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
-    <label>HRMS</label>
+    <label>Employee Management</label>
     <navType>Standard</navType>
-    <tabs>HRMS_Dashboard</tabs>
     <tabs>Employee_Management</tabs>
     <tabs>Employee__c</tabs>
     <tabs>Attendance__c</tabs>
     <tabs>Leave_Request__c</tabs>
     <tabs>Payslip__c</tabs>
     <uiType>Lightning</uiType>
+    <utilityBar>Employee_Management_UtilityBar</utilityBar>
 </CustomApplication>

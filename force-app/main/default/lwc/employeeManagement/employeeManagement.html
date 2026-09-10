@@ -308,6 +308,9 @@
 
                     <!-- Modal Header -->
                     <header class="employee-modal-header">
+                        <div class="modal-bg-circle circle-one"></div>
+                        <div class="modal-bg-circle circle-two"></div>
+
                         <div class="modal-title-area">
                             <div class="modal-title-icon">
                                 <lightning-icon icon-name="standard:user" alternative-text="New employee" size="small">
@@ -315,23 +318,23 @@
                             </div>
 
                             <div>
-                                <span class="modal-label">
-                                    NEW PROFILE
-                                </span>
+                                <div class="modal-eyebrow">
+                                    <span class="modal-live-dot"></span>
+                                    <span>NEW WORKFORCE PROFILE</span>
+                                </div>
 
                                 <h2 id="employee-modal-heading">
                                     Create Employee Record
                                 </h2>
 
                                 <p>
-                                    Add personal and employment information below.
+                                    Add personal and employment information to onboard team members.
                                 </p>
                             </div>
                         </div>
 
                         <button class="modal-close-button" title="Close" aria-label="Close"
                             onclick={closeEmployeeModal}>
-
                             <lightning-icon icon-name="utility:close" alternative-text="Close" size="small">
                             </lightning-icon>
                         </button>
@@ -351,10 +354,13 @@
                                 </div>
 
                                 <div class="profile-preview-text">
-                                    <h3>Profile Preview</h3>
-
+                                    <div class="preview-badge">
+                                        <span class="preview-dot"></span>
+                                        <span>LIVE AVATAR PREVIEW</span>
+                                    </div>
+                                    <h3>Profile Photo Preview</h3>
                                     <p>
-                                        Your employee photo preview will appear here.
+                                        Enter an image URL in the Profile Photo field below to preview in real time.
                                     </p>
                                 </div>
                             </div>
@@ -369,8 +375,9 @@
                                     </div>
 
                                     <div>
+                                        <div class="form-section-tag blue-tag">STEP 1 • IDENTITY</div>
                                         <h3>Personal Details</h3>
-                                        <p>Basic employee information</p>
+                                        <p>Legal name, date of birth, gender, and photo</p>
                                     </div>
                                 </div>
 
@@ -405,8 +412,9 @@
                                     </div>
 
                                     <div>
-                                        <h3>Employment Details</h3>
-                                        <p>Role, contact, payroll, and status</p>
+                                        <div class="form-section-tag purple-tag">STEP 2 • WORK & COMPENSATION</div>
+                                        <h3>Employment Information</h3>
+                                        <p>Role, contact channels, payroll salary, and status</p>
                                     </div>
                                 </div>
 
@@ -440,12 +448,15 @@
 
                         <!-- Modal Footer -->
                         <footer class="employee-modal-footer">
-                            <lightning-button label="Cancel" onclick={closeEmployeeModal}>
-                            </lightning-button>
+                            <button type="button" class="modal-cancel-btn" onclick={closeEmployeeModal}>
+                                Cancel
+                            </button>
 
-                            <lightning-button variant="brand" type="submit" label="Save Employee"
-                                icon-name="utility:save">
-                            </lightning-button>
+                            <button type="submit" class="modal-save-btn">
+                                <lightning-icon icon-name="utility:save" alternative-text="Save" size="xx-small">
+                                </lightning-icon>
+                                <span>Save Employee Record</span>
+                            </button>
                         </footer>
                     </lightning-record-edit-form>
                 </div>
