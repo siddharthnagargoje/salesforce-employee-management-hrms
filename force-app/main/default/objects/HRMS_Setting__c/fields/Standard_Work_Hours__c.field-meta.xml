@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Standard_Work_Hours__c</fullName>
+    <defaultValue>8.0</defaultValue>
+    <description>Standard baseline daily working hours expected per full-time employee.</description>
+    <externalId>false</externalId>
+    <label>Standard Work Hours</label>
+    <precision>4</precision>
+    <required>false</required>
+    <scale>1</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

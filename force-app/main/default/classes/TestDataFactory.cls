@@ -110,7 +110,19 @@ public class TestDataFactory {
             Currency_Format__c = 'INR',
             Date_Format__c = 'DD/MM/YYYY',
             Maintenance_Mode__c = false,
-            Auto_Checkout__c = false
+            Auto_Checkout__c = false,
+            Company_Name__c = 'Apex Technologies Corp',
+            Company_Email__c = 'hr@apextechnologies.com',
+            Standard_Work_Hours__c = 8.0,
+            Work_Week__c = '5 Days (Mon-Fri)',
+            Default_Annual_Leaves__c = 20,
+            Default_Sick_Leaves__c = 10,
+            Allow_Negative_Leave__c = false,
+            Auto_Send_Payslips__c = true,
+            Payroll_Cycle_Day__c = '28th of every month',
+            Auto_Checkout_Time__c = '19:00',
+            Default_Work_Mode__c = 'Office',
+            Overtime_Threshold_Hours__c = 9.0
         );
         if (doInsert) {
             insert setting;

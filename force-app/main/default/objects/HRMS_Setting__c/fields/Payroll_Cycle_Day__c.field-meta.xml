@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Payroll_Cycle_Day__c</fullName>
+    <defaultValue>&quot;28th of every month&quot;</defaultValue>
+    <description>Standard monthly payroll execution and salary disbursement date.</description>
+    <externalId>false</externalId>
+    <label>Payroll Cycle Day</label>
+    <length>50</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

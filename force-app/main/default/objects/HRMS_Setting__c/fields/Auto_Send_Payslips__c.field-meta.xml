@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Auto_Send_Payslips__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>Automatically dispatches payslip PDF via email upon monthly generation.</description>
+    <label>Auto Send Payslips</label>
+    <type>Checkbox</type>
+</CustomField>
