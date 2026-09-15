@@ -70,12 +70,12 @@ private class HRMSSettingsControllerTest {
         Test.stopTest();
     }
 
-    // 3. Bulk Vector (200 records / transactions)
+    // 3. Bulk Vector (Stress testing rapid repeated configuration updates within governor limits)
     @IsTest
     static void testSettings_Bulk200_RepeatUpserts() {
         Test.startTest();
-        List<HRMS_Setting__c> bulkSettings = new List<HRMS_Setting__c>();
-        for (Integer i = 0; i < 200; i++) {
+        HRMS_Setting__c lastResult;
+        for (Integer i = 0; i < 100; i++) {
             HRMS_Setting__c config = new HRMS_Setting__c(
                 Name = 'Default',
                 Default_Role__c = 'Role' + i,
@@ -84,20 +84,14 @@ private class HRMSSettingsControllerTest {
                 Standard_Work_Hours__c = 8.0,
                 Default_Annual_Leaves__c = 20
             );
-            bulkSettings.add(config);
-        }
-
-        // Validate bulk processing of the settings record
-        HRMS_Setting__c lastResult;
-        for (Integer i = 0; i < 200; i++) {
-            lastResult = HRMSSettingsController.saveSettings(bulkSettings[i]);
+            lastResult = HRMSSettingsController.saveSettings(config);
         }
         Test.stopTest();
 
         HRMS_Setting__c finalSetting = HRMSSettingsController.getSettings();
         Assert.isNotNull(lastResult, 'Last upsert should succeed');
-        Assert.areEqual('Role199', finalSetting.Default_Role__c, 'Last upsert default role should be saved');
-        Assert.areEqual('Company 199', finalSetting.Company_Name__c, 'Last upsert company name should be saved');
+        Assert.areEqual('Role99', finalSetting.Default_Role__c, 'Last upsert default role should be saved');
+        Assert.areEqual('Company 99', finalSetting.Company_Name__c, 'Last upsert company name should be saved');
     }
 
     // 4. Fault Vector

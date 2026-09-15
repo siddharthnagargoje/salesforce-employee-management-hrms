@@ -2,312 +2,786 @@
     <div class="settings-shell">
         <div class="settings-page">
 
-            <!-- Dashboard Header -->
-            <header class="dashboard-header">
-                <div class="header-background-circle circle-one"></div>
-                <div class="header-background-circle circle-two"></div>
+            <!-- Hero Header -->
+            <header class="settings-header">
+                <div class="header-glow"></div>
+                <div class="header-circle circle-one"></div>
+                <div class="header-circle circle-two"></div>
 
-                <div class="dashboard-header-content">
-                    <div class="header-text">
-                        <span class="header-eyebrow">
-                            CONFIGURATION & SECURITY
-                        </span>
+                <div class="header-content">
+                    <div class="header-text-group">
+                        <div class="header-pill">
+                            <span class={headerStatusDotClass}></span>
+                            <span class="header-eyebrow">SYSTEM CONFIGURATION CENTER</span>
+                        </div>
 
-                        <h1>
-                            System Settings
+                        <h1 class="header-title">
+                            HRMS Global Settings
                         </h1>
 
-                        <p>
-                            Manage employee access, application preferences, and system configurations.
+                        <p class="header-subtitle">
+                            Configure enterprise workforce policies, attendance rules, leave allocations, payroll formats, and security controls.
                         </p>
                     </div>
 
                     <div class="header-actions">
-                        <div class="system-status">
-                            <span class="status-dot"></span>
-                            <span>System operational</span>
+                        <div class={systemStatusBadgeClass} title="Current System Mode">
+                            <span class={systemStatusDotClass}></span>
+                            <span>{systemStatusText}</span>
                         </div>
 
-                        <div class="user-avatar">
-                            HR
+                        <button type="button" class="action-btn action-btn-secondary" onclick={openResetModal} title="Restore factory baseline configuration">
+                            <lightning-icon icon-name="utility:refresh" alternative-text="Reset" size="xx-small"></lightning-icon>
+                            <span>Reset Defaults</span>
+                        </button>
+
+                        <button type="button" class="action-btn action-btn-primary" onclick={handleSaveSettings} disabled={isSavingOrClean} title="Save all modified settings">
+                            <template if:true={isSaving}>
+                                <lightning-spinner alternative-text="Saving" size="small"></lightning-spinner>
+                            </template>
+                            <template if:false={isSaving}>
+                                <lightning-icon icon-name="utility:save" alternative-text="Save" size="xx-small"></lightning-icon>
+                            </template>
+                            <span>Save Settings</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Top Search & Quick Stats Bar -->
+                <div class="header-search-bar">
+                    <div class="search-input-wrapper">
+                        <lightning-icon icon-name="utility:search" alternative-text="Search" size="x-small" class="search-icon"></lightning-icon>
+                        <input
+                            type="search"
+                            class="search-input"
+                            placeholder="Search any setting, policy, currency, or rule (e.g. 'Leave', 'Auto-checkout', 'Currency', 'Email')..."
+                            value={searchQuery}
+                            oninput={handleSearchInput}
+                            aria-label="Search settings"
+                        />
+                        <template if:true={hasSearchQuery}>
+                            <button type="button" class="clear-search-btn" onclick={clearSearch} title="Clear search">
+                                <lightning-icon icon-name="utility:close" alternative-text="Clear" size="xx-small"></lightning-icon>
+                            </button>
+                        </template>
+                    </div>
+
+                    <div class="header-stat-pills">
+                        <div class="stat-pill">
+                            <span class="stat-pill-label">Active Modules</span>
+                            <span class="stat-pill-value">6 / 6 Configured</span>
+                        </div>
+                        <div class="stat-pill">
+                            <span class="stat-pill-label">Working Schedule</span>
+                            <span class="stat-pill-value">{standardWorkHours}h / Day • {workWeek}</span>
                         </div>
                     </div>
                 </div>
             </header>
 
-            <!-- Summary Cards -->
-            <section class="summary-grid">
-                <div class="summary-card">
-                    <div class="summary-icon summary-icon-purple">
-                        <lightning-icon icon-name="utility:people" alternative-text="User access" size="small">
-                        </lightning-icon>
+            <!-- 4 KPI Summary Cards -->
+            <section class="kpi-grid">
+                <!-- KPI 1: Organization Profile -->
+                <div class="kpi-card" onclick={handleKpiOrgClick} role="button" tabindex="0" title="Click to view Organization settings">
+                    <div class="kpi-icon-box kpi-icon-blue">
+                        <lightning-icon icon-name="utility:company" alternative-text="Organization" size="small"></lightning-icon>
                     </div>
-
-                    <div>
-                        <span class="summary-label">User Access</span>
-                        <span class="summary-value">Configured</span>
+                    <div class="kpi-info">
+                        <span class="kpi-label">Organization Profile</span>
+                        <span class="kpi-value">{companyName}</span>
+                        <span class="kpi-meta">{companyEmail}</span>
                     </div>
+                    <span class="kpi-tag kpi-tag-blue">General</span>
                 </div>
 
-                <div class="summary-card">
-                    <div class="summary-icon summary-icon-green">
-                        <lightning-icon icon-name="utility:check" alternative-text="Notifications" size="small">
-                        </lightning-icon>
+                <!-- KPI 2: Attendance & Schedule -->
+                <div class="kpi-card" onclick={handleKpiAttendanceClick} role="button" tabindex="0" title="Click to view Attendance settings">
+                    <div class="kpi-icon-box kpi-icon-teal">
+                        <lightning-icon icon-name="utility:clock" alternative-text="Attendance" size="small"></lightning-icon>
                     </div>
-
-                    <div>
-                        <span class="summary-label">Notifications</span>
-                        <span class="summary-value">{notificationStatus}</span>
+                    <div class="kpi-info">
+                        <span class="kpi-label">Attendance Policy</span>
+                        <span class="kpi-value">{attendanceSummaryText}</span>
+                        <span class="kpi-meta">{overtimeSummaryText}</span>
                     </div>
+                    <span class="kpi-tag kpi-tag-teal">Time</span>
                 </div>
 
-                <div class="summary-card">
-                    <div class="summary-icon summary-icon-orange">
-                        <lightning-icon icon-name="utility:date_input" alternative-text="Date format" size="small">
-                        </lightning-icon>
+                <!-- KPI 3: Leaves & Approvals -->
+                <div class="kpi-card" onclick={handleKpiLeavesClick} role="button" tabindex="0" title="Click to view Leave settings">
+                    <div class="kpi-icon-box kpi-icon-purple">
+                        <lightning-icon icon-name="utility:event" alternative-text="Leaves" size="small"></lightning-icon>
+                    </div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">Leave Policy</span>
+                        <span class="kpi-value">{leaveApprovalSummaryText}</span>
+                        <span class="kpi-meta">{leaveQuotaSummaryText}</span>
+                    </div>
+                    <span class="kpi-tag kpi-tag-purple">Leaves</span>
+                </div>
+
+                <!-- KPI 4: Payroll & Currency -->
+                <div class="kpi-card" onclick={handleKpiPayrollClick} role="button" tabindex="0" title="Click to view Payroll settings">
+                    <div class="kpi-icon-box kpi-icon-emerald">
+                        <lightning-icon icon-name="utility:money" alternative-text="Payroll" size="small"></lightning-icon>
+                    </div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">Payroll & Finance</span>
+                        <span class="kpi-value">{currencyFormat} Currency</span>
+                        <span class="kpi-meta">Disbursed: {payrollCycleDay}</span>
+                    </div>
+                    <span class="kpi-tag kpi-tag-emerald">Finance</span>
+                </div>
+            </section>
+
+            <!-- Category Navigation Tabs -->
+            <nav class="category-tabs" aria-label="Settings Categories">
+                <button type="button" class={allTabClass} data-tab="all" onclick={handleTabChange}>
+                    <lightning-icon icon-name="utility:apps" alternative-text="All" size="xx-small"></lightning-icon>
+                    <span>All Settings</span>
+                    <span class="tab-badge">{totalSettingsCount}</span>
+                </button>
+
+                <button type="button" class={orgTabClass} data-tab="org" onclick={handleTabChange}>
+                    <lightning-icon icon-name="utility:company" alternative-text="Organization" size="xx-small"></lightning-icon>
+                    <span>Organization</span>
+                    <span class="tab-badge">4</span>
+                </button>
+
+                <button type="button" class={attendanceTabClass} data-tab="attendance" onclick={handleTabChange}>
+                    <lightning-icon icon-name="utility:clock" alternative-text="Attendance" size="xx-small"></lightning-icon>
+                    <span>Attendance & Work</span>
+                    <span class="tab-badge">4</span>
+                </button>
+
+                <button type="button" class={leavesTabClass} data-tab="leaves" onclick={handleTabChange}>
+                    <lightning-icon icon-name="utility:event" alternative-text="Leaves" size="xx-small"></lightning-icon>
+                    <span>Leaves & Time Off</span>
+                    <span class="tab-badge">4</span>
+                </button>
+
+                <button type="button" class={payrollTabClass} data-tab="payroll" onclick={handleTabChange}>
+                    <lightning-icon icon-name="utility:money" alternative-text="Payroll" size="xx-small"></lightning-icon>
+                    <span>Payroll & Compensation</span>
+                    <span class="tab-badge">3</span>
+                </button>
+
+                <button type="button" class={securityTabClass} data-tab="security" onclick={handleTabChange}>
+                    <lightning-icon icon-name="utility:shield" alternative-text="Security" size="xx-small"></lightning-icon>
+                    <span>Access & Security</span>
+                    <span class="tab-badge">2</span>
+                </button>
+
+                <button type="button" class={systemTabClass} data-tab="system" onclick={handleTabChange}>
+                    <lightning-icon icon-name="utility:setup" alternative-text="System" size="xx-small"></lightning-icon>
+                    <span>System & Preferences</span>
+                    <span class="tab-badge">3</span>
+                </button>
+            </nav>
+
+            <!-- Search Query Info Banner (Shown when searching) -->
+            <template if:true={hasSearchQuery}>
+                <div class="search-status-banner">
+                    <lightning-icon icon-name="utility:filterList" alternative-text="Filtering" size="xx-small"></lightning-icon>
+                    <span>Showing search results for: <strong>"{searchQuery}"</strong> ({filteredCount} items matching)</span>
+                    <button type="button" class="btn-link" onclick={clearSearch}>Show All</button>
+                </div>
+            </template>
+
+            <!-- Empty Search State -->
+            <template if:true={isSearchEmpty}>
+                <div class="empty-search-state">
+                    <div class="empty-icon-box">
+                        <lightning-icon icon-name="utility:search" alternative-text="No results" size="medium"></lightning-icon>
+                    </div>
+                    <h3>No settings match your query</h3>
+                    <p>We couldn't find any configuration matching "{searchQuery}". Try searching for keywords like "leave", "hours", "currency", or "approval".</p>
+                    <button type="button" class="action-btn action-btn-secondary" onclick={clearSearch}>
+                        <span>Clear Search Filter</span>
+                    </button>
+                </div>
+            </template>
+
+            <!-- Main Content Settings Cards -->
+            <div class="settings-content-grid">
+
+                <!-- 1. Organization & General Profile -->
+                <template if:true={showOrgCategory}>
+                    <section class="settings-card" data-category="org">
+                        <div class="card-header">
+                            <div class="section-icon section-icon-blue">
+                                <lightning-icon icon-name="utility:company" alternative-text="Organization" size="small"></lightning-icon>
+                            </div>
+                            <div class="card-heading">
+                                <h2 class="card-title">Organization Profile & Work Week</h2>
+                                <p class="card-description">Define organization branding, support channels, and default working schedule.</p>
+                            </div>
+                            <span class="card-badge">01 • ORG</span>
+                        </div>
+
+                        <div class="settings-list">
+                            <!-- Company Name -->
+                            <div class="settings-row" if:true={matchesSearchCompanyName}>
+                                <div class="settings-row-content">
+                                    <label class="settings-row-label" for="companyNameInput">Organization / Company Name</label>
+                                    <span class="settings-row-hint">Displayed across the HRMS portal, PDF payslips, and official leave communications.</span>
+                                </div>
+                                <div class="settings-row-control">
+                                    <input
+                                        id="companyNameInput"
+                                        type="text"
+                                        class="settings-input"
+                                        value={companyName}
+                                        oninput={handleCompanyNameChange}
+                                        placeholder="e.g. Apex Technologies Corp"
+                                    />
+                                </div>
+                            </div>
+
+                            <!-- Company Email -->
+                            <div class="settings-row" if:true={matchesSearchCompanyEmail}>
+                                <div class="settings-row-content">
+                                    <label class="settings-row-label" for="companyEmailInput">HR Department Contact Email</label>
+                                    <span class="settings-row-hint">The reply-to and automated dispatch email used for employee notifications and payslips.</span>
+                                </div>
+                                <div class="settings-row-control">
+                                    <input
+                                        id="companyEmailInput"
+                                        type="email"
+                                        class="settings-input"
+                                        value={companyEmail}
+                                        oninput={handleCompanyEmailChange}
+                                        placeholder="e.g. hr@apextechnologies.com"
+                                    />
+                                </div>
+                            </div>
+
+                            <!-- Work Week Schedule -->
+                            <div class="settings-row" if:true={matchesSearchWorkWeek}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Work Week Model</span>
+                                    <span class="settings-row-hint">Determines expected working days and weekend leave exclusion in timesheet audits.</span>
+                                </div>
+                                <div class="settings-row-control">
+                                    <select class="settings-select" value={workWeek} onchange={handleWorkWeekChange} aria-label="Work Week Model">
+                                        <option value="5 Days (Mon-Fri)">5 Days (Mon - Fri)</option>
+                                        <option value="6 Days (Mon-Sat)">6 Days (Mon - Sat)</option>
+                                        <option value="4 Days (Mon-Thu)">4 Days (Mon - Thu)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Standard Daily Hours -->
+                            <div class="settings-row settings-row-last" if:true={matchesSearchStandardHours}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Standard Daily Working Hours</span>
+                                    <span class="settings-row-hint">Baseline daily hours expected per full-time staff member before overtime triggers.</span>
+                                </div>
+                                <div class="settings-row-control number-stepper-control">
+                                    <input
+                                        type="number"
+                                        step="0.5"
+                                        min="4"
+                                        max="14"
+                                        class="settings-input settings-number-input"
+                                        value={standardWorkHours}
+                                        oninput={handleStandardWorkHoursChange}
+                                        aria-label="Standard Daily Working Hours"
+                                    />
+                                    <span class="input-unit">Hours / Day</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </template>
+
+                <!-- 2. Attendance & Timesheets -->
+                <template if:true={showAttendanceCategory}>
+                    <section class="settings-card" data-category="attendance">
+                        <div class="card-header">
+                            <div class="section-icon section-icon-teal">
+                                <lightning-icon icon-name="utility:clock" alternative-text="Attendance" size="small"></lightning-icon>
+                            </div>
+                            <div class="card-heading">
+                                <h2 class="card-title">Attendance & Timesheet Rules</h2>
+                                <p class="card-description">Configure check-in automation, overtime triggers, and default employee work modes.</p>
+                            </div>
+                            <span class="card-badge">02 • ATTENDANCE</span>
+                        </div>
+
+                        <div class="settings-list">
+                            <!-- Auto Checkout -->
+                            <div class="settings-row" if:true={matchesSearchAutoCheckout}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Automated Shift Check-Out</span>
+                                    <span class="settings-row-hint">Automatically records check-out at the designated cutoff time if an employee forgets to clock out.</span>
+                                </div>
+                                <div class="settings-row-control toggle-wrapper">
+                                    <button
+                                        type="button"
+                                        class={autoCheckoutToggleClass}
+                                        onclick={toggleAutoCheckout}
+                                        aria-label="Automated Shift Check-Out"
+                                        aria-pressed={autoCheckout}
+                                    >
+                                        <span class="toggle-knob"></span>
+                                    </button>
+                                    <span class={autoCheckoutStatusBadgeClass}>{autoCheckoutStateLabel}</span>
+                                </div>
+                            </div>
+
+                            <!-- Auto Checkout Cutoff Time -->
+                            <div class="settings-row" if:true={matchesSearchAutoCheckoutTime}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Auto Check-Out Cutoff Time</span>
+                                    <span class="settings-row-hint">Daily timestamp when auto check-out registers unclosed attendance sessions.</span>
+                                </div>
+                                <div class="settings-row-control">
+                                    <select class="settings-select" value={autoCheckoutTime} onchange={handleAutoCheckoutTimeChange} aria-label="Auto Check-Out Cutoff Time">
+                                        <option value="18:00">18:00 (06:00 PM)</option>
+                                        <option value="19:00">19:00 (07:00 PM)</option>
+                                        <option value="20:00">20:00 (08:00 PM)</option>
+                                        <option value="21:00">21:00 (09:00 PM)</option>
+                                        <option value="23:59">23:59 (Midnight)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Overtime Threshold -->
+                            <div class="settings-row" if:true={matchesSearchOvertime}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Daily Overtime Threshold</span>
+                                    <span class="settings-row-hint">Hours clocked in a single day beyond which attendance hours accumulate as overtime.</span>
+                                </div>
+                                <div class="settings-row-control number-stepper-control">
+                                    <input
+                                        type="number"
+                                        step="0.5"
+                                        min="6"
+                                        max="16"
+                                        class="settings-input settings-number-input"
+                                        value={overtimeThresholdHours}
+                                        oninput={handleOvertimeThresholdChange}
+                                        aria-label="Daily Overtime Threshold"
+                                    />
+                                    <span class="input-unit">Hours</span>
+                                </div>
+                            </div>
+
+                            <!-- Default Work Mode -->
+                            <div class="settings-row settings-row-last" if:true={matchesSearchWorkMode}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Default Work Mode for Staff</span>
+                                    <span class="settings-row-hint">Assigned as baseline when new attendance logs or employee records are initiated.</span>
+                                </div>
+                                <div class="settings-row-control">
+                                    <select class="settings-select" value={defaultWorkMode} onchange={handleDefaultWorkModeChange} aria-label="Default Work Mode">
+                                        <option value="Office">Office (On-site)</option>
+                                        <option value="Hybrid">Hybrid (Flexible)</option>
+                                        <option value="Remote">Remote (Work from Home)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </template>
+
+                <!-- 3. Leaves & Time Off -->
+                <template if:true={showLeavesCategory}>
+                    <section class="settings-card" data-category="leaves">
+                        <div class="card-header">
+                            <div class="section-icon section-icon-purple">
+                                <lightning-icon icon-name="utility:event" alternative-text="Leaves" size="small"></lightning-icon>
+                            </div>
+                            <div class="card-heading">
+                                <h2 class="card-title">Leave Policies & Allocation Rules</h2>
+                                <p class="card-description">Set manager approval workflows, annual leave balance quotas, and advance balance policies.</p>
+                            </div>
+                            <span class="card-badge">03 • LEAVES</span>
+                        </div>
+
+                        <div class="settings-list">
+                            <!-- Require Approval -->
+                            <div class="settings-row" if:true={matchesSearchRequireApproval}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Require Manager Approval for Leaves</span>
+                                    <span class="settings-row-hint">When enabled, leave requests require approval by a Manager or HR Admin before deducting balance.</span>
+                                </div>
+                                <div class="settings-row-control toggle-wrapper">
+                                    <button
+                                        type="button"
+                                        class={approvalToggleClass}
+                                        onclick={toggleApprovalRequired}
+                                        aria-label="Require Manager Approval for Leaves"
+                                        aria-pressed={requireApproval}
+                                    >
+                                        <span class="toggle-knob"></span>
+                                    </button>
+                                    <span class={approvalStatusBadgeClass}>{approvalStateLabel}</span>
+                                </div>
+                            </div>
+
+                            <!-- Default Annual Leaves -->
+                            <div class="settings-row" if:true={matchesSearchAnnualLeaves}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Default Annual Paid Leave Quota</span>
+                                    <span class="settings-row-hint">Standard annual vacation allowance credited to full-time staff per calendar year.</span>
+                                </div>
+                                <div class="settings-row-control number-stepper-control">
+                                    <input
+                                        type="number"
+                                        step="1"
+                                        min="0"
+                                        max="60"
+                                        class="settings-input settings-number-input"
+                                        value={defaultAnnualLeaves}
+                                        oninput={handleAnnualLeavesChange}
+                                        aria-label="Default Annual Paid Leave Quota"
+                                    />
+                                    <span class="input-unit">Days / Year</span>
+                                </div>
+                            </div>
+
+                            <!-- Default Sick Leaves -->
+                            <div class="settings-row" if:true={matchesSearchSickLeaves}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Default Sick & Medical Leave Quota</span>
+                                    <span class="settings-row-hint">Paid medical leave allowance credited to employee leave balance records each year.</span>
+                                </div>
+                                <div class="settings-row-control number-stepper-control">
+                                    <input
+                                        type="number"
+                                        step="1"
+                                        min="0"
+                                        max="40"
+                                        class="settings-input settings-number-input"
+                                        value={defaultSickLeaves}
+                                        oninput={handleSickLeavesChange}
+                                        aria-label="Default Sick & Medical Leave Quota"
+                                    />
+                                    <span class="input-unit">Days / Year</span>
+                                </div>
+                            </div>
+
+                            <!-- Allow Negative Leave Balance -->
+                            <div class="settings-row settings-row-last" if:true={matchesSearchNegativeLeave}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Allow Negative / Advance Leave Balance</span>
+                                    <span class="settings-row-hint">Allows staff to request emergency leave days even if remaining allocated balance is zero.</span>
+                                </div>
+                                <div class="settings-row-control toggle-wrapper">
+                                    <button
+                                        type="button"
+                                        class={negativeLeaveToggleClass}
+                                        onclick={toggleNegativeLeave}
+                                        aria-label="Allow Negative / Advance Leave Balance"
+                                        aria-pressed={allowNegativeLeave}
+                                    >
+                                        <span class="toggle-knob"></span>
+                                    </button>
+                                    <span class={negativeLeaveStatusBadgeClass}>{negativeLeaveStateLabel}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </template>
+
+                <!-- 4. Payroll & Compensation -->
+                <template if:true={showPayrollCategory}>
+                    <section class="settings-card" data-category="payroll">
+                        <div class="card-header">
+                            <div class="section-icon section-icon-emerald">
+                                <lightning-icon icon-name="utility:money" alternative-text="Payroll" size="small"></lightning-icon>
+                            </div>
+                            <div class="card-heading">
+                                <h2 class="card-title">Payroll & Financial Preferences</h2>
+                                <p class="card-description">Set currency representation, monthly payroll execution date, and automated PDF delivery.</p>
+                            </div>
+                            <span class="card-badge">04 • PAYROLL</span>
+                        </div>
+
+                        <div class="settings-list">
+                            <!-- Currency Format -->
+                            <div class="settings-row" if:true={matchesSearchCurrency}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Display Currency Symbol</span>
+                                    <span class="settings-row-hint">Applied across salary calculations, monthly payslips, and payroll dashboard KPIs.</span>
+                                </div>
+                                <div class="settings-row-control">
+                                    <select class="settings-select" value={currencyFormat} onchange={handleCurrencyChange} aria-label="Display Currency Symbol">
+                                        <option value="INR">INR (₹) - Indian Rupee</option>
+                                        <option value="USD">USD ($) - US Dollar</option>
+                                        <option value="EUR">EUR (€) - Euro</option>
+                                        <option value="GBP">GBP (£) - British Pound</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Payroll Cycle Day -->
+                            <div class="settings-row" if:true={matchesSearchPayrollCycle}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Monthly Payroll Processing Cycle</span>
+                                    <span class="settings-row-hint">Standard salary disbursement and payslip generation schedule.</span>
+                                </div>
+                                <div class="settings-row-control">
+                                    <select class="settings-select" value={payrollCycleDay} onchange={handlePayrollCycleChange} aria-label="Monthly Payroll Processing Cycle">
+                                        <option value="28th of every month">28th of every month</option>
+                                        <option value="Last working day">Last working day of month</option>
+                                        <option value="1st of next month">1st of following month</option>
+                                        <option value="15th and 30th (Bi-weekly)">15th & 30th (Bi-weekly)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Auto Send Payslips -->
+                            <div class="settings-row settings-row-last" if:true={matchesSearchAutoSendPayslips}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Auto-Email Payslips on Generation</span>
+                                    <span class="settings-row-hint">Automatically dispatches signed PDF payslips to employee official emails upon monthly batch completion.</span>
+                                </div>
+                                <div class="settings-row-control toggle-wrapper">
+                                    <button
+                                        type="button"
+                                        class={autoSendPayslipsToggleClass}
+                                        onclick={toggleAutoSendPayslips}
+                                        aria-label="Auto-Email Payslips on Generation"
+                                        aria-pressed={autoSendPayslips}
+                                    >
+                                        <span class="toggle-knob"></span>
+                                    </button>
+                                    <span class={autoSendPayslipsStatusBadgeClass}>{autoSendPayslipsStateLabel}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </template>
+
+                <!-- 5. Access & Security -->
+                <template if:true={showSecurityCategory}>
+                    <section class="settings-card" data-category="security">
+                        <div class="card-header">
+                            <div class="section-icon section-icon-rose">
+                                <lightning-icon icon-name="utility:shield" alternative-text="Security" size="small"></lightning-icon>
+                            </div>
+                            <div class="card-heading">
+                                <h2 class="card-title">Access Control & Data Governance</h2>
+                                <p class="card-description">Configure user roles, data deletion safeguards, and administrative privileges.</p>
+                            </div>
+                            <span class="card-badge">05 • SECURITY</span>
+                        </div>
+
+                        <div class="settings-list">
+                            <!-- Allow Admin Delete -->
+                            <div class="settings-row" if:true={matchesSearchAdminDelete}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Allow HR Admins to Delete Records</span>
+                                    <span class="settings-row-hint">Enables hard-delete action on employee profiles, attendance logs, and generated payslips.</span>
+                                </div>
+                                <div class="settings-row-control toggle-wrapper">
+                                    <button
+                                        type="button"
+                                        class={adminDeleteToggleClass}
+                                        onclick={toggleAdminDelete}
+                                        aria-label="Allow HR Admins to Delete Records"
+                                        aria-pressed={allowAdminDelete}
+                                    >
+                                        <span class="toggle-knob"></span>
+                                    </button>
+                                    <span class={adminDeleteStatusBadgeClass}>{adminDeleteStateLabel}</span>
+                                </div>
+                            </div>
+
+                            <!-- Default Role -->
+                            <div class="settings-row settings-row-last" if:true={matchesSearchDefaultRole}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Default Role for New Users</span>
+                                    <span class="settings-row-hint">Initial permission profile assigned when an employee record or user account is provisioned.</span>
+                                </div>
+                                <div class="settings-row-control">
+                                    <select class="settings-select" value={defaultRole} onchange={handleDefaultRoleChange} aria-label="Default Role for New Users">
+                                        <option value="Employee">Employee (Standard Self-Service)</option>
+                                        <option value="Manager">Manager (Team Approval Privileges)</option>
+                                        <option value="HR Admin">HR Admin (Full System Administrator)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </template>
+
+                <!-- 6. System & Preferences -->
+                <template if:true={showSystemCategory}>
+                    <section class="settings-card" data-category="system">
+                        <div class="card-header">
+                            <div class="section-icon section-icon-amber">
+                                <lightning-icon icon-name="utility:setup" alternative-text="System" size="small"></lightning-icon>
+                            </div>
+                            <div class="card-heading">
+                                <h2 class="card-title">System Health & Display Preferences</h2>
+                                <p class="card-description">Manage global email triggers, date formatting standards, and system maintenance lock.</p>
+                            </div>
+                            <span class="card-badge">06 • SYSTEM</span>
+                        </div>
+
+                        <div class="settings-list">
+                            <!-- Email Notifications -->
+                            <div class="settings-row" if:true={matchesSearchEmailNotif}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Global Email Notifications</span>
+                                    <span class="settings-row-hint">Dispatches email alerts for leave approvals, attendance issues, and system updates.</span>
+                                </div>
+                                <div class="settings-row-control toggle-wrapper">
+                                    <button
+                                        type="button"
+                                        class={emailNotifToggleClass}
+                                        onclick={toggleEmailNotifications}
+                                        aria-label="Global Email Notifications"
+                                        aria-pressed={emailNotifications}
+                                    >
+                                        <span class="toggle-knob"></span>
+                                    </button>
+                                    <span class={emailNotifStatusBadgeClass}>{emailNotifStateLabel}</span>
+                                </div>
+                            </div>
+
+                            <!-- Date Format -->
+                            <div class="settings-row" if:true={matchesSearchDateFormat}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Global Date Display Format</span>
+                                    <span class="settings-row-hint">Applied across data tables, employee profiles, attendance logs, and exported CSV/PDF reports.</span>
+                                </div>
+                                <div class="settings-row-control">
+                                    <select class="settings-select" value={dateFormat} onchange={handleDateFormatChange} aria-label="Global Date Display Format">
+                                        <option value="DD/MM/YYYY">DD/MM/YYYY (e.g. 15/09/2026)</option>
+                                        <option value="MM/DD/YYYY">MM/DD/YYYY (e.g. 09/15/2026)</option>
+                                        <option value="YYYY-MM-DD">YYYY-MM-DD (e.g. 2026-09-15)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Maintenance Mode -->
+                            <div class="settings-row settings-row-last" if:true={matchesSearchMaintenance}>
+                                <div class="settings-row-content">
+                                    <span class="settings-row-label">Maintenance Mode</span>
+                                    <span class="settings-row-hint">Places the HRMS in read-only maintenance mode while administrators perform system updates or migrations.</span>
+                                </div>
+                                <div class="settings-row-control toggle-wrapper">
+                                    <button
+                                        type="button"
+                                        class={maintenanceToggleClass}
+                                        onclick={toggleMaintenanceMode}
+                                        aria-label="Maintenance Mode"
+                                        aria-pressed={maintenanceMode}
+                                    >
+                                        <span class="toggle-knob"></span>
+                                    </button>
+                                    <span class={maintenanceStatusBadgeClass}>{maintenanceStateLabel}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </template>
+            </div>
+
+            <!-- Live Policy Preview Drawer -->
+            <section class="preview-card">
+                <div class="preview-header">
+                    <div class="preview-title-group">
+                        <lightning-icon icon-name="utility:preview" alternative-text="Preview" size="x-small" class="preview-icon"></lightning-icon>
+                        <h3 class="preview-title">Live Policy Preview</h3>
+                    </div>
+                    <span class="preview-status">Real-time simulation based on active settings</span>
+                </div>
+
+                <div class="preview-grid">
+                    <div class="preview-pill-box">
+                        <span class="preview-pill-label">Sample Date Representation</span>
+                        <span class="preview-pill-value">{sampleDateDisplay}</span>
                     </div>
 
-                    <div>
-                        <span class="summary-label">Date Format</span>
-                        <span class="summary-value">{dateFormat}</span>
+                    <div class="preview-pill-box">
+                        <span class="preview-pill-label">Sample Net Salary Total</span>
+                        <span class="preview-pill-value">{sampleCurrencyDisplay}</span>
+                    </div>
+
+                    <div class="preview-pill-box">
+                        <span class="preview-pill-label">Total Paid Time-Off Pool</span>
+                        <span class="preview-pill-value">{totalLeaveDaysPool} Days / Year</span>
+                    </div>
+
+                    <div class="preview-pill-box">
+                        <span class="preview-pill-label">Weekly Standard Workload</span>
+                        <span class="preview-pill-value">{weeklyWorkloadSummary}</span>
                     </div>
                 </div>
             </section>
 
-            <!-- User Access -->
-            <section class="settings-card">
-                <div class="card-header">
-                    <div class="section-icon section-icon-purple">
-                        <lightning-icon icon-name="utility:user" alternative-text="User access" size="small">
-                        </lightning-icon>
-                    </div>
-
-                    <div class="card-heading">
-                        <h2 class="card-title">User Access</h2>
-                        <p class="card-description">
-                            Configure roles and permissions for your team.
-                        </p>
-                    </div>
-
-                    <span class="card-number">01</span>
-                </div>
-
-                <div class="settings-list">
-                    <div class="settings-row">
-                        <div class="settings-row-content">
-                            <span class="settings-row-label">
-                                Allow HR Admins to delete records
-                            </span>
-
-                            <span class="settings-row-hint">
-                                Grants delete access to employee, attendance, and payslip data.
-                            </span>
-                        </div>
-
-                        <button type="button" class={adminDeleteToggleClass} onclick={toggleAdminDelete}
-                            aria-label="Allow HR Admins to delete records" aria-pressed={allowAdminDelete}>
-                            <span class="toggle-knob"></span>
-                        </button>
-                    </div>
-
-                    <div class="settings-row">
-                        <div class="settings-row-content">
-                            <span class="settings-row-label">
-                                Default role for new users
-                            </span>
-
-                            <span class="settings-row-hint">
-                                Automatically applied when a new user record is created.
-                            </span>
-                        </div>
-
-                        <select class="settings-select" onchange={handleDefaultRoleChange}
-                            aria-label="Default role for new users">
-                            <option value="Employee">Employee</option>
-                            <option value="Manager">Manager</option>
-                            <option value="HR Admin">HR Admin</option>
-                        </select>
-                    </div>
-
-                    <div class="settings-row settings-row-last">
-                        <div class="settings-row-content">
-                            <span class="settings-row-label">
-                                Require approval for leave requests
-                            </span>
-
-                            <span class="settings-row-hint">
-                                Leave requests remain pending until approved by a manager.
-                            </span>
-                        </div>
-
-                        <button type="button" class={approvalToggleClass} onclick={toggleApprovalRequired}
-                            aria-label="Require approval for leave requests" aria-pressed={requireApproval}>
-                            <span class="toggle-knob"></span>
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Preferences -->
-            <section class="settings-card">
-                <div class="card-header">
-                    <div class="section-icon section-icon-green">
-                        <lightning-icon icon-name="utility:settings" alternative-text="Preferences" size="small">
-                        </lightning-icon>
-                    </div>
-
-                    <div class="card-heading">
-                        <h2 class="card-title">Preferences</h2>
-                        <p class="card-description">
-                            Set application preferences and display defaults.
-                        </p>
-                    </div>
-
-                    <span class="card-number">02</span>
-                </div>
-
-                <div class="settings-list">
-                    <div class="settings-row">
-                        <div class="settings-row-content">
-                            <span class="settings-row-label">
-                                Email notifications
-                            </span>
-
-                            <span class="settings-row-hint">
-                                Receive notifications when leave requests or payslips need review.
-                            </span>
-                        </div>
-
-                        <button type="button" class={emailNotifToggleClass} onclick={toggleEmailNotifications}
-                            aria-label="Enable email notifications" aria-pressed={emailNotifications}>
-                            <span class="toggle-knob"></span>
-                        </button>
-                    </div>
-
-                    <div class="settings-row">
-                        <div class="settings-row-content">
-                            <span class="settings-row-label">
-                                Currency format
-                            </span>
-
-                            <span class="settings-row-hint">
-                                Used across payroll, salary, and payslip totals.
-                            </span>
-                        </div>
-
-                        <select class="settings-select" onchange={handleCurrencyChange} aria-label="Currency format">
-                            <option value="INR">INR (₹)</option>
-                            <option value="USD">USD ($)</option>
-                            <option value="EUR">EUR (€)</option>
-                        </select>
-                    </div>
-
-                    <div class="settings-row settings-row-last">
-                        <div class="settings-row-content">
-                            <span class="settings-row-label">
-                                Date format
-                            </span>
-
-                            <span class="settings-row-hint">
-                                Applies to tables, employee records, and exported reports.
-                            </span>
-                        </div>
-
-                        <select class="settings-select" onchange={handleDateFormatChange} aria-label="Date format">
-                            <option value="DD/MM/YYYY">DD/MM/YYYY</option>
-                            <option value="MM/DD/YYYY">MM/DD/YYYY</option>
-                            <option value="YYYY-MM-DD">YYYY-MM-DD</option>
-                        </select>
-                    </div>
-                </div>
-            </section>
-
-            <!-- System Configurations -->
-            <section class="settings-card">
-                <div class="card-header">
-                    <div class="section-icon section-icon-orange">
-                        <lightning-icon icon-name="utility:setup" alternative-text="System configuration" size="small">
-                        </lightning-icon>
-                    </div>
-
-                    <div class="card-heading">
-                        <h2 class="card-title">System Configurations</h2>
-                        <p class="card-description">
-                            Manage system behavior and operational settings.
-                        </p>
-                    </div>
-
-                    <span class="card-number">03</span>
-                </div>
-
-                <div class="settings-list">
-                    <div class="settings-row">
-                        <div class="settings-row-content">
-                            <span class="settings-row-label">
-                                Maintenance mode
-                            </span>
-
-                            <span class="settings-row-hint">
-                                Temporarily restricts access while system changes are performed.
-                            </span>
-                        </div>
-
-                        <button type="button" class={maintenanceToggleClass} onclick={toggleMaintenanceMode}
-                            aria-label="Enable maintenance mode" aria-pressed={maintenanceMode}>
-                            <span class="toggle-knob"></span>
-                        </button>
-                    </div>
-
-                    <div class="settings-row settings-row-last">
-                        <div class="settings-row-content">
-                            <span class="settings-row-label">
-                                Attendance auto check-out
-                            </span>
-
-                            <span class="settings-row-hint">
-                                Automatically records check-out if no time is entered by midnight.
-                            </span>
-                        </div>
-
-                        <button type="button" class={autoCheckoutToggleClass} onclick={toggleAutoCheckout}
-                            aria-label="Enable attendance auto check-out" aria-pressed={autoCheckout}>
-                            <span class="toggle-knob"></span>
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Save Bar -->
-            <div class="save-bar">
+            <!-- Floating Sticky Save Bar -->
+            <aside class="save-bar">
                 <div class="save-message">
                     <span class={saveIndicatorClass}></span>
-
                     <div>
-                        <span class={saveStatusClass}>
-                            {saveStatusText}
-                        </span>
-
-                        <span class="save-help-text">
-                            {saveHelpText}
-                        </span>
+                        <span class={saveStatusClass}>{saveStatusText}</span>
+                        <span class="save-help-text">{saveHelpText}</span>
                     </div>
                 </div>
 
-                <button type="button" class="save-button" onclick={handleSaveSettings} disabled={isSaving}>
-
-                    <template if:true={isSaving}>
-                        <lightning-spinner alternative-text="Saving settings" size="small">
-                        </lightning-spinner>
+                <div class="save-actions">
+                    <template if:true={isDirty}>
+                        <button type="button" class="btn-discard" onclick={handleDiscardChanges} disabled={isSaving}>
+                            <span>Discard Changes</span>
+                        </button>
                     </template>
 
-                    <template if:false={isSaving}>
-                        <lightning-icon icon-name="utility:save" alternative-text="Save" size="xx-small">
-                        </lightning-icon>
-                    </template>
+                    <button type="button" class="save-button" onclick={handleSaveSettings} disabled={isSavingOrClean}>
+                        <template if:true={isSaving}>
+                            <lightning-spinner alternative-text="Saving settings" size="small"></lightning-spinner>
+                        </template>
+                        <template if:false={isSaving}>
+                            <lightning-icon icon-name="utility:save" alternative-text="Save" size="xx-small"></lightning-icon>
+                        </template>
+                        <span>{saveButtonText}</span>
+                    </button>
+                </div>
+            </aside>
 
-                    <span>{saveButtonText}</span>
-                </button>
-            </div>
+            <!-- Reset Confirmation Modal -->
+            <template if:true={isResetModalOpen}>
+                <div class="modal-backdrop" onclick={closeResetModal} role="presentation"></div>
+                <div class="modal-container" role="dialog" aria-modal="true" aria-labelledby="modalHeading">
+                    <div class="modal-header">
+                        <div class="modal-icon modal-icon-amber">
+                            <lightning-icon icon-name="utility:warning" alternative-text="Warning" size="small"></lightning-icon>
+                        </div>
+                        <div class="modal-title-group">
+                            <h2 id="modalHeading" class="modal-title">Reset to Default Settings?</h2>
+                            <p class="modal-subtitle">This will restore baseline settings for all HRMS modules.</p>
+                        </div>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>All organizational policies, attendance schedules, leave quotas, and payroll preferences will revert to the standard enterprise defaults:</p>
+                        <ul class="modal-list">
+                            <li><strong>Currency:</strong> INR (₹) • <strong>Date Format:</strong> DD/MM/YYYY</li>
+                            <li><strong>Standard Work Day:</strong> 8.0 Hours • <strong>Work Week:</strong> 5 Days (Mon-Fri)</li>
+                            <li><strong>Leave Quotas:</strong> 20 Days Annual, 10 Days Sick</li>
+                            <li><strong>Payroll Cycle:</strong> 28th of every month • <strong>Auto Check-out:</strong> Disabled</li>
+                        </ul>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="action-btn action-btn-secondary" onclick={closeResetModal} disabled={isResetting}>
+                            <span>Cancel</span>
+                        </button>
+                        <button type="button" class="action-btn action-btn-danger" onclick={handleConfirmReset} disabled={isResetting}>
+                            <template if:true={isResetting}>
+                                <lightning-spinner alternative-text="Resetting" size="small"></lightning-spinner>
+                            </template>
+                            <span>Restore Defaults</span>
+                        </button>
+                    </div>
+                </div>
+            </template>
 
         </div>
     </div>

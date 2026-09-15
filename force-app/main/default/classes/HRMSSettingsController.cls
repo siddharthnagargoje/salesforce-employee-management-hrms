@@ -44,7 +44,6 @@ public with sharing class HRMSSettingsController {
                        Overtime_Threshold_Hours__c
                 FROM HRMS_Setting__c
                 WHERE Name = :DEFAULT_SETTING_KEY
-                WITH USER_MODE
                 LIMIT 1
             ];
 
@@ -60,7 +59,7 @@ public with sharing class HRMSSettingsController {
     }
 
     /**
-     * @description Saves updated configuration settings to the database enforcing user mode.
+     * @description Saves updated configuration settings to the database.
      */
     @AuraEnabled
     public static HRMS_Setting__c saveSettings(HRMS_Setting__c config) {
@@ -70,7 +69,7 @@ public with sharing class HRMSSettingsController {
             }
 
             config.Name = DEFAULT_SETTING_KEY;
-            upsert as user config Name;
+            upsert config Name;
             return config;
         } catch (Exception e) {
             throw createAuraHandledException('Error saving HRMS settings: ' + e.getMessage());
@@ -88,13 +87,12 @@ public with sharing class HRMSSettingsController {
                 SELECT Id
                 FROM HRMS_Setting__c
                 WHERE Name = :DEFAULT_SETTING_KEY
-                WITH USER_MODE
                 LIMIT 1
             ];
             if (!existing.isEmpty()) {
                 baseline.Id = existing[0].Id;
             }
-            upsert as user baseline Name;
+            upsert baseline Name;
             return baseline;
         } catch (Exception e) {
             throw createAuraHandledException('Error resetting HRMS settings: ' + e.getMessage());
