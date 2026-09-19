@@ -393,35 +393,38 @@
 .kpi-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 16px;
-    margin-bottom: 22px;
+    gap: 14px;
+    margin-bottom: 20px;
 }
 
 .kpi-card {
     position: relative;
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 16px 18px;
+    gap: 12px;
+    height: 84px;
+    min-height: 84px;
+    padding: 12px 14px;
     background: #FFFFFF;
-    border: 1px solid var(--border-subtle);
-    border-radius: 16px;
-    box-shadow: var(--card-shadow);
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(18, 38, 63, 0.04), 0 1px 2px rgba(18, 38, 63, 0.02);
     cursor: pointer;
     box-sizing: border-box;
-    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
 }
 
 .kpi-card:hover {
     transform: translateY(-2px);
-    box-shadow: var(--card-shadow-hover);
+    box-shadow: 0 4px 12px rgba(18, 38, 63, 0.08);
     border-color: #CBD5E1;
 }
 
 .kpi-icon-box {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -434,45 +437,60 @@
 }
 
 .kpi-icon-blue {
-    background: var(--primary-light);
-    color: var(--primary);
+    background: #EFF6FF;
+    color: #0C75FF;
+    border: 1px solid rgba(12, 117, 255, 0.12);
 }
 
 .kpi-icon-teal {
-    background: var(--teal-light);
-    color: var(--teal);
+    background: #E6F9F0;
+    color: #00A664;
+    border: 1px solid rgba(0, 166, 100, 0.12);
 }
 
 .kpi-icon-purple {
-    background: var(--purple-light);
-    color: var(--purple);
+    background: #F3EEFF;
+    color: #7C3AED;
+    border: 1px solid rgba(124, 58, 237, 0.12);
 }
 
 .kpi-icon-emerald {
-    background: var(--emerald-light);
-    color: var(--emerald);
+    background: #FFF7ED;
+    color: #FF8A00;
+    border: 1px solid rgba(255, 138, 0, 0.12);
 }
 
 .kpi-info {
     flex: 1;
     min-width: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1px;
 }
 
 .kpi-label {
     display: block;
-    margin-bottom: 2px;
-    color: var(--text-muted);
-    font-size: 0.68rem;
+    color: #64748B;
+    font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 48px;
 }
 
 .kpi-value {
+    margin: 2px 0 1px;
     display: block;
-    color: var(--text-primary);
-    font-size: 0.95rem;
+    color: #0F172A;
+    font-size: 1.15rem;
     font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -480,10 +498,10 @@
 
 .kpi-meta {
     display: block;
-    margin-top: 2px;
-    color: var(--text-secondary);
-    font-size: 0.72rem;
+    color: #94A3B8;
+    font-size: 0.68rem;
     font-weight: 500;
+    line-height: 1.2;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -492,17 +510,19 @@
 .kpi-tag {
     position: absolute;
     top: 10px;
-    right: 12px;
-    padding: 2px 7px;
-    border-radius: 6px;
-    font-size: 0.62rem;
-    font-weight: 800;
+    right: 10px;
+    padding: 1.5px 7px;
+    border-radius: 999px;
+    font-size: 0.60rem;
+    font-weight: 700;
     text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
 }
 
-.kpi-tag-blue { background: #EFF6FF; color: var(--primary); }
-.kpi-tag-teal { background: #E6FAF9; color: var(--teal); }
-.kpi-tag-purple { background: #F3EEFF; color: var(--purple); }
+.kpi-tag-blue { background: #EFF6FF; color: #0C75FF; }
+.kpi-tag-teal { background: #E6F9F0; color: #00A664; }
+.kpi-tag-purple { background: #F3EEFF; color: #7C3AED; }
 .kpi-tag-emerald { background: #E6F9F0; color: #00A664; }
 
 /* ==========================================================================

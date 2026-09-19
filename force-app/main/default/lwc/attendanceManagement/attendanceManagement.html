@@ -44,47 +44,59 @@
              KPI CARDS GRID
              ========================================================= -->
         <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon blue-stat">
-                    <lightning-icon icon-name="utility:groups" alternative-text="Total" size="small"></lightning-icon>
+            <div class="stat-card stat-blue">
+                <div class="stat-icon">
+                    <lightning-icon icon-name="utility:groups" alternative-text="Total" size="x-small"></lightning-icon>
                 </div>
                 <div class="stat-content">
-                    <span class="stat-label">TOTAL RECORDS</span>
-                    <strong>{totalRecords}</strong>
-                    <span class="stat-subtext">Profiles logged</span>
+                    <div class="stat-heading">
+                        <span class="stat-title">Total Records</span>
+                        <span class="stat-tag tag-blue">Logged</span>
+                    </div>
+                    <div class="stat-value">{totalRecords}</div>
+                    <div class="stat-description">Profiles logged</div>
                 </div>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-icon green-stat">
-                    <lightning-icon icon-name="utility:success" alternative-text="Present" size="small"></lightning-icon>
+            <div class="stat-card stat-green">
+                <div class="stat-icon">
+                    <lightning-icon icon-name="utility:success" alternative-text="Present" size="x-small"></lightning-icon>
                 </div>
                 <div class="stat-content">
-                    <span class="stat-label">PRESENT</span>
-                    <strong>{presentCount}</strong>
-                    <span class="stat-subtext">Active today</span>
+                    <div class="stat-heading">
+                        <span class="stat-title">Present</span>
+                        <span class="stat-tag tag-green">Active</span>
+                    </div>
+                    <div class="stat-value">{presentCount}</div>
+                    <div class="stat-description">Active today</div>
                 </div>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-icon orange-stat">
-                    <lightning-icon icon-name="utility:clock" alternative-text="Hours" size="small"></lightning-icon>
+            <div class="stat-card stat-orange">
+                <div class="stat-icon">
+                    <lightning-icon icon-name="utility:clock" alternative-text="Hours" size="x-small"></lightning-icon>
                 </div>
                 <div class="stat-content">
-                    <span class="stat-label">WORKING HOURS</span>
-                    <strong>{totalWorkingHours}</strong>
-                    <span class="stat-subtext">Cumulative prod.</span>
+                    <div class="stat-heading">
+                        <span class="stat-title">Working Hours</span>
+                        <span class="stat-tag tag-orange">Today</span>
+                    </div>
+                    <div class="stat-value">{totalWorkingHours}</div>
+                    <div class="stat-description">Cumulative prod.</div>
                 </div>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-icon purple-stat">
-                    <lightning-icon icon-name="utility:trending" alternative-text="Overtime" size="small"></lightning-icon>
+            <div class="stat-card stat-purple">
+                <div class="stat-icon">
+                    <lightning-icon icon-name="utility:trending" alternative-text="Overtime" size="x-small"></lightning-icon>
                 </div>
                 <div class="stat-content">
-                    <span class="stat-label">OVERTIME</span>
-                    <strong>{totalOvertimeHours}</strong>
-                    <span class="stat-subtext">Extra hours logged</span>
+                    <div class="stat-heading">
+                        <span class="stat-title">Overtime</span>
+                        <span class="stat-tag tag-purple">Logged</span>
+                    </div>
+                    <div class="stat-value">{totalOvertimeHours}</div>
+                    <div class="stat-description">Extra hours logged</div>
                 </div>
             </div>
         </div>

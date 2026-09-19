@@ -57,68 +57,65 @@
                     <section class="kpi-grid">
 
                         <!-- Active Employees -->
-                        <article class="kpi-card kpi-employees">
-                            <div class="kpi-card-header">
-                                <div class="kpi-meta">
-                                    <span class="kpi-label">Active Employees</span>
-                                    <div class="kpi-value">{totalEmployees}</div>
-                                </div>
-                                <div class="kpi-icon icon-blue">
-                                    <lightning-icon icon-name="utility:people" alternative-text="Employees" size="small">
-                                    </lightning-icon>
-                                </div>
+                        <article class="kpi-card stat-blue">
+                            <div class="stat-icon">
+                                <lightning-icon icon-name="utility:people" alternative-text="Employees" size="x-small">
+                                </lightning-icon>
                             </div>
 
-                            <div class="kpi-footer">
-                                <span class="trend-badge trend-positive">
-                                    <lightning-icon icon-name="utility:arrowup" size="xx-small" alternative-text="Growth"></lightning-icon>
-                                    <span>{employeeGrowthTrend}</span>
-                                </span>
-                                <span class="kpi-subtext">Active Workforce</span>
+                            <div class="stat-content">
+                                <div class="stat-heading">
+                                    <span class="stat-title">Active Employees</span>
+                                    <span class="trend-badge trend-positive">
+                                        <lightning-icon icon-name="utility:arrowup" size="xx-small" alternative-text="Growth"></lightning-icon>
+                                        <span>{employeeGrowthTrend}</span>
+                                    </span>
+                                </div>
+
+                                <div class="stat-value">{totalEmployees}</div>
+                                <div class="stat-description">Active Workforce</div>
                             </div>
                         </article>
 
                         <!-- Gross Payroll -->
-                        <article class="kpi-card kpi-payroll">
-                            <div class="kpi-card-header">
-                                <div class="kpi-meta">
-                                    <span class="kpi-label">Gross Payroll</span>
-                                    <div class="kpi-value">{totalPayrollDisplay}</div>
-                                </div>
-                                <div class="kpi-icon icon-emerald">
-                                    <lightning-icon icon-name="utility:money" alternative-text="Payroll" size="small">
-                                    </lightning-icon>
-                                </div>
+                        <article class="kpi-card stat-green">
+                            <div class="stat-icon">
+                                <lightning-icon icon-name="utility:money" alternative-text="Payroll" size="x-small">
+                                </lightning-icon>
                             </div>
 
-                            <div class="kpi-footer">
-                                <span class="trend-badge trend-emerald">
-                                    <span class="live-dot-mini"></span>
-                                    <span>Live Ledger</span>
-                                </span>
-                                <span class="kpi-subtext">Current month</span>
+                            <div class="stat-content">
+                                <div class="stat-heading">
+                                    <span class="stat-title">Gross Payroll</span>
+                                    <span class="trend-badge trend-emerald">
+                                        <span class="live-dot-mini"></span>
+                                        <span>Live Ledger</span>
+                                    </span>
+                                </div>
+
+                                <div class="stat-value">{totalPayrollDisplay}</div>
+                                <div class="stat-description">Current month</div>
                             </div>
                         </article>
 
                         <!-- Attendance Today -->
-                        <article class="kpi-card kpi-attendance">
-                            <div class="kpi-card-header">
-                                <div class="kpi-meta">
-                                    <span class="kpi-label">Attendance Today</span>
-                                    <div class="kpi-value">{attendancePercent}</div>
-                                </div>
-                                <div class="kpi-icon icon-indigo">
-                                    <lightning-icon icon-name="utility:date_time" alternative-text="Attendance" size="small">
-                                    </lightning-icon>
-                                </div>
+                        <article class="kpi-card stat-purple">
+                            <div class="stat-icon">
+                                <lightning-icon icon-name="utility:date_time" alternative-text="Attendance" size="x-small">
+                                </lightning-icon>
                             </div>
 
-                            <div class="kpi-footer">
-                                <span class="trend-badge trend-positive">
-                                    <span class="live-dot-mini"></span>
-                                    <span>On Track</span>
-                                </span>
-                                <span class="kpi-subtext">Daily check-ins</span>
+                            <div class="stat-content">
+                                <div class="stat-heading">
+                                    <span class="stat-title">Attendance Today</span>
+                                    <span class="trend-badge trend-positive">
+                                        <span class="live-dot-mini"></span>
+                                        <span>On Track</span>
+                                    </span>
+                                </div>
+
+                                <div class="stat-value">{attendancePercent}</div>
+                                <div class="stat-description">Daily check-ins</div>
                             </div>
                         </article>
                     </section>

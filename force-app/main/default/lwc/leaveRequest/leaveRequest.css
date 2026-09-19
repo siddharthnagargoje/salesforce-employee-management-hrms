@@ -318,165 +318,184 @@
 
 /* Leave Balance Cards */
 
+.stats-grid,
 .leave-balance-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 16px;
-    margin-bottom: 24px;
+    gap: 14px;
+    margin-bottom: 20px;
 }
 
-.leave-balance-card {
+.stat-card {
     position: relative;
-    min-height: 174px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 84px;
+    min-height: 84px;
+    padding: 12px 14px;
     overflow: hidden;
-    padding: 20px 18px;
     background: #ffffff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    transition: all 180ms ease;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(18, 38, 63, 0.04), 0 1px 2px rgba(18, 38, 63, 0.02);
+    box-sizing: border-box;
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
 }
 
-.leave-balance-card:hover {
+.stat-card:hover {
     border-color: #CBD5E1;
-    box-shadow: var(--shadow-hover);
+    box-shadow: 0 4px 12px rgba(18, 38, 63, 0.08);
     transform: translateY(-2px);
 }
 
-.leave-balance-card::after {
-    position: absolute;
-    right: -40px;
-    bottom: -58px;
-    width: 135px;
-    height: 135px;
-    border-radius: 50%;
-    content: "";
-    opacity: 0.06;
-}
-
-.annual-card::after { background: #0C75FF; }
-.sick-card::after { background: #FF4D4F; }
-.maternity-card::after { background: #00D284; }
-.casual-card::after { background: #7C3AED; }
-
-.leave-card-top {
+.stat-icon {
     position: relative;
     z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-}
-
-.leave-card-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 38px;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
     border-radius: 10px;
 }
 
-.leave-card-icon lightning-icon {
+.stat-icon lightning-icon {
     --sds-c-icon-color-foreground-default: currentColor;
+    --slds-c-icon-color-foreground: currentColor;
 }
 
-.annual-card .leave-card-icon {
+.stat-blue .stat-icon {
     color: #0C75FF;
     background: #EFF6FF;
+    border: 1px solid rgba(12, 117, 255, 0.12);
 }
 
-.sick-card .leave-card-icon {
+.stat-orange .stat-icon {
     color: #FF4D4F;
     background: #FEF2F2;
+    border: 1px solid rgba(255, 77, 79, 0.12);
 }
 
-.maternity-card .leave-card-icon {
-    color: #00D284;
+.stat-green .stat-icon {
+    color: #00A664;
     background: #E6F9F0;
+    border: 1px solid rgba(0, 166, 100, 0.12);
 }
 
-.casual-card .leave-card-icon {
+.stat-purple .stat-icon {
     color: #7C3AED;
     background: #F3EEFF;
+    border: 1px solid rgba(124, 58, 237, 0.12);
 }
 
-.leave-card-label {
-    color: var(--text-secondary);
-    font-size: 0.75rem;
-    font-weight: 700;
-}
-
-.leave-card-body {
+.stat-content {
     position: relative;
     z-index: 1;
-    margin-top: 19px;
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1px;
 }
 
-.leave-card-body strong {
-    display: block;
-    color: var(--text-primary);
-    font-size: 1.7rem;
-    font-weight: 900;
+.stat-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
     line-height: 1;
 }
 
-.leave-card-body span {
-    display: block;
-    margin-top: 6px;
-    color: var(--text-muted);
-    font-size: 0.7rem;
-    font-weight: 600;
+.stat-title {
+    min-width: 0;
+    color: #64748B;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.apply-button {
-    position: relative;
-    z-index: 2;
+.apply-tag {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    margin-top: 14px;
-    padding: 6px 11px;
-    background: #ffffff;
-    border: 1px solid currentColor;
-    border-radius: 8px;
+    gap: 3px;
+    padding: 1.5px 7px;
+    border-radius: 999px;
+    font-size: 0.60rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
     cursor: pointer;
-    font-size: 0.68rem;
-    font-weight: 800;
-    transition: all 150ms ease;
+    border: 1px solid transparent;
+    transition: all 140ms ease;
+    line-height: 1.2;
 }
 
-.apply-button lightning-icon {
+.apply-tag lightning-icon {
     --sds-c-icon-color-foreground-default: currentColor;
+    --slds-c-icon-color-foreground: currentColor;
 }
 
-.annual-button {
-    color: #0C75FF;
-    border-color: #DBEAFE;
-    background: #EFF6FF;
-}
-
-.sick-button {
-    color: #FF4D4F;
-    border-color: #FECACA;
-    background: #FEF2F2;
-}
-
-.maternity-button {
-    color: #00D284;
-    border-color: #B6F2D6;
-    background: #E6F9F0;
-}
-
-.casual-button {
-    color: #7C3AED;
-    border-color: #DDD6FE;
-    background: #F3EEFF;
-}
-
-.apply-button:hover {
-    color: #ffffff;
+.apply-tag:hover {
     transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.tag-blue {
+    color: #0C75FF;
+    background: #EFF6FF;
+    border-color: #DBEAFE;
+}
+
+.tag-orange {
+    color: #FF4D4F;
+    background: #FEF2F2;
+    border-color: #FECACA;
+}
+
+.tag-green {
+    color: #00A664;
+    background: #E6F9F0;
+    border-color: #B6F2D6;
+}
+
+.tag-purple {
+    color: #7C3AED;
+    background: #F3EEFF;
+    border-color: #DDD6FE;
+}
+
+.stat-value {
+    margin: 2px 0 1px;
+    padding: 0;
+    overflow: hidden;
+    color: #0F172A;
+    font-size: 1.30rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.stat-description {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    color: #94A3B8;
+    font-size: 0.68rem;
+    font-weight: 500;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .annual-button:hover {
@@ -587,104 +606,176 @@
 /* Modal */
 
 .leave-modal {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    z-index: 9999 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 20px 16px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
 }
 
+.leave-modal .slds-modal__container,
 .leave-modal-container {
-    width: 900px;
-    max-width: 100%;
-    overflow: hidden;
-    border-radius: 18px;
-    box-shadow: 0 25px 70px rgba(18, 38, 63, 0.22);
+    position: relative !important;
+    width: 820px !important;
+    max-width: 95% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: calc(100vh - 40px) !important;
+    margin: auto !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    background: #FFFFFF !important;
+    border-radius: 18px !important;
+    box-shadow: 0 25px 70px rgba(18, 38, 63, 0.28) !important;
+    overflow: hidden !important;
+    animation: modalPopIn 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.review-modal-container {
+    width: 480px !important;
+}
+
+@keyframes modalPopIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.96) translateY(-8px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 .leave-modal-header {
+    position: relative;
+    flex-shrink: 0 !important;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
-    gap: 20px;
-    padding: 24px 28px;
+    gap: 16px;
+    padding: 18px 24px;
     color: #ffffff;
     background: linear-gradient(135deg, #0C75FF 0%, #0060DF 55%, #00C5C8 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .modal-heading-area {
     display: flex;
     align-items: center;
-    gap: 13px;
+    gap: 12px;
 }
 
 .modal-heading-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 39px;
-    height: 39px;
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
     background: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.35);
     border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .modal-heading-icon lightning-icon {
     --sds-c-icon-color-foreground-default: #ffffff;
+    --slds-c-icon-color-foreground: #ffffff;
+}
+
+.modal-heading-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-heading-text .modal-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    margin-bottom: 2px;
+    padding: 2px 8px;
+    color: #0C75FF;
+    background: #FFFFFF;
+    border-radius: 9999px;
+    font-size: 0.60rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .leave-modal-header h2 {
     margin: 0;
     color: #ffffff;
-    font-size: 1.25rem;
+    font-size: 1.20rem;
     font-weight: 800;
+    line-height: 1.25;
 }
 
 .leave-modal-header p {
-    margin: 5px 0 0;
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 0.78rem;
+    margin: 2px 0 0;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 0.74rem;
+    line-height: 1.25;
 }
 
 .modal-close-button {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 32px;
     height: 32px;
+    min-width: 32px;
     padding: 0;
     color: #ffffff;
-    background: transparent;
-    border: 0;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 8px;
     cursor: pointer;
+    transition: all 160ms ease;
 }
 
 .modal-close-button:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.32);
+    transform: scale(1.06);
 }
 
 .modal-close-button lightning-icon {
     --sds-c-icon-color-foreground-default: #ffffff;
+    --slds-c-icon-color-foreground: #ffffff;
 }
 
 .leave-modal-body {
-    max-height: 65vh;
-    padding: 28px;
-    overflow-y: auto;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    max-height: calc(100vh - 210px) !important;
+    padding: 20px 24px !important;
+    overflow-y: auto !important;
     background: #ffffff;
+    box-sizing: border-box;
 }
 
 .form-introduction {
     display: flex;
     align-items: center;
     gap: 9px;
-    margin-bottom: 22px;
-    padding: 12px 16px;
+    margin-bottom: 16px;
+    padding: 9px 14px;
     color: var(--text-secondary);
     background: #F8FAFC;
     border: 1px solid var(--border);
     border-radius: 10px;
-    font-size: 0.75rem;
+    font-size: 0.74rem;
 }
 
 .form-introduction p {
@@ -700,13 +791,14 @@
 
 .form-intro-icon lightning-icon {
     --sds-c-icon-color-foreground-default: #0C75FF;
+    --slds-c-icon-color-foreground: #0C75FF;
 }
 
 .leave-form-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 22px;
-    row-gap: 8px;
+    column-gap: 20px;
+    row-gap: 12px;
 }
 
 .form-field {
@@ -718,17 +810,19 @@
 }
 
 .total-days-field {
-    padding: 10px 14px;
-    background: #EFF6FF;
-    border: 1px solid #DBEAFE;
+    background: #F0FDF4;
+    border: 1px solid #BBF7D0;
     border-radius: 8px;
+    padding: 2px 10px 4px;
 }
 
 .leave-modal-footer {
+    flex-shrink: 0 !important;
     display: flex;
+    align-items: center;
     justify-content: flex-end;
     gap: 10px;
-    padding: 18px 28px;
+    padding: 14px 24px;
     background: #F8FAFC;
     border-top: 1px solid var(--border);
 }
@@ -738,7 +832,13 @@
 }
 
 .leave-backdrop {
-    background: rgba(17, 24, 39, 0.45) !important;
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    z-index: 9998 !important;
+    background: rgba(15, 23, 42, 0.6) !important;
     backdrop-filter: blur(4px);
 }
 

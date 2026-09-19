@@ -74,115 +74,90 @@
             </div>
 
             <!-- Leave Balance Cards -->
-            <section class="leave-balance-grid">
+            <section class="stats-grid leave-balance-grid">
 
-                <!-- Annual Leave -->
-                <article class="leave-balance-card annual-card">
-                    <div class="leave-card-top">
-                        <div class="leave-card-icon">
-                            <lightning-icon icon-name="utility:event" alternative-text="Annual leave" size="small">
-                            </lightning-icon>
+                <!-- Paid Leave -->
+                <article class="stat-card stat-blue">
+                    <div class="stat-icon">
+                        <lightning-icon icon-name="utility:event" alternative-text="Paid leave" size="x-small">
+                        </lightning-icon>
+                    </div>
+
+                    <div class="stat-content">
+                        <div class="stat-heading">
+                            <span class="stat-title">Paid Leave</span>
+                            <button type="button" class="apply-tag tag-blue" data-type="Paid Leave" onclick={handleQuickApply} title="Apply for Paid Leave">
+                                <span>Apply</span>
+                                <lightning-icon icon-name="utility:arrowright" alternative-text="Apply" size="xx-small"></lightning-icon>
+                            </button>
                         </div>
 
-                        <span class="leave-card-label">
-                            Paid Leave
-                        </span>
+                        <div class="stat-value">30</div>
+                        <div class="stat-description">Days Available</div>
                     </div>
-
-                    <div class="leave-card-body">
-                        <strong>30</strong>
-                        <span>Days Available</span>
-                    </div>
-
-                    <button class="apply-button annual-button" data-type="Paid Leave" onclick={handleQuickApply}>
-
-                        Apply Now
-
-                        <lightning-icon icon-name="utility:arrowright" alternative-text="Apply" size="xx-small">
-                        </lightning-icon>
-                    </button>
                 </article>
 
                 <!-- Sick Leave -->
-                <article class="leave-balance-card sick-card">
-                    <div class="leave-card-top">
-                        <div class="leave-card-icon">
-                            <lightning-icon icon-name="utility:heart" alternative-text="Sick leave" size="small">
-                            </lightning-icon>
+                <article class="stat-card stat-orange">
+                    <div class="stat-icon">
+                        <lightning-icon icon-name="utility:heart" alternative-text="Sick leave" size="x-small">
+                        </lightning-icon>
+                    </div>
+
+                    <div class="stat-content">
+                        <div class="stat-heading">
+                            <span class="stat-title">Sick Leave</span>
+                            <button type="button" class="apply-tag tag-orange" data-type="Sick Leave" onclick={handleQuickApply} title="Apply for Sick Leave">
+                                <span>Apply</span>
+                                <lightning-icon icon-name="utility:arrowright" alternative-text="Apply" size="xx-small"></lightning-icon>
+                            </button>
                         </div>
 
-                        <span class="leave-card-label">
-                            Sick Leave
-                        </span>
+                        <div class="stat-value">20</div>
+                        <div class="stat-description">Days Available</div>
                     </div>
-
-                    <div class="leave-card-body">
-                        <strong>20</strong>
-                        <span>Days Available</span>
-                    </div>
-
-                    <button class="apply-button sick-button" data-type="Sick Leave" onclick={handleQuickApply}>
-
-                        Apply Now
-
-                        <lightning-icon icon-name="utility:arrowright" alternative-text="Apply" size="xx-small">
-                        </lightning-icon>
-                    </button>
                 </article>
 
-                <!-- Maternity Leave -->
-                <article class="leave-balance-card maternity-card">
-                    <div class="leave-card-top">
-                        <div class="leave-card-icon">
-                            <lightning-icon icon-name="utility:people" alternative-text="Maternity leave" size="small">
-                            </lightning-icon>
+                <!-- Work From Home -->
+                <article class="stat-card stat-green">
+                    <div class="stat-icon">
+                        <lightning-icon icon-name="utility:people" alternative-text="Work from home" size="x-small">
+                        </lightning-icon>
+                    </div>
+
+                    <div class="stat-content">
+                        <div class="stat-heading">
+                            <span class="stat-title">Work From Home</span>
+                            <button type="button" class="apply-tag tag-green" data-type="Work From Home" onclick={handleQuickApply} title="Apply for Work From Home">
+                                <span>Apply</span>
+                                <lightning-icon icon-name="utility:arrowright" alternative-text="Apply" size="xx-small"></lightning-icon>
+                            </button>
                         </div>
 
-                        <span class="leave-card-label">
-                            Work From Home
-                        </span>
+                        <div class="stat-value">15</div>
+                        <div class="stat-description">Days Available</div>
                     </div>
-
-                    <div class="leave-card-body">
-                        <strong>15</strong>
-                        <span>Days Available</span>
-                    </div>
-
-                    <button class="apply-button maternity-button" data-type="Work From Home"
-                        onclick={handleQuickApply}>
-
-                        Apply Now
-
-                        <lightning-icon icon-name="utility:arrowright" alternative-text="Apply" size="xx-small">
-                        </lightning-icon>
-                    </button>
                 </article>
 
                 <!-- Casual Leave -->
-                <article class="leave-balance-card casual-card">
-                    <div class="leave-card-top">
-                        <div class="leave-card-icon">
-                            <lightning-icon icon-name="utility:user_role" alternative-text="Casual leave" size="small">
-                            </lightning-icon>
+                <article class="stat-card stat-purple">
+                    <div class="stat-icon">
+                        <lightning-icon icon-name="utility:user_role" alternative-text="Casual leave" size="x-small">
+                        </lightning-icon>
+                    </div>
+
+                    <div class="stat-content">
+                        <div class="stat-heading">
+                            <span class="stat-title">Casual Leave</span>
+                            <button type="button" class="apply-tag tag-purple" data-type="Casual Leave" onclick={handleQuickApply} title="Apply for Casual Leave">
+                                <span>Apply</span>
+                                <lightning-icon icon-name="utility:arrowright" alternative-text="Apply" size="xx-small"></lightning-icon>
+                            </button>
                         </div>
 
-                        <span class="leave-card-label">
-                            Casual Leave
-                        </span>
+                        <div class="stat-value">30</div>
+                        <div class="stat-description">Days Available</div>
                     </div>
-
-                    <div class="leave-card-body">
-                        <strong>30</strong>
-                        <span>Days Available</span>
-                    </div>
-
-                    <button class="apply-button casual-button" data-type="Casual Leave" onclick={handleQuickApply}>
-
-                        Apply Now
-
-                        <lightning-icon icon-name="utility:arrowright" alternative-text="Apply" size="xx-small">
-                        </lightning-icon>
-                    </button>
                 </article>
 
             </section>
@@ -235,7 +210,7 @@
                                     </lightning-icon>
                                 </div>
 
-                                <div>
+                                <div class="modal-heading-text">
                                     <span class="modal-eyebrow">
                                         NEW APPLICATION
                                     </span>
@@ -369,7 +344,7 @@
                                     <lightning-icon icon-name={reviewActionIcon} alternative-text="Review" size="small">
                                     </lightning-icon>
                                 </div>
-                                <div>
+                                <div class="modal-heading-text">
                                     <span class="modal-eyebrow">REVIEW WORKFLOW</span>
                                     <h2 id="review-modal-heading">{reviewModalTitle}</h2>
                                 </div>
