@@ -1,136 +1,227 @@
-import { LightningElement, track, wire } from 'lwc';
-import getEmployees        from '@salesforce/apex/EmployeeController.getEmployees';
-import getAttendanceList   from '@salesforce/apex/AttendanceController.getAttendanceList';
-import getLeaveRequests    from '@salesforce/apex/LeaveController.getLeaveRequests';
-import getPayslips         from '@salesforce/apex/PayrollController.getPayslips';
+import { LightningElement, wire, track } from 'lwc';
+
+import getEmployees from '@salesforce/apex/EmployeeController.getEmployees';
+import getAttendanceList from '@salesforce/apex/EmployeeController.getAttendanceList';
+import getLeaveRequests from '@salesforce/apex/EmployeeController.getLeaveRequests';
 
 export default class Dashboard extends LightningElement {
-
-    // ─── Navigation ───────────────────────────────────────────────────────────
     @track currentPage = 'dashboard';
-
-    get isDashboard()  { return this.currentPage === 'dashboard';  }
-    get isEmployees()  { return this.currentPage === 'employees';  }
-    get isAttendance() { return this.currentPage === 'attendance'; }
-    get isLeave()      { return this.currentPage === 'leave';      }
-    get isReports()    { return this.currentPage === 'reports';    }
-    get isSettings()   { return this.currentPage === 'settings';   }
-    get isPayslip()    { return this.currentPage === 'payslip';    }
-
-    handleNavigation(event) {
-        this.currentPage = event.detail.page;
-    }
-
-    handleToggleSidebar() {}
-
-    navigateToEmployees() { this.currentPage = 'employees'; }
-    navigateToPayslip()   { this.currentPage = 'payslip';   }
-    navigateToLeave()     { this.currentPage = 'leave';      }
-
-    // ─── KPI: Employees ───────────────────────────────────────────────────────
-    @track totalEmployees      = '0';
+    @track totalEmployees = 0;
+    @track totalPayrollSum = 0;
+    @track attendanceLogs = [];
+    @track pendingRequests = [];
+    @track attendancePercent = '0%';
     @track employeeGrowthTrend = '+0%';
-    @track attendancePercent   = '0%';
+    @track isSidebarCollapsed = false;
 
     @wire(getEmployees)
-    wiredEmployees({ data, error }) {
+    wiredEmployees({ error, data }) {
         if (data) {
-            const active = data.filter(e => e.Status__c === 'Active');
-            this.totalEmployees      = active.length.toString();
-            this.employeeGrowthTrend = '+2.4%';
+            this.totalEmployees = data.length;
+
+            this.totalPayrollSum = data.reduce((sum, employee) => {
+                return sum + (parseFloat(employee.Salary__c) || 0);
+            }, 0);
+
+            this.employeeGrowthTrend =
+                `↑ ${Math.floor((data.length / 10) * 100)}% vs last month`;
         } else if (error) {
-            this.totalEmployees = '0';
-            console.error('getEmployees error:', error);
+            console.error('Error loading employees:', error);
+            this.totalEmployees = 0;
+            this.totalPayrollSum = 0;
         }
     }
 
-    // ─── KPI: Payroll ─────────────────────────────────────────────────────────
-    @track totalPayrollDisplay = '\u20B90';
-
-    @wire(getPayslips)
-    wiredPayslips({ data, error }) {
+    @wire(getAttendanceList)
+    wiredAttendance({ error, data }) {
         if (data) {
-            const total = data.reduce((sum, p) => sum + (p.Net_Pay__c || 0), 0);
-            this.totalPayrollDisplay = '\u20B9' + Math.round(total).toLocaleString('en-IN');
+            this.attendanceLogs = data.slice(0, 10).map((log) => {
+                const employeeName = log.Employee__r
+                    ? log.Employee__r.Name
+                    : 'Unknown Employee';
+
+                const status = log.Status__c || 'Not Marked';
+
+                return {
+                    id: log.Id,
+                    name: employeeName,
+                    initials: this.getInitials(employeeName),
+                    checkIn: log.Check_In__c
+                        ? new Date(log.Check_In__c).toLocaleTimeString(
+                            'en-IN',
+                            {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            }
+                        )
+                        : '--',
+                    statusLabel: status,
+                    statusClass:
+                        (status === 'Present' || status === 'On Time')
+                            ? 'attendance-status status-on-time'
+                            : 'attendance-status status-late'
+                };
+            });
+
+            const presentCount = this.attendanceLogs.filter(
+                (log) => log.statusLabel === 'Present' || log.statusLabel === 'On Time'
+            ).length;
+
+            this.attendancePercent = this.attendanceLogs.length
+                ? `${Math.round(
+                    (presentCount / this.attendanceLogs.length) * 100
+                )}%`
+                : '0%';
         } else if (error) {
-            this.totalPayrollDisplay = '\u20B90';
-            console.error('getPayslips error:', error);
+            console.error('Error loading attendance:', error);
+            this.attendanceLogs = [];
+            this.attendancePercent = '0%';
         }
     }
 
-    // ─── Attendance Logs ──────────────────────────────────────────────────────
-    @track attendanceLogs = [];
+    @wire(getLeaveRequests)
+    wiredRequests({ error, data }) {
+        if (data) {
+            this.pendingRequests = data
+                .filter((request) => request.Status__c === 'Pending')
+                .slice(0, 5)
+                .map((request) => {
+                    const leaveType = request.Leave_Type__c || 'Request';
+
+                    return {
+                        id: request.Id,
+                        employee: request.Employee__r
+                            ? request.Employee__r.Name
+                            : 'Unknown Employee',
+                        type: leaveType,
+                        details:
+                            `${request.Start_Date__c || ''}` +
+                            (request.End_Date__c ? ` → ${request.End_Date__c}` : ''),
+                        typeClass:
+                            (leaveType === 'Sick Leave' || leaveType === 'Emergency')
+                                ? 'request-type type-danger'
+                                : 'request-type type-warning'
+                    };
+                });
+        } else if (error) {
+            console.error('Error loading requests:', error);
+            this.pendingRequests = [];
+        }
+    }
+
+    getInitials(name) {
+        if (!name) {
+            return '--';
+        }
+
+        const parts = name.trim().split(' ');
+
+        const first = parts[0]
+            ? parts[0].charAt(0)
+            : '';
+
+        const last = parts.length > 1
+            ? parts[parts.length - 1].charAt(0)
+            : '';
+
+        return `${first}${last}`.toUpperCase();
+    }
+
+    get totalPayrollDisplay() {
+        return `₹${this.totalPayrollSum.toLocaleString('en-IN', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+        })}`;
+    }
+
+    renderedCallback() {
+        const donutEl = this.template.querySelector('.donut-chart');
+        if (donutEl) {
+            const percentage = parseInt(this.attendancePercent, 10) || 0;
+            donutEl.style.setProperty('--attendance-progress', `${percentage}%`);
+        }
+    }
+
+    get pendingRequestsCount() {
+        return this.pendingRequests ? this.pendingRequests.length : 0;
+    }
+
+    get hasNoPendingRequests() {
+        return !this.pendingRequests || this.pendingRequests.length === 0;
+    }
 
     get hasNoAttendanceLogs() {
         return !this.attendanceLogs || this.attendanceLogs.length === 0;
     }
 
-    @wire(getAttendanceList)
-    wiredAttendance({ data, error }) {
-        if (data) {
-            const today = new Date().toDateString();
-            const todayLogs = data.filter(a => {
-                if (!a.Attendance_Date__c) return false;
-                return new Date(a.Attendance_Date__c).toDateString() === today;
-            });
+    handleNavigation(event) {
+        const raw = typeof event.detail === 'string'
+            ? event.detail
+            : (event.detail && (event.detail.page || event.detail.value)) || '';
+        const targetPage = raw.toLowerCase().trim();
 
-            this.attendanceLogs = todayLogs.slice(0, 10).map(log => ({
-                id:          log.Id,
-                name:        log.Employee__r ? log.Employee__r.Name : '—',
-                initials:    this._initials(log.Employee__r ? log.Employee__r.Name : ''),
-                checkIn:     log.Check_In_Time__c
-                                 ? new Date(log.Check_In_Time__c).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })
-                                 : '—',
-                statusLabel: log.Status__c || 'Present',
-                statusClass: (log.Status__c === 'Present' || log.Status__c === 'On Time')
-                                 ? 'attendance-status status-on-time'
-                                 : 'attendance-status status-late'
-            }));
+        const pageMap = {
+            dashboard: 'dashboard',
+            employees: 'employees',
+            employee: 'employees',
+            attendance: 'attendance',
+            attendances: 'attendance',
+            leave: 'leave',
+            leaves: 'leave',
+            reports: 'reports',
+            report: 'reports',
+            settings: 'settings',
+            setting: 'settings',
+            payslip: 'payslip',
+            payslips: 'payslip'
+        };
 
-            const present  = todayLogs.filter(l => l.Status__c === 'Present' || l.Status__c === 'On Time').length;
-            const total    = todayLogs.length || 1;
-            const pct      = Math.round((present / total) * 100);
-            this.attendancePercent = pct + '%';
-        } else if (error) {
-            this.attendanceLogs    = [];
-            this.attendancePercent = '0%';
-            console.error('getAttendanceList error:', error);
+        this.currentPage = pageMap[targetPage] || 'dashboard';
+    }
+
+    handleToggleSidebar(event) {
+        if (event && event.detail) {
+            this.isSidebarCollapsed = event.detail.isCollapsed;
         }
     }
 
-    // ─── Pending Leave Requests ───────────────────────────────────────────────
-    @track pendingRequests = [];
-
-    get pendingRequestsCount() { return this.pendingRequests.length; }
-    get hasNoPendingRequests()  { return this.pendingRequests.length === 0; }
-
-    @wire(getLeaveRequests)
-    wiredLeaveRequests({ data, error }) {
-        if (data) {
-            this.pendingRequests = data
-                .filter(req => req.Status__c === 'Pending')
-                .slice(0, 5)
-                .map(req => ({
-                    id:        req.Id,
-                    employee:  req.Employee__r ? req.Employee__r.Name : '—',
-                    type:      req.Leave_Type__c || 'Leave',
-                    typeClass: req.Leave_Type__c === 'Emergency' || req.Leave_Type__c === 'Sick'
-                                   ? 'request-type type-danger'
-                                   : 'request-type type-warning',
-                    details:   (req.Start_Date__c || '') + (req.End_Date__c ? ' \u2192 ' + req.End_Date__c : '')
-                }));
-        } else if (error) {
-            this.pendingRequests = [];
-            console.error('getLeaveRequests error:', error);
-        }
+    navigateToEmployees() {
+        this.currentPage = 'employees';
     }
 
-    // ─── Helper ───────────────────────────────────────────────────────────────
-    _initials(name) {
-        if (!name) return '?';
-        const parts = name.trim().split(' ');
-        return parts.length >= 2
-            ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
-            : name.substring(0, 2).toUpperCase();
+    navigateToPayslip() {
+        this.currentPage = 'payslip';
+    }
+
+    navigateToLeave() {
+        this.currentPage = 'leave';
+    }
+
+    get isDashboard() {
+        return this.currentPage === 'dashboard';
+    }
+
+    get isEmployees() {
+        return this.currentPage === 'employees';
+    }
+
+    get isAttendance() {
+        return this.currentPage === 'attendance';
+    }
+
+    get isLeave() {
+        return this.currentPage === 'leave';
+    }
+
+    get isReports() {
+        return this.currentPage === 'reports';
+    }
+
+    get isSettings() {
+        return this.currentPage === 'settings';
+    }
+
+    get isPayslip() {
+        return this.currentPage === 'payslip';
     }
 }
