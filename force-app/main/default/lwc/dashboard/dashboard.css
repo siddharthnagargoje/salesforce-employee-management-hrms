@@ -7,8 +7,8 @@
     --dash-text-main: #111827;
     --dash-text-muted: #64748B;
     --dash-text-subtle: #94A3B8;
-    --dash-primary: #0C75FF;
-    --dash-primary-hover: #0060DF;
+    --dash-primary: #00A86B;
+    --dash-primary-hover: #00875A;
     --dash-emerald: #00D284;
     --dash-emerald-bg: #E6F9F0;
     --dash-rose: #FF4D4F;
@@ -17,7 +17,7 @@
     --dash-amber-bg: #FFF7ED;
     --dash-indigo: #7C3AED;
     --dash-indigo-bg: #F3EEFF;
-    --dash-cyan: #00C5C8;
+    --dash-cyan: #34D399;
     --dash-cyan-bg: #E0F9F9;
     --dash-radius-sm: 8px;
     --dash-radius-md: 12px;
@@ -63,11 +63,11 @@
     margin-bottom: 24px;
     padding: 24px 32px;
     color: var(--dash-text-main);
-    background: linear-gradient(135deg, #FFFFFF 0%, #F6FAFF 48%, #EDF5FF 100%);
-    border: 1px solid #D6E4F8;
+    background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 48%, #ECFDF5 100%);
+    border: 1px solid #A7F3D0;
     border-radius: 20px;
     box-shadow: 
-        0 14px 34px -6px rgba(12, 117, 255, 0.09),
+        0 14px 34px -6px rgba(0, 168, 107, 0.09),
         0 4px 14px rgba(18, 38, 63, 0.04),
         inset 0 1px 0 rgba(255, 255, 255, 0.95);
     box-sizing: border-box;
@@ -81,7 +81,7 @@
     right: -5%;
     width: 420px;
     height: 420px;
-    background: radial-gradient(circle, rgba(12, 117, 255, 0.14) 0%, rgba(0, 197, 200, 0.08) 45%, rgba(124, 58, 237, 0.03) 70%, transparent 85%);
+    background: radial-gradient(circle, rgba(0, 168, 107, 0.14) 0%, rgba(52, 211, 153, 0.08) 45%, rgba(124, 58, 237, 0.03) 70%, transparent 85%);
     border-radius: 50%;
     pointer-events: none;
     filter: blur(20px);
@@ -99,9 +99,9 @@
     right: 25px;
     width: 280px;
     height: 280px;
-    background: linear-gradient(135deg, rgba(12, 117, 255, 0.09) 0%, rgba(0, 197, 200, 0.12) 100%);
-    border: 1.5px solid rgba(12, 117, 255, 0.18);
-    box-shadow: inset 0 4px 20px rgba(255, 255, 255, 0.7), 0 8px 24px rgba(12, 117, 255, 0.08);
+    background: linear-gradient(135deg, rgba(0, 168, 107, 0.09) 0%, rgba(52, 211, 153, 0.12) 100%);
+    border: 1.5px solid rgba(0, 168, 107, 0.18);
+    box-shadow: inset 0 4px 20px rgba(255, 255, 255, 0.7), 0 8px 24px rgba(0, 168, 107, 0.08);
 }
 
 .circle-two {
@@ -109,7 +109,7 @@
     bottom: -110px;
     width: 210px;
     height: 210px;
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.06) 0%, rgba(12, 117, 255, 0.08) 100%);
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.06) 0%, rgba(0, 168, 107, 0.08) 100%);
     border: 1.5px solid rgba(124, 58, 237, 0.14);
     box-shadow: inset 0 2px 14px rgba(255, 255, 255, 0.5);
 }
@@ -135,10 +135,10 @@
     gap: 7px;
     margin-bottom: 8px;
     padding: 5px 12px;
-    background: linear-gradient(135deg, #FFFFFF 0%, #EFF6FF 100%);
-    border: 1px solid #BFDBFE;
+    background: linear-gradient(135deg, #FFFFFF 0%, #ECFDF5 100%);
+    border: 1px solid #A7F3D0;
     border-radius: 9999px;
-    box-shadow: 0 2px 8px rgba(12, 117, 255, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 8px rgba(0, 168, 107, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
     width: fit-content;
 }
 
@@ -222,7 +222,7 @@
 .secondary-button {
     color: #1E293B;
     background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
-    border: 1px solid #D6E4F8;
+    border: 1px solid #A7F3D0;
     box-shadow: 
         0 2px 8px rgba(18, 38, 63, 0.06),
         inset 0 1px 0 #FFFFFF;
@@ -239,27 +239,27 @@
 
 .primary-button {
     color: #FFFFFF;
-    background: linear-gradient(135deg, #0C75FF 0%, #005ce6 100%);
+    background: linear-gradient(135deg, #00A86B 0%, #00875A 100%);
     border: 1px solid rgba(255, 255, 255, 0.25);
     box-shadow: 
-        0 6px 18px rgba(12, 117, 255, 0.35),
+        0 6px 18px rgba(0, 168, 107, 0.35),
         inset 0 1px 1px rgba(255, 255, 255, 0.35);
     font-weight: 700;
 }
 
 .primary-button:hover {
-    background: linear-gradient(135deg, #0060DF 0%, #004bc2 100%);
+    background: linear-gradient(135deg, #00875A 0%, #006E49 100%);
     border-color: rgba(255, 255, 255, 0.35);
     transform: translateY(-2px);
     box-shadow: 
-        0 10px 24px rgba(12, 117, 255, 0.45),
+        0 10px 24px rgba(0, 168, 107, 0.45),
         inset 0 1px 1px rgba(255, 255, 255, 0.45);
 }
 
 .secondary-button:active,
 .primary-button:active {
     transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(12, 117, 255, 0.25);
+    box-shadow: 0 2px 8px rgba(0, 168, 107, 0.25);
 }
 
 .user-avatar {
@@ -269,7 +269,7 @@
     width: 44px;
     height: 44px;
     color: #ffffff;
-    background: linear-gradient(135deg, #0C75FF 0%, #00C5C8 100%);
+    background: linear-gradient(135deg, #00A86B 0%, #34D399 100%);
     border: 2.5px solid #ffffff;
     border-radius: 50%;
     font-size: 0.8rem;
@@ -277,8 +277,8 @@
     letter-spacing: 0.05em;
     user-select: none;
     box-shadow: 
-        0 4px 16px rgba(0, 197, 200, 0.35),
-        0 2px 6px rgba(12, 117, 255, 0.2),
+        0 4px 16px rgba(52, 211, 153, 0.35),
+        0 2px 6px rgba(0, 168, 107, 0.2),
         inset 0 1px 2px rgba(255, 255, 255, 0.6);
     transition: transform 180ms ease, box-shadow 180ms ease;
 }
@@ -286,8 +286,8 @@
 .user-avatar:hover {
     transform: scale(1.08);
     box-shadow: 
-        0 6px 20px rgba(0, 197, 200, 0.45),
-        0 3px 8px rgba(12, 117, 255, 0.3);
+        0 6px 20px rgba(52, 211, 153, 0.45),
+        0 3px 8px rgba(0, 168, 107, 0.3);
 }
 
 /* ==========================================================================
@@ -343,9 +343,9 @@
 }
 
 .stat-blue .stat-icon {
-    color: #0C75FF;
-    background: #EFF6FF;
-    border: 1px solid rgba(12, 117, 255, 0.12);
+    color: #00A86B;
+    background: #ECFDF5;
+    border: 1px solid rgba(0, 168, 107, 0.12);
 }
 
 .stat-green .stat-icon {
@@ -528,8 +528,8 @@
 
 .blue-heading-icon {
     color: var(--dash-primary);
-    background: #EFF6FF;
-    border: 1px solid #DBEAFE;
+    background: #ECFDF5;
+    border: 1px solid #A7F3D0;
 }
 
 .purple-heading-icon {
@@ -654,11 +654,11 @@
     height: 32px;
     flex-shrink: 0;
     color: #ffffff;
-    background: linear-gradient(135deg, #0C75FF 0%, #38BDF8 100%);
+    background: linear-gradient(135deg, #00A86B 0%, #34D399 100%);
     border-radius: 50%;
     font-size: 0.68rem;
     font-weight: 700;
-    box-shadow: 0 2px 6px rgba(12, 117, 255, 0.2);
+    box-shadow: 0 2px 6px rgba(0, 168, 107, 0.2);
 }
 
 .employee-table-name {

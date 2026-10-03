@@ -5,8 +5,8 @@
     --sidebar-ink: #111827;
     --sidebar-muted: #64748B;
     --sidebar-line: #EEF2F6;
-    --sidebar-accent: #0C75FF;
-    --sidebar-accent-hover: #0060DF;
+    --sidebar-accent: #00A86B;
+    --sidebar-accent-hover: #00875A;
 }
 
 .sidebar {
@@ -48,10 +48,10 @@
     width: 38px;
     height: 38px;
     flex-shrink: 0;
-    background: linear-gradient(135deg, #0C75FF 0%, #00C5C8 100%);
+    background: linear-gradient(135deg, #00A86B 0%, #34D399 100%);
     border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 11px;
-    box-shadow: 0 4px 12px rgba(12, 117, 255, 0.25);
+    box-shadow: 0 4px 12px rgba(0, 168, 107, 0.25);
 }
 
 .brand-text {
@@ -167,13 +167,13 @@
     transform: translateX(2px);
 }
 
-/* Modern Electric Blue Pill Active State (Reference: CLEARIQ) */
+/* Emerald Green Pill Active State */
 .navigation-item.active {
     color: #FFFFFF !important;
-    background: #0C75FF;
+    background: #00A86B;
     border-color: transparent;
     font-weight: 600;
-    box-shadow: 0 4px 14px rgba(12, 117, 255, 0.32);
+    box-shadow: 0 4px 14px rgba(0, 168, 107, 0.32);
 }
 
 .navigation-item.active:hover {
@@ -183,7 +183,7 @@
 }
 
 .navigation-item:focus-visible {
-    outline: 2px solid #0C75FF;
+    outline: 2px solid #00A86B;
     outline-offset: 2px;
 }
 
@@ -207,13 +207,13 @@
     --sds-c-icon-color-foreground-default: currentColor;
 }
 
-.blue-icon { color: #0C75FF; background: #EFF6FF; }
+.blue-icon  { color: #00A86B; background: #ECFDF5; }
 .purple-icon { color: #7C3AED; background: #F3EEFF; }
-.green-icon { color: #00D284; background: #E6F9F0; }
+.green-icon  { color: #00D284; background: #E6F9F0; }
 .orange-icon { color: #FF8A00; background: #FFF7ED; }
-.teal-icon { color: #00C5C8; background: #E0F9F9; }
-.pink-icon { color: #FF4D4F; background: #FEF2F2; }
-.gray-icon { color: #64748B; background: #F1F5F9; }
+.teal-icon   { color: #34D399; background: #D1FAE5; }
+.pink-icon   { color: #FF4D4F; background: #FEF2F2; }
+.gray-icon   { color: #64748B; background: #F1F5F9; }
 
 .navigation-item.active .nav-icon {
     background: rgba(255, 255, 255, 0.2);
@@ -259,8 +259,8 @@
 }
 
 .reports-badge {
-    color: #0C75FF;
-    background: #EFF6FF;
+    color: #00A86B;
+    background: #ECFDF5;
 }
 
 .navigation-item.active .menu-badge {
